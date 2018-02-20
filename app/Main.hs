@@ -7,7 +7,7 @@ import Hakyll.Web.Sass (sassCompiler)
 
 import Lib.Pandoc (pandocCompiler')
 import Lib.Configuration (feedConfig)
-import Lib.Context (indexCtx, postCtx, errorCtx)
+import Lib.Context (indexCtx, articleCtx, errorCtx)
 
 -- The path to our articles in Hakyll's pattern notation
 articlePath = "articles/*/*.md"
@@ -43,9 +43,9 @@ main = hakyll $ do
     compile $ do
       pandocCompiler'
         >>= saveSnapshot "raw" -- used for teaser generation
-        >>= loadAndApplyTemplate "templates/article.html" postCtx
+        >>= loadAndApplyTemplate "templates/article.html" articleCtx
         >>= saveSnapshot "content" -- used for atom feed generation
-        >>= loadAndApplyTemplate "templates/default.html" postCtx
+        >>= loadAndApplyTemplate "templates/default.html" articleCtx
 
   -- Compile Files
   forM ["assets/images/**", "assets/manifest/**", "articles/**"] $ do copyFiles
@@ -64,6 +64,6 @@ main = hakyll $ do
   create ["atom.xml"] $ do
     route idRoute
     compile $ do
-      let feedCtx = postCtx `mappend` bodyField "description"
+      let feedCtx = articleCtx `mappend` bodyField "description"
       articles <- recentFirst =<< loadAllSnapshots articlePath "content"
       renderAtom feedConfig feedCtx articles

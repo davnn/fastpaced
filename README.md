@@ -10,11 +10,11 @@
 
 ### Optional
 
+- **bibliography:** String (path to bibliography)
+- **image:** String (path to image)
 - **mathematics:** Boolean
 - **centered:** Boolean 
-- **bibliography:** String (path to bibliography)
-- **references:** [String] (see pandoc citations)
-- **image:** String (path to image)
+- **hidden:** Boolean (do not show in post list)
 
 ### Classes
 

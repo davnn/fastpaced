@@ -14,12 +14,13 @@
     <title>$title$</title>
     <link rel="canonical" href="$site$">
     <meta property="og:url" content="$site$">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="$title$" />
+    <meta property="og:description" content="Curious Observer">
     <meta property="og:site_name" content="Curious Observer">
-    <meta property="og:image" content="$if(image)$ $site$$url$/$image$ $else$ $site$/assets/images/galaxy.jpg $endif$">
+    <meta property="og:image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
     <meta name="google-site-verification" content="l4qDc2YcS8N4VrJnhEB_RY5X9xfO5X8aob0M3C3I0J8">
-    <style>
-        $partial("assets/styles/main.scss")$
-    </style>
+    <style>$partial("assets/styles/main.scss")$</style>
 </head>
 
 <body>

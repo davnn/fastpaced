@@ -1,4 +1,4 @@
-module Lib.Context (indexCtx, postCtx, errorCtx) where
+module Lib.Context (indexCtx, articleCtx, errorCtx) where
 
 import Hakyll
 import System.FilePath (takeDirectory)
@@ -19,12 +19,12 @@ extendedDefaultContext =
 
 indexCtx :: [Item String] -> Context String
 indexCtx posts =
-  listField "posts" postCtx (return posts) `mappend`
+  listField "posts" articleCtx (return posts) `mappend`
   constField "title" title `mappend`
   extendedDefaultContext
 
-postCtx :: Context String
-postCtx =
+articleCtx :: Context String
+articleCtx =
   dateField "date" "%B %e, %Y" `mappend`
   constField "layout" "article" `mappend`
   constField "comments" "true" `mappend`
