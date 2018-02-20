@@ -1,0 +1,27 @@
+---
+layout: home
+---
+
+<section id="intro">
+    <h1>Data. Science. Code. Design. Thoughts.</h1>
+
+    <p>My name is <b>David Muhr</b> and I am an Austrian Data Science student genuinely interested in too many topics.&nbsp;<input type="checkbox" id="dots" class="dots" hidden><label for="dots" title="Learn more"><span>&#9679;</span><span>&#9679;</span><span>&#9679;</span></label>
+
+        <span>I have a deep interest in computer science principles and especially programming language theory.&nbsp;<input type="checkbox" id="dots-inner" class="dots" hidden><label for="dots-inner" title="Learn more"><span>&#9679;</span><span>&#9679;</span><span>&#9679;</span></label><span>Never stop questioning 🚀</span></span>
+    </p>
+</section>
+
+<section id="post-list">
+    <ul>
+        $for(posts)$
+        <li>
+            <h2><a href="$url$">$title$</a>
+                <span>
+                    <a href="https://curious.observer$url$#disqus_thread"></a>
+                    $date$
+                </span></h2>
+        </li>
+        $endfor$
+    </ul>
+</section>
+<script id="dsq-count-scr" src="//curiousobserver.disqus.com/count.js" async></script>

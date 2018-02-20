@@ -1,0 +1,53 @@
+<article $if(centered)$ class="centered" $endif$ itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header>
+        <h1 itemprop="name headline">$title$</h1>
+    </header>
+
+    $if(teaser)$
+    <div class="abstract">
+        $teaser$
+    </div>
+    $endif$
+
+    <div class="meta">
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished">$date$</time>
+        </p>
+
+        <p class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span>Author<br></span>
+            <a itemprop="name" href="/">$author$</a>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        $body$
+
+        <section class="appendix">
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: “Figure from …”.</p>
+        </section>
+
+      <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+  var disqus_config = function () {
+    this.shortname = "curiousobserver";
+    this.page.url = "$site$$url$";
+    this.page.identifier = "$url$";
+    this.page.title = "$title$";
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://curiousobserver.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

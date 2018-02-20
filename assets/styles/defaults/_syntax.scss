@@ -1,0 +1,67 @@
+// Custom syntax highlighting theme loosely based on the VS theme
+// See: http://richleland.github.io/pygments-css/
+
+$_color-comment: grey;
+$_color-error: red;
+$_color-keyword: blue;
+$_color-string: green;
+$_color-string: darkred;
+$_color-number: blue;
+$_color-generic: black;
+$_color-type: #555;
+
+// Unfortunately pandoc highlighting uses highlighting-kate
+// This should align the styles of both highlighters
+.sourceCode {
+  a {
+    color: $_color-generic;
+  }
+
+  .va, /* Variable */
+  .kw, /* Keyword */
+  .im, /* Import */
+  .cf { /* ControlFlow */
+    color: $_color-keyword;
+  }
+
+  .in, /* Information */
+  .an, /* Annotation */
+  .cv, /* CommentVar */
+  .do, /* Documentation */
+  .co { /* Comment */
+    color: $_color-comment;
+  }
+
+  .dv, /* DecVal */
+  .bn, /* BaseN */
+  .fl { /* Float */
+    color: $_color-number;
+  }
+
+  .cn, /* Constant */
+  .sc, /* SpecialChar */
+  .vs, /* VerbatimString */
+  .ss, /* SpecialString */
+  .ch, /* Char */
+  .st { /* String */
+    color: $_color-string;
+  }
+
+  .al, /* Alert */
+  .wa, /* Warning */
+  .er { /* Error */
+    color: $_color-error;
+  }
+
+  .dt /* DataType */ {
+    font-weight: bold;
+  }
+
+  //.bu { } /* BuiltIn */
+  //.fu { } /* Function */
+  //.ot { } /* Other */
+  //.op { } /* Operator */
+  //.ex { } /* Extension */
+  //.pp { } /* Preprocessor */
+  //.at { } /* Attribute */
+}

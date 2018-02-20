@@ -1,0 +1,9 @@
+.DS_Store
+.ipynb_checkpoints/
+.git-metadata/
+.stack-work/
+.idea/
+
+_site/
+_cache/
+out/

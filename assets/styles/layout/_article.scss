@@ -1,0 +1,354 @@
+#article {
+  article {
+    @include container($width-medium);
+
+    color: $color-text-dark;
+    font-size: $font-size-text;
+    hyphens: auto;
+  }
+
+  header > h1 {
+    max-width: $font-size-4 * strip-unit($measure-large);
+    padding-bottom: spacing(2);
+    font-size: $font-size-5;
+    line-height: 1.2;
+
+    @include breakpoint($breakpoint-tablet-landscape-up) {
+      font-size: $font-size-6;
+    }
+  }
+
+  .abstract {
+    font-size: $font-size-3;
+    max-width: $measure-large;
+    padding-bottom: spacing(1);
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    padding-top: .5rem;
+    padding-bottom: spacing(1);
+    border-top: 1px solid $color-divider-dark;
+    color: $color-text-dark-disabled;
+    font-family: $font-family--sans;
+    font-size: $font-size-1;
+  }
+
+  p,
+  ol,
+  ul,
+  blockquote {
+    max-width: $measure-medium;
+  }
+
+  $default_margin: 1.25rem;
+
+  .content > * + * {
+    margin-top: $default_margin;
+  }
+
+  .content > h1,
+  .content > h2,
+  .content > h3,
+  .content > h4,
+  .content > h5,
+  .content > h6 {
+    margin-top: strip-unit($default_margin) * 2 + em;
+  }
+
+  // Content that needs more spacing
+  .content > figure,
+  .content > blockquote,
+  .content > .sourceCode,
+  .content > .jupyter-notebook {
+    margin-top: $default_margin * 2;
+    margin-bottom: $default_margin * 2;
+  }
+
+  .content > blockquote {
+    position: relative;
+    padding-left: 1.05em; // Same as ul/ol indent
+    font-style: italic;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: $color-text-dark;
+      content: "";
+    }
+
+    cite {
+      display: block;
+      margin-top: .5rem;
+      font-size: $font-size-2;
+      font-style: normal;
+      font-weight: bold;
+
+      &::before {
+        content: "— "
+      }
+    }
+  }
+
+  .content > ul,
+  .content > ol {
+    padding-left: 1.05em;
+  }
+
+  .content > ul {
+    list-style-type: disc;
+  }
+
+  .content > ol {
+    list-style-type: decimal;
+  }
+
+  .content pre {
+    padding: .3rem .5rem;
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+    font-size: $font-size-2;
+    line-height: 1.5;
+    overflow: auto;
+  }
+
+  sup,
+  .citation {
+    position: relative;
+    top: -.5em;
+    padding-bottom: .5em;
+    font-size: 75%;
+    white-space: nowrap;
+  }
+
+  // Generated content below article
+  .appendix,
+  .references,
+  .footnotes {
+    margin: 2rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid $color-divider-dark;
+    color: $color-text-dark-secondary;
+    font-family: $font-family--sans;
+    font-size: $font-size-2;
+    word-wrap: break-word;
+
+    * + * {
+      margin-top: .75rem;
+    }
+
+    > h4 {
+      font-size: $font-size-text;
+    }
+
+    pre {
+      max-width: 32rem;
+      padding: spacing(0);
+      white-space: nowrap;
+    }
+
+    ol {
+      padding-left: 1.05em;
+      list-style-type: decimal;
+    }
+  }
+
+  .appendix > h4:not(:first-child) {
+    margin-top: 2rem;
+  }
+
+  .references::before,
+  .footnotes::before {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: $font-size-text;
+    font-weight: bold;
+  }
+
+  .references::before {
+    content: "References";
+  }
+
+  .footnotes::before {
+    content: "Footnotes";
+  }
+
+  .footnotes {
+    hr {
+      display: none;
+    }
+
+    p {
+      display: inline;
+    }
+  }
+
+  .references ~ .footnotes,
+  .references ~ .appendix,
+  .footnotes ~ .appendix {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  // Table of contents
+  #TOC {
+    li > ul {
+      margin-left: 1rem;
+    }
+  }
+
+  // Minimalistic table style used both in code output and directly in the article
+  table {
+    border: none;
+    color: black;
+    font-size: $font-size-2;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+
+    thead {
+      border-bottom: 1px solid black;
+      vertical-align: bottom;
+    }
+
+    tr {
+      border: none;
+      line-height: normal;
+    }
+
+    td,
+    th {
+      padding: .5rem;
+      border: none;
+    }
+  }
+
+  .math.display {
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .katex-display {
+    margin: 0; // reset default katex margin
+  }
+
+  #disqus_thread {
+    margin-top: spacing(5);
+    padding-top: spacing(2);
+    border-top: 1px dashed $color-brand;
+  }
+
+  // Modifiers
+  // Can be used with the pandoc link attributes syntax, e.g. { .centered }
+  figcaption,
+  .caption {
+    display: block;
+    padding-top: .5em;
+    font-size: $font-size-2;
+    font-style: italic;
+  }
+
+  figcaption::before,
+  .caption::before {
+    font-weight: bold;
+  }
+
+  figcaption::before {
+    content: "Figure: ";
+  }
+
+  .caption.table::before {
+    content: "Table: ";
+  }
+
+  .caption.code::before {
+    content: "Code: ";
+  }
+
+  .caption.equation::before {
+    content: "Equation: ";
+  }
+
+  // This modifier can be used to let items like images break out of the column size
+  .content .full-width {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  @include breakpoint($breakpoint-phone-only) {
+    .meta p > span {
+      display: none;
+    }
+  }
+
+  // Tablet-portrait up
+  /* stylelint-disable max-nesting-depth */
+  @include breakpoint($breakpoint-tablet-portrait-up) {
+    article {
+      font-size: $font-size-3;
+    }
+
+    .abstract {
+      font-size: $font-size-4;
+    }
+
+    .meta {
+      flex-direction: row;
+      justify-content: flex-end;
+
+      > *:not(:last-child) {
+        margin-right: 1rem;
+        padding-right: 1rem;
+        border-right: 1px solid $color-divider-dark;
+      }
+    }
+
+    // Centered variation
+    // Can be used by placing "centered: true" in the YAML frontmatter
+    article.centered {
+      header > h1 {
+        margin: auto;
+        text-align: center;
+      }
+
+      .content > * {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .meta, .abstract {
+        text-align: center;
+      }
+
+      .meta {
+        justify-content: center;
+      }
+    }
+  }
+
+  $_container_size: $font-size-3 * strip-unit($measure-medium);
+  @include breakpoint("screen and (min-width: #{$_container_size})") {
+    .content {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      img,
+      figcaption,
+      .caption,
+      .references,
+      .footnotes,
+      .appendix {
+        max-width: $_container_size;
+      }
+    }
+  }
+}
