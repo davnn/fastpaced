@@ -3,6 +3,7 @@
 .git-metadata/
 .stack-work/
 .idea/
+*.iml
 
 _site/
 _cache/
