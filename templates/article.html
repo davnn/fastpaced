@@ -46,11 +46,13 @@
     this.page.title = "$title$";
   };
 
-  (function() {
+  function loadDisqus() {
     var d = document, s = d.createElement('script');
     s.src = 'https://curiousobserver.disqus.com/embed.js';
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
-  })();
+  }
+
+  ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
