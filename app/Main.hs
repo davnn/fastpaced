@@ -12,9 +12,6 @@ import Lib.Context (indexCtx, articleCtx, errorCtx)
 -- The path to our articles in Hakyll's pattern notation
 articlePath = "articles/*/*.md"
 
--- Helper rule that simply copies files without name change
-copyFiles pattern = match pattern $ route idRoute >> compile copyFileCompiler
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
@@ -40,15 +37,16 @@ main = hakyll $ do
   -- Compile Articles
   match articlePath $ do
     route (setExtension ".html")
-    compile $ do
-      pandocCompiler'
-        >>= saveSnapshot "raw" -- used for teaser generation
-        >>= loadAndApplyTemplate "templates/article.html" articleCtx
-        >>= saveSnapshot "content" -- used for atom feed generation
-        >>= loadAndApplyTemplate "templates/default.html" articleCtx
+    compile $ pandocCompiler'
+      >>= saveSnapshot "raw" -- used for teaser generation
+      >>= loadAndApplyTemplate "templates/article.html" articleCtx
+      >>= saveSnapshot "content" -- used for atom feed generation
+      >>= loadAndApplyTemplate "templates/default.html" articleCtx
 
   -- Compile Files
-  forM ["assets/images/**", "assets/manifest/**", "articles/**"] $ do copyFiles
+  match ("assets/images/**" .||. "assets/manifest/**" .||. "articles/**") $ do
+    route idRoute
+    compile copyFileCompiler
 
   -- Compile Templates
   match "templates/**" $ compile templateBodyCompiler
@@ -57,8 +55,8 @@ main = hakyll $ do
   create ["404.html"] $ do
     route idRoute
     compile $ makeItem "Error" -- this does nothing but create an empty Item
-        >>= loadAndApplyTemplate "templates/default.html" errorCtx
-        >>= relativizeUrls
+      >>= loadAndApplyTemplate "templates/default.html" errorCtx
+      >>= relativizeUrls
 
   -- Compile Feed
   create ["atom.xml"] $ do
