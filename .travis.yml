@@ -21,18 +21,26 @@ before_install:
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
+# Enable maximum wait time to make sure the build gets through
   - travis_wait 60 stack setup --no-terminal
 # Disable concurrent jobs to prevent out of memory
-# See: https://serokell.io/posts/ru/2018-01-24-using-travis-CI-for-Haskell-projects.html
   - travis_wait 60 stack build --stack-yaml stack_ci.yaml --fast --jobs 2 --no-terminal --no-haddock-deps
 
 script:
+# build the Hakyll site
 - stack exec curiousobserver build
 
 deploy:
+  # deploy to github pages (the gh-pages branch of the current repository)
   provider: pages
+  # prevent deletion of the files to be pushed to gh-pages
   skip_cleanup: true
+  # this is set in TravisCI repository settings
   github_token: $GITHUB_TOKEN
+  # the build directory
   local_dir: _site
+  # adds the custom domain CNAME file
+  fqdn: curious.observer
+  # only deploy on pushes on the `master` branch
   on:
     branch: master
