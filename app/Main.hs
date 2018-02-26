@@ -25,10 +25,9 @@ main = hakyll $ do
         >>= loadAndApplyTemplate "templates/default.html" (indexCtx posts)
 
   -- Compile Styles
-  match "assets/styles/main.scss" $ do
+  match "assets/styles/main.scss" $
     -- Compress the CSS and transform to Template
-    let compressToTemplate = fmap (readTemplate . compressCss)
-    compile (compressToTemplate <$> sassCompiler)
+    compile (fmap (readTemplate . compressCss) <$> sassCompiler)
 
   -- Compile Bibliography
   match "assets/csl/*.csl" $ compile cslCompiler
@@ -38,7 +37,6 @@ main = hakyll $ do
   match articlePath $ do
     route (setExtension ".html")
     compile $ pandocCompiler'
-      >>= saveSnapshot "raw" -- used for teaser generation
       >>= loadAndApplyTemplate "templates/article.html" articleCtx
       >>= saveSnapshot "content" -- used for atom feed generation
       >>= loadAndApplyTemplate "templates/default.html" articleCtx
@@ -56,7 +54,6 @@ main = hakyll $ do
     route idRoute
     compile $ makeItem "Error" -- this does nothing but create an empty Item
       >>= loadAndApplyTemplate "templates/default.html" errorCtx
-      >>= relativizeUrls
 
   -- Compile Feed
   create ["atom.xml"] $ do
