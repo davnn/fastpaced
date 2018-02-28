@@ -13,10 +13,9 @@
 - **bibliography:** String (path to bibliography)
 - **image:** String (path to image)
 - **mathematics:** Boolean
-- **centered:** Boolean 
-- **hidden:** Boolean (do not show in post list)
+- **toc:** Boolean
+- **centered:** Boolean
 
 ### Classes
 
-- **.full-width**: Set max width to 100%
-
+- **.width{i}**: Set max width to i/6
