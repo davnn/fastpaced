@@ -14,8 +14,16 @@ cache:
   - $HOME/.stack
   - $HOME/build/davnn/curiousobserver/.stack-work
 
-# Download and unpack the stack executable
+# Disable default submodule logic
+git:
+  submodules:
+    false
+
 before_install:
+# Update submodules to latest commit on origin
+# See: https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin
+- git submodule update --init --recursive --remote --merge
+# Download and unpack the stack executable
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
