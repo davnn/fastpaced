@@ -4,6 +4,7 @@
 $_color-comment: grey;
 $_color-error: red;
 $_color-keyword: blue;
+$_color-keyword-secondary: #000080;
 $_color-string: green;
 $_color-string: darkred;
 $_color-number: blue;
@@ -57,8 +58,11 @@ $_color-type: #555;
     font-weight: bold;
   }
 
-  //.bu { } /* BuiltIn */
-  //.fu { } /* Function */
+  .bu, /* BuiltIn */
+  .fu /* Function */ {
+    color: $_color-keyword-secondary;
+  }
+
   //.ot { } /* Other */
   //.op { } /* Operator */
   //.ex { } /* Extension */
