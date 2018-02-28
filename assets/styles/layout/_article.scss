@@ -1,29 +1,35 @@
+$_default_margin: 1.25rem;
+
 #article {
+  font-size: $font-size-text;
+
+  // The article container
   article {
     @include container($width-medium);
 
     color: $color-text-dark;
-    font-size: $font-size-text;
     hyphens: auto;
+
   }
 
+  // The article title
   header > h1 {
     max-width: $font-size-4 * strip-unit($measure-large);
     padding-bottom: spacing(2);
-    font-size: $font-size-5;
-    line-height: 1.2;
 
     @include breakpoint($breakpoint-tablet-landscape-up) {
       font-size: $font-size-6;
     }
   }
 
+  // Area directly below title
   .abstract {
     font-size: $font-size-3;
     max-width: $measure-large;
     padding-bottom: spacing(1);
   }
 
+  // Display for date and author
   .meta {
     display: flex;
     flex-direction: column;
@@ -35,6 +41,7 @@
     font-size: $font-size-1;
   }
 
+  // Max width for default font-size items
   p,
   ol,
   ul,
@@ -42,30 +49,38 @@
     max-width: $measure-medium;
   }
 
-  $default_margin: 1.25rem;
-
-  .content > * + * {
-    margin-top: $default_margin;
+  // The child directly after teaser / meta
+  .content > *:first-child {
+    margin-top: 0;
   }
 
+  // The default margin for all items under .content (lobotomized owl)
+  .content > * + * {
+    margin-top: $_default_margin;
+  }
+
+  // Top-level content that needs extra spacing between paragraphs
+  // We don't use a sass mixin for this because selectors in mixins are not merged
   .content > h1,
   .content > h2,
   .content > h3,
   .content > h4,
   .content > h5,
   .content > h6 {
-    margin-top: strip-unit($default_margin) * 2 + em;
+    margin-top: strip-unit($_default_margin) * 2 + em;
   }
-
-  // Content that needs more spacing
+  .content > div,
+  .content > section,
   .content > figure,
   .content > blockquote,
-  .content > .sourceCode,
-  .content > .jupyter-notebook {
-    margin-top: $default_margin * 2;
-    margin-bottom: $default_margin * 2;
+  .content > table,
+  .content > ul,
+  .content > ol {
+    margin-top: $_default_margin * 2;
+    margin-bottom: $_default_margin * 2;
   }
 
+  // Quotation and emphasis
   .content > blockquote {
     position: relative;
     padding-left: 1.05em; // Same as ul/ol indent
@@ -94,20 +109,20 @@
     }
   }
 
-  .content > ul,
-  .content > ol {
+  // Lists (used for both in-content and appendix lists)
+  ul,
+  ol {
     padding-left: 1.05em;
   }
-
-  .content > ul {
+  ul {
     list-style-type: disc;
   }
-
-  .content > ol {
+  ol {
     list-style-type: decimal;
   }
 
-  .content pre {
+  // Code
+  pre {
     padding: .3rem .5rem;
     border: 1px solid #cfcfcf;
     border-radius: 2px;
@@ -117,20 +132,11 @@
     overflow: auto;
   }
 
-  sup,
-  .citation {
-    position: relative;
-    top: -.5em;
-    padding-bottom: .5em;
-    font-size: 75%;
-    white-space: nowrap;
-  }
-
   // Generated content below article
   .appendix,
   .references,
   .footnotes {
-    margin: 2rem 0;
+    margin: $_default_margin * 3/2 0;
     padding-top: 2rem;
     border-top: 1px solid $color-divider-dark;
     color: $color-text-dark-secondary;
@@ -139,55 +145,35 @@
     word-wrap: break-word;
 
     * + * {
-      margin-top: .75rem;
-    }
-
-    > h4 {
-      font-size: $font-size-text;
-    }
-
-    pre {
-      max-width: 32rem;
-      padding: spacing(0);
-      white-space: nowrap;
-    }
-
-    ol {
-      padding-left: 1.05em;
-      list-style-type: decimal;
+      margin-top: $_default_margin / 2;
     }
   }
 
+  // Replicate the margin of the containers inside the appendix
   .appendix > h4:not(:first-child) {
-    margin-top: 2rem;
+    margin-top: $_default_margin * 3/2;
   }
 
+  // Add the headlines with pseudo elements
   .references::before,
   .footnotes::before {
     display: block;
     margin-bottom: 1rem;
-    font-size: $font-size-text;
     font-weight: bold;
   }
-
   .references::before {
     content: "References";
   }
-
   .footnotes::before {
     content: "Footnotes";
   }
 
-  .footnotes {
-    hr {
-      display: none;
-    }
-
-    p {
-      display: inline;
-    }
+  // Don't display default Pandoc <hr>
+  .footnotes hr {
+    display: none;
   }
 
+  // Don't show border if element is not first (the order is given by pandoc)
   .references ~ .footnotes,
   .references ~ .appendix,
   .footnotes ~ .appendix {
@@ -195,109 +181,85 @@
     border-top: 0;
   }
 
-  // Table of contents
-  #TOC {
-    li > ul {
-      margin-left: 1rem;
-    }
-  }
-
   // Minimalistic table style used both in code output and directly in the article
   table {
-    border: none;
-    color: black;
     font-size: $font-size-2;
-    border-collapse: collapse;
-    border-spacing: 0;
-    table-layout: fixed;
 
     thead {
       border-bottom: 1px solid black;
       vertical-align: bottom;
     }
 
-    tr {
-      border: none;
-      line-height: normal;
-    }
-
     td,
     th {
       padding: .5rem;
-      border: none;
     }
   }
 
-  .math.display {
-    display: block;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
-  .katex-display {
-    margin: 0; // reset default katex margin
-  }
-
+  // Comment section
   #disqus_thread {
     margin-top: spacing(5);
     padding-top: spacing(2);
     border-top: 1px dashed $color-brand;
   }
 
-  // Modifiers
-  // Can be used with the pandoc link attributes syntax, e.g. { .centered }
-  figcaption,
-  .caption {
+  // Figures and images
+  figure {
+    text-align: center;
+  }
+  figcaption {
     display: block;
     padding-top: .5em;
     font-size: $font-size-2;
     font-style: italic;
+    text-align: center;
   }
-
-  figcaption::before,
-  .caption::before {
-    font-weight: bold;
-  }
-
   figcaption::before {
+    font-weight: bold;
     content: "Figure: ";
   }
 
-  .caption.table::before {
-    content: "Table: ";
+  // Math
+  .math { // font size for both inline and display math
+    font-size: $font-size-text;
+  }
+  .math.display { // prevent overflow when math is too wide
+    display: block;
+    overflow: auto;
   }
 
-  .caption.code::before {
-    content: "Code: ";
+  // Replicate the measure-medium container size for other elements
+  .content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    figure,
+    figcaption,
+    .references,
+    .footnotes,
+    .appendix {
+      max-width: $font-size-3 * strip-unit($measure-medium);
+    }
   }
 
-  .caption.equation::before {
-    content: "Equation: ";
-  }
-
-  // This modifier can be used to let items like images break out of the column size
-  .content .full-width {
-    width: 100%;
-    max-width: 100%;
-  }
-
+  // Responsive adjustments
   @include breakpoint($breakpoint-phone-only) {
+    // Don't show description
     .meta p > span {
       display: none;
     }
   }
-
-  // Tablet-portrait up
-  /* stylelint-disable max-nesting-depth */
   @include breakpoint($breakpoint-tablet-portrait-up) {
-    article {
-      font-size: $font-size-3;
-    }
+    font-size: $font-size-3;
 
     .abstract {
       font-size: $font-size-4;
     }
 
+    // Display side by side with border in-between
     .meta {
       flex-direction: row;
       justify-content: flex-end;
@@ -310,7 +272,6 @@
     }
 
     // Centered variation
-    // Can be used by placing "centered: true" in the YAML frontmatter
     article.centered {
       header > h1 {
         margin: auto;
@@ -330,24 +291,11 @@
         justify-content: center;
       }
     }
-  }
 
-  $_container_size: $font-size-3 * strip-unit($measure-medium);
-  @include breakpoint("screen and (min-width: #{$_container_size})") {
-    .content {
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      img,
-      figcaption,
-      .caption,
-      .references,
-      .footnotes,
-      .appendix {
-        max-width: $_container_size;
+    // Columns inside article (6 = full width = default)
+    @for $i from 1 through 5 {
+      .width#{$i} {
+        max-width: $i/6 * 100%;
       }
     }
   }
