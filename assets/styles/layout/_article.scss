@@ -227,6 +227,9 @@ $_default_margin: 1.25rem;
     display: block;
     overflow: auto;
   }
+  .math.inline .katex { // prevent overflow of inline elements when math is too wide
+    white-space: normal;
+  }
 
   // Replicate the measure-medium container size for other elements
   .content {
