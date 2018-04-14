@@ -4,7 +4,15 @@
 .stack-work/
 .idea/
 *.iml
+*.cabal
 
 _site/
 _cache/
 out/
+
+# tmp files
+*___jb_tmp___
+
+# only needed for stylelint
+package-lock.json
+node_modules/

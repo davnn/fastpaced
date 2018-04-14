@@ -3,7 +3,7 @@ version:             0.1.0.0
 github:              "davnn/curiousobserver"
 license:             BSD3
 author:              "David Muhr"
-maintainer:          "muhrdavid+github@gmail.com"
+maintainer:          "muhrdavid+git@gmail.com"
 copyright:           "David Muhr"
 
 extra-source-files:
@@ -21,7 +21,6 @@ description:         Please see the README on Github at <https://github.com/davn
 dependencies:
 - base >= 4.7 && < 5
 - hakyll
-- hakyll-sass
 - pandoc
 - filepath
 

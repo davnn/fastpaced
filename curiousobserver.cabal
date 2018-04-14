@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3989b3624e1a95217369b41333da93c63fcb10d52f8e40a4e25c6f98b5465f5c
+-- hash: ceae197f7a3819ddbc60c3021d6db9b1a5e03841a4105cb87cdddea7aa8e1915
 
 name:           curiousobserver
 version:        0.1.0.0
@@ -10,7 +10,7 @@ description:    Please see the README on Github at <https://github.com/davnn/cur
 homepage:       https://github.com/davnn/curiousobserver#readme
 bug-reports:    https://github.com/davnn/curiousobserver/issues
 author:         David Muhr
-maintainer:     muhrdavid+github@gmail.com
+maintainer:     muhrdavid+git@gmail.com
 copyright:      David Muhr
 license:        BSD3
 license-file:   LICENSE
@@ -33,7 +33,6 @@ executable curiousobserver
       base >=4.7 && <5
     , filepath
     , hakyll
-    , hakyll-sass
     , pandoc
   other-modules:
       Lib.Configuration

@@ -18,4 +18,6 @@
 
 ### Classes
 
-- **.width{i}**: Set max width to i/6
+- **.width-small**: Set width to 33%
+- **.width-medium**: Set width to 50%
+- **.width-large**: Set width to 66%

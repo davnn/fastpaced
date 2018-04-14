@@ -1,0 +1,1068 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+:root {
+  /* Brand Colors */
+  --color-brand: #b71c1c;
+  --color-brand-dark: #7f0000;
+
+  /* Typography Colors */
+  --color-text-dark-secondary: rgba(0, 0, 0, .54);
+  --color-text-dark-disabled: rgba(0, 0, 0, .38);
+  --color-text-dark: rgba(0, 0, 0, .87);
+  --color-text-light: #fff;
+  --color-text-light-secondary: rgba(255, 255, 255, .7);
+  --color-text-light-disabled: rgba(255, 255, 255, .5);
+  --color-tap-highlight: rgba(0, 0, 0, .075);
+
+  /* Syntax Highlighting Colors */
+  --color-syntax-generic: black;
+  --color-syntax-keyword: blue;
+  --color-syntax-keyword-secondary: #000080;
+  --color-syntax-comment: grey;
+  --color-syntax-number: blue;
+  --color-syntax-string: darkred;
+  --color-syntax-error: red;
+
+  /* UI Colors */
+  --color-divider-dark: rgba(0, 0, 0, .12);
+  --color-divider-light: rgba(255, 255, 255, .12);
+
+  /* Typography */
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-family-serif: "PT serif", "Palatino", "Georgia", "Cambria", "Times New Roman", serif;
+  --font-family-mono: monospace;
+  --font-size-1: .875rem;
+  --font-size-2: 1rem;
+  --font-size-text: 1.125rem;
+  --font-size-3: 1.25rem;
+  --font-size-4: 1.5rem;
+  --font-size-5: 2rem;
+  --font-size-6: 3rem;
+  --font-size-headline: 4.5rem;
+
+  /* Constants */
+  --footer-height: 30px;
+  --header-width: 400px;
+  --header-height: 85px;
+  --logo-width: 45px;
+
+  /* Spacing */
+  --spacing-0: 1rem;
+  --spacing-1: 1.5rem;
+  --spacing-2: 2.25rem;
+  --spacing-3: 3.375rem;
+  --spacing-4: 5.0625rem;
+  --spacing-5: 7.59375rem;
+
+  /* Container */
+  --container-padding: 1.5rem;
+  --container-narrow: 720px;
+  --container-medium: 1024px;
+  --container-large: 1160px;
+
+  /* Measure */
+  --measure-narrow: 20em;
+  --measure-medium: 32em;
+  --measure-large: 35em;
+
+  /* Z-Indices */
+  --zindex-navigation: 100;
+  --zindex-navigation-icon: 101;
+}
+
+/* ==========================================================================
+   Adapted sanitize.css v5.0.0 | CC0 License | github.com/jonathantneal/sanitize.css
+   ========================================================================== */
+
+/**
+ * 1. Remove repeating backgrounds in all browsers (opinionated).
+ * 2. Add box sizing inheritence in all browsers (opinionated).
+ */
+
+*,
+::before,
+::after {
+  background-repeat: no-repeat; /* 1 */
+  box-sizing: inherit; /* 2 */
+}
+
+/**
+ * 1. Add text decoration inheritance in all browsers (opinionated).
+ * 2. Add vertical alignment inheritence in all browsers (opinionated).
+ */
+
+::before,
+::after {
+  text-decoration: inherit; /* 1 */
+  vertical-align: inherit; /* 2 */
+}
+
+/* Sections (https://html.spec.whatwg.org/multipage/semantics.html#sections)
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 9-.
+ */
+
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+
+h1 {
+  font-size: 2em;
+  margin: .67em 0;
+}
+
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+
+/**
+ * Change the fill color to match the text color in all browsers (opinionated).
+ */
+
+svg {
+  fill: currentColor;
+}
+
+/*
+ * Change the alignment on media elements in all browers (opinionated).
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+/* User interaction (https://html.spec.whatwg.org/multipage/interaction.html#editing)
+   ========================================================================== */
+
+/*
+ * Remove the tapping delay on clickable elements (opinionated).
+ * 1. Remove the tapping delay in IE 10.
+ */
+
+a,
+area,
+button,
+input,
+label,
+select,
+summary,
+textarea,
+[tabindex] {
+  -ms-touch-action: manipulation; /* 1 */
+  touch-action: manipulation;
+}
+
+/**
+ * Add the correct display in IE 10-.
+ */
+
+[hidden] {
+  display: none;
+}
+
+/* ARIA (https://w3c.github.io/html-aria/)
+   ========================================================================== */
+
+/**
+ * Change the cursor on busy elements (opinionated).
+ */
+
+[aria-busy="true"] {
+  cursor: progress;
+}
+
+/*
+ * Change the cursor on control elements (opinionated).
+ */
+
+[aria-controls] {
+  cursor: pointer;
+}
+
+/*
+ * Change the display on visually hidden accessible elements (opinionated).
+ */
+
+[aria-hidden="false"][hidden]:not(:focus) {
+  clip: rect(0, 0, 0, 0);
+  display: inherit;
+  position: absolute;
+}
+
+/*
+ * Change the cursor on disabled, not-editable, or otherwise
+ * inoperable elements (opinionated).
+ */
+
+[aria-disabled] {
+  cursor: default;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
+/**
+ * Minimal CSS reset
+ * Based on the classic css reset from Eric Meyer (https://meyerweb.com/eric/tools/css/reset/)
+ */
+
+/**
+ * Remove default margin and padding
+ */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+hr,
+dl,
+dd,
+ol,
+ul,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Remove default list style
+ */
+ol,
+ul {
+  list-style: none;
+}
+
+/**
+ * Remove default button style
+ */
+button,
+select {
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+/**
+ * Remove default tap highlight
+ */
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * Remove default quote styling
+ */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after {
+  content: none;
+}
+
+/**
+ * Remove default border spacing
+ */
+table {
+  border-spacing: 0;
+}
+
+/* ==========================================================================
+   Presets
+   ========================================================================== */
+
+html {
+  height: 100%; /* Keep footer at bottom */
+  box-sizing: border-box; /* gets inherited to all children */
+  cursor: default;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative; /* Keep footer at bottom */
+  min-height: 100%; /* Keep footer at bottom */
+  padding-bottom: 30px; /* Footer Height */
+  font-family: var(--font-family-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: var(--color-brand);
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+  -webkit-tap-highlight-color: var(--color-tap-highlight);
+}
+
+a:visited {
+  color: var(--color-brand);
+}
+
+a:active {
+  color: var(--color-brand-dark);
+}
+
+label {
+  -webkit-tap-highlight-color: var(--color-tap-highlight); /* Same as url */
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Fix hyphenation of pre content, which should never be needed
+  Content gets hyphenated in Safari and Chrome Mobile and does
+  not get hyphenated on desktop Chrome */
+pre {
+  font-family: monospace;
+  hyphens: none;
+}
+
+main {
+  padding: var(--spacing-2) 0; /* Default top and bottom padding */
+}
+
+/* ==========================================================================
+   Syntax
+   ========================================================================== */
+
+.sourceCode a {
+  color: var(--color-syntax-generic);
+}
+
+.sourceCode .va, /* Variable */
+.sourceCode .kw, /* Keyword */
+.sourceCode .im, /* Import */
+.sourceCode .cf { /* ControlFlow */
+  color: var(--color-syntax-keyword);
+}
+
+.sourceCode .in, /* Information */
+.sourceCode .an, /* Annotation */
+.sourceCode .cv, /* CommentVar */
+.sourceCode .do, /* Documentation */
+.sourceCode .co { /* Comment */
+  color: var(--color-syntax-comment);
+}
+
+.sourceCode .dv, /* DecVal */
+.sourceCode .bn, /* BaseN */
+.sourceCode .fl { /* Float */
+  color: var(--color-syntax-number);
+}
+
+.sourceCode .cn, /* Constant */
+.sourceCode .sc, /* SpecialChar */
+.sourceCode .vs, /* VerbatimString */
+.sourceCode .ss, /* SpecialString */
+.sourceCode .ch, /* Char */
+.sourceCode .st { /* String */
+  color: var(--color-syntax-string);
+}
+
+.sourceCode .al, /* Alert */
+.sourceCode .wa, /* Warning */
+.sourceCode .er { /* Error */
+  color: var(--color-syntax-error);
+}
+
+.sourceCode .dt /* DataType */ {
+  font-weight: bold;
+}
+
+.sourceCode .bu, /* BuiltIn */
+.sourceCode .fu /* Function */ {
+  color: var(--color-syntax-keyword-secondary);
+}
+
+/* .sourceCode .op { } /* Operator */
+
+/* .sourceCode .ex { } /* Extension */
+
+/* .sourceCode .pp { } /* Preprocessor */
+
+/* .sourceCode .at { } /* Attribute */
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+#site-header {
+  margin: 0 auto;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+  height: var(--header-height);
+  font-family: var(--font-family-sans);
+  letter-spacing: .1em;
+  line-height: 2;
+}
+
+#site-header > nav {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+#site-header .site-navigation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: calc(var(--container-padding) / 2) calc(var(--container-padding) / -2) 0 calc(var(--container-padding) / -2);
+  padding: var(--spacing-2);
+  pointer-events: none;
+  transform: scale(.95);
+  transform-origin: 100% 0;
+  transition-duration: .25s;
+  transition-property: transform, opacity;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(50, 50, 93, .1), 0 5px 15px rgba(50, 50, 93, .15), 0 5px 15px rgba(0, 0, 0, .1);
+  will-change: transform, opacity;
+  opacity: 0;
+  overflow: hidden;
+  z-index: var(--zindex-navigation);
+}
+
+#site-header h4 {
+  margin-bottom: .5em;
+}
+
+#site-header .contact > a {
+  display: block;
+}
+
+#site-header .site-logo {
+  display: block;
+  width: 45px;
+}
+
+#site-header .site-logo > svg {
+  transition: fill .25s;
+}
+
+#site-header .site-logo > svg:active {
+  fill: var(--color-brand-dark);
+}
+
+#site-header #nav-toggle + label {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#site-header #nav-toggle + label > .icon-close {
+  display: none;
+}
+
+#site-header #nav-toggle:checked ~ .site-navigation {
+  transform: none;
+  opacity: 1; /* Display the navigation when checked */
+  pointer-events: auto;
+}
+
+#site-header #nav-toggle:checked + label {
+  z-index: var(--zindex-navigation-icon);
+}
+
+#site-header #nav-toggle:checked + label > .icon-close {
+  display: inline-block; /* Display close icon when nav is open */
+}
+
+#site-header #nav-toggle:checked + label > .icon-open {
+  display: none; /* Hide open icon when nav is open */
+}
+
+/* ==========================================================================
+   Home
+   ========================================================================== */
+#home > #intro,
+#home > #post-list {
+  margin: 0 auto;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+}
+
+#home > #intro > h1 {
+  max-width: 10em;
+  margin-bottom: var(--spacing-3);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-6);
+  line-height: 1.2;
+}
+
+#home > #intro > p {
+  max-width: var(--measure-medium);
+  color: var(--color-text-dark-secondary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-3);
+  hyphens: auto;
+}
+
+#home > #intro .dots + label {
+  display: inline;
+  margin: 0 auto;
+  user-select: none;
+  transition: opacity .5s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#home > #intro .dots + label > * {
+  transition: color .25s;
+  color: var(--color-brand);
+}
+
+#home > #intro .dots + label > *:active,
+#home > #intro .dots + label > *:focus {
+  color: var(--color-brand-dark);
+}
+
+#home > #intro .dots:checked + label {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#home > #intro .dots + label + span {
+  display: block;
+  height: 0;
+  transform: translateY(-25%);
+  transition-duration: .5s;
+  transition-property: opacity, transform;
+  will-change: opacity, transform;
+  opacity: 0;
+}
+
+#home > #intro .dots:checked + label + span {
+  height: initial;
+  margin-top: var(--spacing-1);
+  transform: none;
+  opacity: 1;
+}
+
+#home > #post-list {
+  position: relative; /* overlay the above content */
+  padding-top: var(--spacing-3);
+}
+
+#home > #post-list ul > li:not(:last-child) {
+  border-bottom: 1px solid var(--color-divider-dark);
+}
+
+#home > #post-list h2 {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  font-weight: normal;
+}
+
+#home > #post-list h2 > span {
+  display: flex;
+  justify-content: space-between;
+  min-width: 225px;
+  padding-top: .5rem;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-1);
+}
+
+#home > #post-list h2 > a {
+  font-size: var(--font-size-4);
+}
+
+#home > #post-list h2 > a,
+#home > #post-list h2 > span > a {
+  transition-duration: .25s;
+  transition-property: color;
+}
+
+#home > #post-list h2 > span > a {
+  color: var(--color-text-dark-secondary);
+}
+
+#home > #post-list h2 > span > a:hover,
+#home > #post-list h2 > span > a:focus {
+  color: var(--color-brand);
+}
+
+/* ==========================================================================
+   Article
+   ========================================================================== */
+
+#article {
+  font-size: var(--font-size-text);
+}
+
+#article article { /* The article container */
+  margin: 0 auto;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+  max-width: var(--container-medium);
+  hyphens: auto;
+
+  /* color text dark needed? */
+}
+
+#article .abstract { /* Area directly below title */
+  font-size: var(--font-size-3);
+  max-width: var(--measure-large);
+  padding-bottom: var(--spacing-1);
+}
+
+#article .meta { /* Area for date and author */
+  display: flex;
+  flex-direction: column;
+  padding-top: .5rem;
+  padding-bottom: var(--spacing-1);
+  border-top: 1px solid var(--color-divider-dark);
+  color: var(--color-text-dark-disabled);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-1);
+}
+
+#article ul,
+#article ol { /* Lists (used for both in-content and appendix lists) */
+  padding-left: 1.05em;
+}
+
+#article ul {
+  list-style-type: disc;
+}
+
+#article ol {
+  list-style-type: decimal;
+}
+
+#article pre { /* Code */
+  padding: .3rem .5rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.5;
+  overflow: auto;
+}
+
+#article p,
+#article ol,
+#article ul,
+#article blockquote { /* Max width for default font-size items */
+  max-width: var(--measure-medium);
+}
+
+#article header > h1 { /* The article title */
+  max-width: 52.5rem; /* font-size-4 * measure-large */
+  padding-bottom: var(--spacing-2);
+}
+
+#article .content > *:first-child { /* The child directly after meta */
+  margin-top: 0;
+}
+
+#article .content > * + * { /* The default margin for all items under .content (lobotomized owl) */
+  margin-top: var(--font-size-3);
+}
+
+#article .content > h1,
+#article .content > h2,
+#article .content > h3,
+#article .content > h4,
+#article .content > h5,
+#article .content > h6 { /* Top-level content that needs extra spacing between paragraphs */
+  margin-top: 2.5em; /* font-size-3 * 2 em */
+}
+
+#article .content > div,
+#article .content > section,
+#article .content > figure,
+#article .content > blockquote,
+#article .content > table,
+#article .content > ul,
+#article .content > ol { /* Top-level content that needs extra spacing between paragraphs */
+  margin-top: calc(var(--font-size-3) * 2);
+  margin-bottom: calc(var(--font-size-3) * 2);
+}
+
+#article .content > blockquote { /* Quotation and emphasis */
+  position: relative;
+  padding-left: 1.05em; /* Same as ul/ol indent */
+  font-style: italic;
+}
+
+#article .content > blockquote::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--color-text-dark);
+  content: "";
+}
+
+#article .content > blockquote cite {
+  display: block;
+  margin-top: .5rem;
+  font-size: var(--font-size-2);
+  font-style: normal;
+  font-weight: bold;
+}
+
+#article .content > blockquote cite::before {
+  content: "— ";
+}
+
+#article .appendix,
+#article .references,
+#article .footnotes { /* Generated content below article */
+  padding-top: var(--font-size-6);
+  border-top: 1px solid var(--color-divider-dark);
+  color: var(--color-text-dark-secondary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-2);
+  word-wrap: break-word;
+}
+
+#article .appendix * + *,
+#article .references * + *,
+#article .footnotes * + * {
+  margin-top: var(--font-size-1);
+}
+
+#article .appendix > h4:not(:first-child) { /* Replicate the margin of the top level extra spacing */
+  margin-top: calc(var(--font-size-3) * 2);
+}
+
+#article .references::before, /* Add the headlines with pseudo elements */
+#article .footnotes::before {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+#article .references::before {
+  content: "References";
+}
+
+#article .footnotes::before {
+  content: "Footnotes";
+}
+
+#article .footnotes hr { /* Dont display default Pandoc <hr> */
+  display: none;
+}
+
+#article .references ~ .footnotes,
+#article .references ~ .appendix,
+#article .footnotes ~ .appendix { /* Dont show border if element is not first (the order is given by pandoc) */
+  padding-top: 0;
+  border-top: 0;
+}
+
+#article table { /* Minimalistic table style used both in code output and directly in the article */
+  font-size: var(--font-size-2);
+}
+
+#article thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+
+#article td,
+#article th {
+  padding: .5rem;
+}
+
+#article #disqus_thread { /* Comment section */
+  margin-top: var(--spacing-5);
+  padding-top: var(--spacing-2);
+  border-top: 1px dashed var(--color-brand);
+}
+
+#article figure { /* Figures and images */
+  text-align: center;
+}
+
+#article figcaption {
+  display: block;
+  padding-top: .5em;
+  font-size: var(--font-size-2);
+  font-style: italic;
+  text-align: center;
+}
+
+#article figcaption::before {
+  font-weight: bold;
+  content: "Figure: ";
+}
+
+#article .math { /* Math */
+  font-size: var(--font-size-text); /* font size for both inline and display math */
+}
+
+#article .math.display { /* prevent overflow when math is too wide */
+  display: block;
+  overflow: auto;
+}
+
+#article .math.inline .katex { /* prevent overflow of inline elements when math is too wide */
+  white-space: normal;
+}
+
+#article .content h1,
+#article .content h2,
+#article .content h3,
+#article .content h4,
+#article .content h5,
+#article .content h6,
+#article .content figure,
+#article .content figcaption,
+#article .content .references,
+#article .content .footnotes,
+#article .content .appendix { /* Replicate the measure-medium container size for other elements */
+  max-width: 40rem; /* font-size-3 * measure-medium */
+}
+
+#article article.centered header > h1 { /* Centered variation */
+  margin: auto;
+  text-align: center;
+}
+
+#article article.centered .content > * {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#article article.centered .meta,
+#article article.centered .abstract {
+  text-align: center;
+}
+
+#article article.centered .meta {
+  justify-content: center;
+}
+
+#article .width-small {
+  max-width: 33.33333%;
+}
+
+#article .width-medium {
+  max-width: 50%;
+}
+
+#article .width-large {
+  max-width: 66.66666%;
+}
+
+/* ==========================================================================
+   404
+   ========================================================================== */
+#error {
+  min-height: calc(100vh - var(--header-height));
+  background-image: url(/assets/images/404.svg);
+  background-repeat: repeat;
+  background-size: var(--font-size-5);
+  text-align: center;
+  animation: bgslide 15s linear infinite;
+  overflow: hidden;
+}
+
+#error p {
+  margin-right: -10vh;
+  transform: rotate(90deg);
+  color: var(--color-brand);
+  font-size: 45vh;
+  font-weight: bold;
+  user-select: none;
+}
+
+@media screen and (max-aspect-ratio: 5/6) {
+  #error p {
+    margin-right: -10vw;
+    font-size: 45vw;
+  }
+}
+
+@keyframes bgslide {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* Phone
+   ========================================================================== */
+@media screen and (max-width: 599px) {
+  /* Article */
+  #article .meta p > span {
+    display: none; /* Dont show description */
+  }
+}
+
+/* Tablet Portrait
+   ========================================================================== */
+@media screen and (min-width: 600px) {
+  /* Header */
+  #site-header .site-navigation {
+    left: auto;
+    padding: var(--spacing-2) var(--spacing-5) var(--spacing-2) var(--spacing-2);
+  }
+
+  /* Article */
+  #article {
+    font-size: var(--font-size-3);
+  }
+
+  #article .abstract {
+    font-size: var(--font-size-4);
+  }
+
+  #article .meta { /* Display side by side with border in-between */
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  #article .meta > *:not(:last-child) {
+    margin-right: 1rem;
+    padding-right: 1rem;
+    border-right: 1px solid var(--color-divider-dark);
+  }
+}
+
+/* Tablet Landscape
+   ========================================================================== */
+@media screen and (min-width: 900px) {
+  /* Home */
+  #home > #intro,
+  #home > #post-list {
+    max-width: var(--container-large);
+  }
+
+  #home > #intro > h1 {
+    font-size: var(--font-size-headline);
+  }
+
+  #home > #post-list h2 {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  #home > #post-list h2 > a {
+    color: var(--color-text-dark-secondary);
+    font-size: var(--font-size-5);
+  }
+
+  /* Article */
+  #article header > h1 {
+    font-size: var(--font-size-6);
+  }
+
+  /* 404 */
+  #error {
+    animation-duration: 60s;
+  }
+}
+
+/* Large Desktop
+   ========================================================================== */
+@media screen and (min-width: 1680px) {
+  /* Presets */
+  main {
+    padding: var(--spacing-5) 0 var(--spacing-2) var(--header-width);
+  }
+
+  /* Header */
+  #site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--header-width);
+    height: 100%;
+    border-right: 1px solid var(--color-divider-dark);
+    background-color: white;
+  }
+
+  #site-header > nav {
+    flex-direction: column;
+    align-items: initial; /* reset */
+  }
+
+  #site-header .site-logo {
+    margin: 0 auto;
+    padding-top: var(--spacing-3);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #site-header #nav-toggle + label {
+    display: none;
+  }
+
+  #site-header .site-navigation {
+    position: initial; /* reset */
+    box-shadow: initial; /* reset */
+    pointer-events: initial; /* reset */
+    opacity: 1;
+  }
+
+  /* 404 */
+  #error {
+    min-height: 100vh;
+    animation-duration: 90s;
+  }
+}
