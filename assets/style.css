@@ -907,6 +907,38 @@ main {
   max-width: 66.66666%;
 }
 
+#article .definition,
+#article .proof,
+#article .theorem {
+  max-width: var(--measure-medium);
+  padding: 1.05em; /* same as ol and ul */
+  border: 1px solid grey;
+}
+
+#article .definition > * + *,
+#article .proof > * + *,
+#article .theorem > * + * {
+  margin-top: var(--font-size-1);
+}
+
+#article .definition::before,
+#article .proof::before,
+#article .theorem::before {
+  float: left;
+  font-weight: bold;
+  padding-right: 1em;
+}
+
+#article .definition::before {
+  content: "Definition";
+}
+#article .proof::before {
+  content: "Proof";
+}
+#article .theorem::before {
+  content: "Theorem";
+}
+
 /* ==========================================================================
    404
    ========================================================================== */

@@ -21,3 +21,5 @@
 - **.width-small**: Set width to 33%
 - **.width-medium**: Set width to 50%
 - **.width-large**: Set width to 66%
+
+- **.definition, .theorem, .proof**: Individual style for content blocks
