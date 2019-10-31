@@ -32,7 +32,7 @@ install:
 # Enable maximum wait time to make sure the build gets through
   - travis_wait 60 stack setup --no-terminal
 # Disable concurrent jobs to prevent out of memory
-  - travis_wait 60 stack build --stack-yaml stack_ci.yaml --fast --jobs 2 --no-terminal --no-haddock-deps
+  - travis_wait 60 stack build --fast --jobs 2 --no-terminal --no-haddock-deps
 
 script:
 # build the Hakyll site

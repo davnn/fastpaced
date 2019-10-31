@@ -5,6 +5,7 @@
 .idea/
 *.iml
 *.cabal
+*.lock
 
 _site/
 _cache/

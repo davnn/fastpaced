@@ -488,7 +488,8 @@ main {
 
 #site-header .site-logo {
   display: block;
-  width: 45px;
+  width: 36px;
+  height: 36px;
 }
 
 #site-header .site-logo > svg {
