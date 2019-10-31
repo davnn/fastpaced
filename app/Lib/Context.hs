@@ -3,9 +3,9 @@ module Lib.Context (indexCtx, articleCtx, errorCtx) where
 import Hakyll
 import System.FilePath (dropFileName)
 
-site = "https://curious.observer"
-title = "Curious Observer | Data. Science. Code. Design. Thoughts."
-description = "Curious Observer is a blog about science and technology. This is a place to learn about interesting ideas explained from first principles."
+site = "https://fastpaced.com"
+title = "fastpaced | Data. Science. Code. Design. Thoughts."
+description = "fastpaced is a blog about data science maintained by David Muhr. Learn about interesting new ideas and techniques."
 
 -- Based on `urlField`
 shortUrlField :: String -> Context a

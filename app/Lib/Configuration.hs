@@ -4,9 +4,9 @@ import Hakyll
 
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration {
-        feedTitle       = "curious.observer",
+        feedTitle       = "fastpaced.com",
         feedDescription = "Data. Science. Code. Design. Thoughts.",
         feedAuthorName  = "David Muhr",
         feedAuthorEmail = "dmuhr@hotmail.com",
-        feedRoot        = "https://curious.observer"
+        feedRoot        = "https://fastpaced.com"
       }

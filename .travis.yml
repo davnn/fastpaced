@@ -12,7 +12,7 @@ cache:
   directories:
   - $HOME/.ghc
   - $HOME/.stack
-  - $HOME/build/davnn/curiousobserver/.stack-work
+  - $HOME/build/davnn/fastpaced/.stack-work
 
 # Disable default submodule logic
 git:
@@ -36,7 +36,7 @@ install:
 
 script:
 # build the Hakyll site
-- stack exec curiousobserver build
+- stack exec fastpaced build
 
 deploy:
   # deploy to github pages (the gh-pages branch of the current repository)
@@ -48,7 +48,7 @@ deploy:
   # the build directory
   local_dir: _site
   # adds the custom domain CNAME file
-  fqdn: curious.observer
+  fqdn: fastpaced.com
   # only deploy on pushes on the `master` branch
   on:
     branch: master
