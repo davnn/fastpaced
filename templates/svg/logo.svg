@@ -1,4 +1,12 @@
-<svg viewBox="0 0 45 45" fill="#71c1c">
-    <circle cx="22.5" cy="22.5" r="22.5"/>
-    <path d="M24.425 9.706a12.918 12.918 0 0 1 9.279 6.323c3.57 6.184 1.448 14.103-4.735 17.673a12.9 12.9 0 0 1-4.544 1.592v-6.619a6.472 6.472 0 0 0 3.677-9.411 6.443 6.443 0 0 0-3.677-2.94V9.706zm-4.313.074v6.705a6.471 6.471 0 0 0-3.214 9.247 6.436 6.436 0 0 0 3.214 2.777v6.702a12.91 12.91 0 0 1-8.816-6.244c-3.57-6.184-1.448-14.103 4.735-17.673a12.906 12.906 0 0 1 4.081-1.514z" fill="#fff"/>
+<svg viewBox="0 0 144 125">
+    <path d="M144 25c0-6.63-2.634-12.989-7.322-17.678A25.004 25.004 0 00119 0H25A25.004 25.004 0 007.322 7.322 25.004 25.004 0 000 25v75c0 6.63 2.634 12.989 7.322 17.678A25.004 25.004 0 0025 125h94c6.63 0 12.989-2.634 17.678-7.322A25.004 25.004 0 00144 100V25z" fill="#b71c1c"/>
+    <g fill="none" stroke-width="15">
+        <path d="M26.5 50.5h61" stroke="url(#Linear)"/>
+        <path d="M26.5 26.5h91" stroke="url(#Linear)"/>
+        <path d="M26.5 74.5h31" stroke="url(#Linear)"/>
+        <path d="M26.5 98.5h21" stroke="url(#Linear)"/>
+    </g>
+    <defs>
+    <linearGradient id="Linear" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(144 0 0 144 0 62.5)"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".5"/></linearGradient>
+    </defs>
 </svg>
