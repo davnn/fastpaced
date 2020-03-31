@@ -57,7 +57,7 @@
   --spacing-5: 7.59375rem;
 
   /* Container */
-  --container-padding: 1.5rem;
+  --container-padding: 1rem;
   --container-narrow: 720px;
   --container-medium: 1024px;
   --container-large: 1160px;
@@ -724,7 +724,7 @@ main {
 #article .content > h4,
 #article .content > h5,
 #article .content > h6 { /* Top-level content that needs extra spacing between paragraphs */
-  margin-top: 2.5em; /* font-size-3 * 2 em */
+  margin-top: 1em;
 }
 
 #article .content > div,
@@ -734,8 +734,8 @@ main {
 #article .content > table,
 #article .content > ul,
 #article .content > ol { /* Top-level content that needs extra spacing between paragraphs */
-  margin-top: calc(var(--font-size-3) * 2);
-  margin-bottom: calc(var(--font-size-3) * 2);
+  margin-top: var(--font-size-3);
+  margin-bottom: var(--font-size-3);
 }
 
 #article .content > blockquote { /* Quotation and emphasis */
@@ -851,12 +851,14 @@ main {
 }
 
 #article .math { /* Math */
-  font-size: var(--font-size-text); /* font size for both inline and display math */
+  font-size: 1.05rem; /* font size for both inline and display math */
 }
 
 #article .math.display { /* prevent overflow when math is too wide */
   display: block;
   overflow: auto;
+  margin-top: -1em; /* adjust for inherent katex margin */
+  margin-bottom: -1em; /* adjust for inherent katex margin */
 }
 
 #article .math.inline .katex { /* prevent overflow of inline elements when math is too wide */
@@ -912,8 +914,9 @@ main {
 #article .proof,
 #article .theorem {
   max-width: var(--measure-medium);
-  padding: 1.05em; /* same as ol and ul */
-  border: 1px solid grey;
+  padding: 1em 0 1em 0; /* same as ol and ul */
+  border: dashed var(--color-divider-dark);
+  border-width: 1px 0 1px 0;
 }
 
 #article .definition > * + *,
@@ -982,7 +985,7 @@ main {
    ========================================================================== */
 @media screen and (max-width: 599px) {
   /* Article */
-  #article .meta p > span {
+  #article .meta p > span:first-child {
     display: none; /* Dont show description */
   }
 }
