@@ -7,6 +7,6 @@ feedConfig = FeedConfiguration {
         feedTitle       = "fastpaced.com",
         feedDescription = "Data. Science. Code. Design. Thoughts.",
         feedAuthorName  = "David Muhr",
-        feedAuthorEmail = "dmuhr@hotmail.com",
+        feedAuthorEmail = "muhrdavid+atom@gmail.com",
         feedRoot        = "https://fastpaced.com"
       }

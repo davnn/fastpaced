@@ -701,7 +701,8 @@ main {
 #article p,
 #article ol,
 #article ul,
-#article blockquote { /* Max width for default font-size items */
+#article blockquote,
+#article hr { /* Max width for default font-size items */
   max-width: var(--measure-medium);
 }
 

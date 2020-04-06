@@ -61,6 +61,6 @@ main = do
     create ["atom.xml"] $ do
       route idRoute
       compile $ do
-        let feedCtx = articleCtx `mappend` bodyField "description"
+        let feedCtx = articleCtx <> bodyField "description"
         articles <- recentFirst =<< loadAllSnapshots articlePath "content"
         renderAtom feedConfig feedCtx articles

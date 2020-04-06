@@ -5,7 +5,7 @@ import System.FilePath (dropFileName)
 
 site = "https://fastpaced.com"
 title = "fastpaced | Data. Science. Code. Design. Thoughts."
-description = "fastpaced is a blog about data science maintained by David Muhr. Learn about interesting new ideas and techniques."
+description = "fastpaced is a research-oriented blog about data science and other random things."
 
 -- Based on `urlField`
 shortUrlField :: String -> Context a
@@ -15,27 +15,27 @@ shortUrlField key = field key $
 -- Field that should exist in all contexts (for all pages)
 extendedDefaultContext :: Context String
 extendedDefaultContext =
-  constField "site" site `mappend`
-  constField "description" description `mappend`
+  constField "site" site <>
+  constField "defaultdescription" description <>
   defaultContext
 
 indexCtx :: [Item String] -> Context String
 indexCtx posts =
-  listField "posts" articleCtx (return posts) `mappend`
-  constField "title" title `mappend`
+  listField "posts" articleCtx (return posts) <>
+  constField "title" title <>
   extendedDefaultContext
 
 articleCtx :: Context String
 articleCtx =
-  dateField "date" "%B %e, %Y" `mappend`
-  constField "layout" "article" `mappend`
-  constField "comments" "true" `mappend`
-  shortUrlField "url" `mappend`
+  dateField "date" "%B %e, %Y" <>
+  constField "layout" "article" <>
+  constField "comments" "true" <>
+  shortUrlField "url" <>
   extendedDefaultContext
 
 errorCtx :: Context String
 errorCtx =
-  constField "layout" "error" `mappend`
-  constField "title" "404: Not found" `mappend`
-  constField "body" "<p>:-(</p>" `mappend`
+  constField "layout" "error" <>
+  constField "title" "404: Not found" <>
+  constField "body" "<p>:-(</p>" <>
   extendedDefaultContext
