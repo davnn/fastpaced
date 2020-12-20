@@ -2,7 +2,16 @@
 
 This is a private blog proudly powered by [Hakyll](https://github.com/jaspervdj/hakyll), the Haskell static site generator.
 
-Articles are in their own repository to keep code and content separate; they are included via git submodule. [Travis CI](https://travis-ci.org/) is used to build this repository and to push the results to the github-pages branch. An update to the master branch of the [fastpaced articles repository](https://github.com/davnn/fastpaced-articles) automatically triggers a new Travis build.
+Articles are in their own repository to keep code and content separate; they are included via git submodule. Use
+
+```
+git submodule init
+git submodule update
+```
+
+to initialize and update the articles.
+
+[Travis CI](https://travis-ci.org/) is used to build this repository and to push the results to the github-pages branch. An update to the master branch of the [fastpaced articles repository](https://github.com/davnn/fastpaced-articles) automatically triggers a new Travis build.
 
 Articles are written in [Markdown](https://www.markdownguide.org/) and [Pandoc](https://pandoc.org/) is used to transform the ``.md`` files into ``.html`` files. Each articles lives in its own folder inside ``/articles``. The folder name of an article also represents its HTML ``path``.
 
