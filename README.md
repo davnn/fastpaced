@@ -6,7 +6,7 @@ Articles are in their own repository to keep code and content separate; they are
 
 ```
 git submodule init
-git submodule update
+git submodule update --remote
 ```
 
 to initialize and update the articles.
