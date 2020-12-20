@@ -29,14 +29,11 @@ Optional metadata is available if articles require additional features. The foll
 
 ```
 mathematics: Boolean (true | false)
-toc: Boolean  (true | false)
 centered: Boolean  (true | false)
 image: String (path)
 ```
 
 The ``mathematics`` field enables mathematical typesetting with [KaTeX](https://github.com/KaTeX/KaTeX). Mathematical content can then be included with ``$expr$`` for inline content and ``$$expr$$`` for block content.
-
-The ``toc`` field optionally creates a table of contents from all the headlines in the articles.
 
 The ``centered`` field changes the article to a centered layout instead of left-aligned.
 
