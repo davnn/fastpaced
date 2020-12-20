@@ -11,14 +11,14 @@
     $endif$
 
     <div class="meta">
-        <p class="date">
-            <span>Published<br></span>
-            <time itemprop="datePublished">$date$</time>
-        </p>
-
         <p class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
             <span>Author<br></span>
             <span itemprop="name">$author$</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished">$date$</time>
         </p>
     </div>
 
@@ -26,33 +26,40 @@
         $body$
 
         <section class="appendix">
-          <h4>Updates and Corrections</h4>
-          <p>The source for this article is available at Github. If you want to suggest a change, please <a href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
 
-          <h4>Citations and Reuse</h4>
-          <p>Figures, and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: “Figure: ... from source”.</p>
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption:
+                “Figure: ... from source”.</p>
         </section>
 
-      <div id="disqus_thread"></div>
+        <div id="disqus_thread"></div>
     </div>
 
 </article>
 
 <script>
-  var disqus_config = function () {
-    this.shortname = "fastpaced";
-    this.page.url = "$site$$url$";
-    this.page.identifier = "$url$";
-    this.page.title = "$title$";
-  };
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "$site$$url$";
+        this.page.identifier = "$url$";
+        this.page.title = "$title$";
+    };
 
-  function loadDisqus() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://fastpaced.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  }
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
 
-  ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+    Disqus.</a></noscript>
