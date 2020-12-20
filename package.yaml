@@ -5,24 +5,17 @@ license:             BSD3
 author:              "David Muhr"
 maintainer:          "muhrdavid+git@gmail.com"
 copyright:           "David Muhr"
+description:         Please see the README on Github at <https://github.com/davnn/fastpaced#readme>
 
 extra-source-files:
 - README.md
-
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on Github at <https://github.com/davnn/fastpaced#readme>
 
 dependencies:
 - base >= 4.7 && < 5
 - hakyll
 - pandoc
 - filepath
+- text
 
 executables:
   fastpaced:

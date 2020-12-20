@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Lib.Pandoc (pandocCompiler') where
 
 import Hakyll
@@ -20,14 +22,6 @@ pandocWriterOptions  = defaultHakyllWriterOptions {
         writerHTMLMathMethod = KaTeX ""
       }
 
--- Add TOC to WriterOptions
-pandocWriterOptionsWithTOC :: WriterOptions
-pandocWriterOptionsWithTOC = pandocWriterOptions {
-        writerTableOfContents = True,
-        writerTOCDepth = 2,
-        writerTemplate = Just "\n<div class=\"toc\">\n$toc$\n</div>\n$body$"
-      }
-
 -- Conditionally compile with or without citations
 writePandoc' :: ReaderOptions -> WriterOptions -> Item CSL -> [Item Biblio] -> Compiler (Item String)
 writePandoc' ropt wopt _ [] =
@@ -43,9 +37,6 @@ pandocCompiler' = do
   bib <- loadAll (fromGlob (currentRoute ++ "/*.bib"))
   csl <- load $ fromFilePath "assets/csl/ieee.csl"
   id <- getUnderlying
-  toc <- getMetadataField id "toc"
   let ropt = pandocReaderOptions
-  let wopt = case toc of
-        Just _  -> pandocWriterOptionsWithTOC
-        Nothing -> pandocWriterOptions
+  let wopt = pandocWriterOptions
   writePandoc' ropt wopt csl bib
