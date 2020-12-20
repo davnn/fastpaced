@@ -917,7 +917,7 @@ main {
 #article .theorem {
   max-width: var(--measure);
   padding: 1em 0 1em 0; /* same as ol and ul */
-  border: dashed var(--color-divider-dark);
+  border: solid var(--color-divider-dark);
   border-width: 1px 0 1px 0;
 }
 
