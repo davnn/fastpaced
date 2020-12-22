@@ -637,8 +637,8 @@ main {
   color: var(--color-text-dark-secondary);
 }
 
-#home > #post-list h2 > span > a:hover,
-#home > #post-list h2 > span > a:focus {
+#home > #post-list h2 a:hover,
+#home > #post-list h2 a:focus {
   color: var(--color-brand);
 }
 
@@ -1065,8 +1065,12 @@ main {
 
 /* Full article width including padding
    ========================================================================== */
-@media screen and (min-width: 45.75rem) { /* align/center in relationship to measure width */
-  #article article:not(.centered) .width-small {
+@media screen and (min-width: 47.75rem) { /* full article with plus updated container padding */
+  :root { /* increase container padding after reaching full article width */
+    --container-padding: 2rem;
+  }
+
+  #article article:not(.centered) .width-small { /* align/center in relationship to measure width */
     margin-left: 13.125rem;
   }
   #article article:not(.centered) .width-medium {
