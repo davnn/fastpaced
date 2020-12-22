@@ -35,7 +35,7 @@ pandocCompiler' = do
   -- get the path to the current folder
   currentRoute <- (takeDirectory . toFilePath) <$> getUnderlying
   bib <- loadAll (fromGlob (currentRoute ++ "/*.bib"))
-  csl <- load $ fromFilePath "assets/csl/ieee.csl"
+  csl <- load $ fromFilePath "assets/csl/chicago-author-date.csl"
   id <- getUnderlying
   let ropt = pandocReaderOptions
   let wopt = pandocWriterOptions

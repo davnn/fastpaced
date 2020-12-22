@@ -699,6 +699,18 @@ main {
   overflow: auto;
 }
 
+#article p { /* Always justify article text */
+  text-align: justify;
+}
+
+#article img { /* Display all images as blocks */
+  display: block;
+}
+
+#article hr { /* Uniform divider color */
+  border-color: var(--color-divider-dark);
+}
+
 #article p,
 #article ol,
 #article ul,
@@ -750,9 +762,9 @@ main {
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 3px;
   height: 100%;
-  background-color: var(--color-text-dark);
+  background-color: var(--color-divider-dark);
   content: "";
 }
 
@@ -777,6 +789,14 @@ main {
   font-family: var(--font-family-sans);
   font-size: var(--font-size-2);
   word-wrap: break-word;
+}
+
+#article .citation, #article .references > div { /* targets all citations and references */
+  font-style: italic;
+}
+
+#article .citation {
+  font-size: 90%;
 }
 
 #article .appendix * + *,
@@ -835,16 +855,11 @@ main {
   border-top: 1px dashed var(--color-brand);
 }
 
-#article figure { /* Figures and images */
-  text-align: center;
-}
-
 #article figcaption {
   display: block;
-  padding-top: .5em;
+  padding-top: .25em;
   font-size: var(--font-size-2);
-  font-style: italic;
-  text-align: center;
+  text-align: left;
 }
 
 #article figcaption::before {
@@ -873,12 +888,15 @@ main {
 #article .content h4,
 #article .content h5,
 #article .content h6,
-#article .content figure,
 #article .content figcaption,
 #article .content .references,
 #article .content .footnotes,
 #article .content .appendix { /* Replicate the measure container size for other elements */
   max-width: 43.75rem; /* font-size-3 * measure */
+}
+
+#article article.centered figcaption {
+  margin: auto;
 }
 
 #article article.centered header > h1 { /* Centered variation */
@@ -894,6 +912,7 @@ main {
 #article article.centered .meta,
 #article article.centered .abstract {
   text-align: center;
+  margin: auto;
 }
 
 #article article.centered .meta {
@@ -901,15 +920,28 @@ main {
 }
 
 #article .width-small {
-  max-width: 33.33333%;
+  width: 17.5rem; /* full width * 0.4 */
 }
 
 #article .width-medium {
-  max-width: 50%;
+  width: 21.875rem; /* full width * 0.5 */
 }
 
 #article .width-large {
-  max-width: 66.66666%;
+  width: 26.25rem; /* full width * 0.6 */
+}
+
+#article .width-full {
+  width: 43.75rem; /* font-size-3 * measure */
+}
+
+#article .width-small,
+#article .width-medium,
+#article .width-large,
+#article .width-full {
+  max-width: 100%; /* Don't overflow mobile max width */
+  margin: auto;
+
 }
 
 #article .definition,
@@ -1028,6 +1060,23 @@ main {
   #article .meta > *:not(:last-child) {
     margin-right: 1rem;
     padding-right: 1rem;
+  }
+}
+
+/* Full article width including padding
+   ========================================================================== */
+@media screen and (min-width: 45.75rem) { /* align/center in relationship to measure width */
+  #article article:not(.centered) .width-small {
+    margin-left: 13.125rem;
+  }
+  #article article:not(.centered) .width-medium {
+    margin-left: 10.9375rem;
+  }
+  #article article:not(.centered) .width-large {
+    margin-left: 8.75rem;
+  }
+  #article article:not(.centered) .width-full {
+    margin-left: 0;
   }
 }
 
