@@ -39,4 +39,4 @@ The ``centered`` field changes the article to a centered layout instead of left-
 
 The ``image`` field specifies the path to an image relative from the current article path. This image is used for the site meta data ``og:image``. A default image is included if the ``image`` field is missing.
 
-Pandoc has various possible extension and this blog uses the ``fenced_divs`` extension to enable classes to be added to ``div`` blocks. There are classes implemented for specific content blocks like ``.definition``, ``.theorem`` and ``.proof``. Additionally the width of elements can be modified with ``.width-small``, ``.width-medium`` and ``.width-large``, which set the width of the element to 33%, 50% and 66% of the article.
+Pandoc has various possible extension and this blog uses the ``fenced_divs`` extension to enable classes to be added to ``div`` blocks. There are classes implemented for specific content blocks like ``.definition``, ``.theorem`` and ``.proof``. Additionally, the width of elements can be modified with ``.width-small``, ``.width-medium``, ``.width-large`` and ``.width-full``, which set the width of the element to 33%, 50% and 66% of the article.
