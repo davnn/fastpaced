@@ -4,8 +4,8 @@ import Hakyll
 import System.FilePath (dropFileName)
 
 site = "https://fastpaced.com"
-title = "fastpaced | Data. Science. Code. Design. Thoughts."
-description = "fastpaced is a research-oriented blog about data science and other random things."
+title = "Data. Science. Code. Design. Thoughts. - fastpaced"
+description = "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning doctoral student, currently working and living in beautiful Austria."
 
 -- Based on `urlField`
 shortUrlField :: String -> Context a
@@ -28,6 +28,7 @@ indexCtx posts =
 articleCtx :: Context String
 articleCtx =
   dateField "date" "%B %e, %Y" <>
+  dateField "dateInt" "%Y%m%d" <>
   constField "layout" "article" <>
   constField "comments" "true" <>
   shortUrlField "url" <>

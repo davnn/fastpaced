@@ -1,24 +1,26 @@
-<article $if(centered)$ class="centered" $endif$ itemscope itemtype="http://schema.org/BlogPosting">
-
+<article $if(centered)$ class="centered" $endif$ itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$" />
+    <meta itemprop="isPartOf" content="$site$">
+    <meta itemprop="mainEntityOfPage" content="$url$" />
     <header>
         <h1 itemprop="name headline">$title$</h1>
     </header>
 
     $if(abstract)$
-    <div class="abstract">
+    <div class="abstract" itemprop="abstract">
         $abstract$
     </div>
     $endif$
 
     <div class="meta">
-        <p class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
             <span>Author<br></span>
             <span itemprop="name">$author$</span>
         </p>
 
         <p class="date">
             <span>Published<br></span>
-            <time itemprop="datePublished">$date$</time>
+            <time itemprop="datePublished dateModified">$date$</time>
         </p>
     </div>
 

@@ -12,13 +12,35 @@
     <link rel="canonical" href="$site$">
 
     <title>$title$</title>
+    <meta name="description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
     <meta property="og:url" content="$site$">
     <meta property="og:type" content="website" />
     <meta property="og:title" content="$title$" />
     <meta property="og:site_name" content="fastpaced">
     <meta property="og:description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
     <meta property="og:image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
-    <meta name="description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "@id": "$site$",
+            "name": "fastpaced",
+            "description": "$defaultdescription$",
+            "author": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "creator": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "inLanguage": "en-US"
+        }
+    </script>
     <style>$partial("assets/style.css")$</style>
 </head>
 
