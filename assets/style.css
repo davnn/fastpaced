@@ -783,7 +783,7 @@ main {
 #article .appendix,
 #article .references,
 #article .footnotes { /* Generated content below article */
-  padding-top: var(--font-size-6);
+  padding-top: var(--font-size-3);
   border-top: 1px solid var(--color-divider-dark);
   color: var(--color-text-dark-secondary);
   font-family: var(--font-family-sans);
@@ -806,7 +806,7 @@ main {
 }
 
 #article .appendix > h4:not(:first-child) { /* Replicate the margin of the top level extra spacing */
-  margin-top: calc(var(--font-size-3) * 2);
+  margin-top: var(--font-size-3);
 }
 
 #article .references::before, /* Add the headlines with pseudo elements */
