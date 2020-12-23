@@ -1,4 +1,36 @@
 /* ==========================================================================
+   Google Fonts
+   ========================================================================== */
+
+/* latin */
+@font-face {
+  font-family: 'PT Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptserif/v12/EJRTQgYoZZY2vCFuvAFT_r21cgT9rcs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptserif/v12/EJRVQgYoZZY2vCFuvAFWzr-_dSb_.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptserif/v12/EJRSQgYoZZY2vCFuvAnt66qSVyvVp8NA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
    Variables
    ========================================================================== */
 
@@ -8,12 +40,8 @@
   --color-brand-dark: #7f0000;
 
   /* Typography Colors */
-  --color-text-dark-secondary: rgba(0, 0, 0, .54);
-  --color-text-dark-disabled: rgba(0, 0, 0, .38);
-  --color-text-dark: rgba(0, 0, 0, .87);
-  --color-text-light: #fff;
-  --color-text-light-secondary: rgba(255, 255, 255, .7);
-  --color-text-light-disabled: rgba(255, 255, 255, .5);
+  --color-text: rgba(0, 0, 0, .87);
+  --color-text-secondary: rgba(0, 0, 0, .54);
   --color-tap-highlight: rgba(0, 0, 0, .075);
 
   /* Syntax Highlighting Colors */
@@ -544,14 +572,14 @@ main {
 #home > #intro > h1 {
   max-width: 10em;
   margin-bottom: var(--spacing-3);
-  color: var(--color-text-dark);
+  color: var(--color-text);
   font-size: var(--font-size-6);
   line-height: 1.2;
 }
 
 #home > #intro > p {
   max-width: var(--measure-small);
-  color: var(--color-text-dark-secondary);
+  color: var(--color-text-secondary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-3);
   hyphens: auto;
@@ -634,7 +662,7 @@ main {
 }
 
 #home > #post-list h2 > span > a {
-  color: var(--color-text-dark-secondary);
+  color: var(--color-text-secondary);
 }
 
 #home > #post-list h2 a:hover,
@@ -648,6 +676,11 @@ main {
 
 #article {
   font-size: var(--font-size-text);
+}
+
+#article .noscript {
+  font-size: 80%;
+  color: var(--color-text-secondary);
 }
 
 #article article { /* The article container */
@@ -672,7 +705,7 @@ main {
   padding-top: .5rem;
   padding-bottom: var(--spacing-1);
   border-top: 1px solid var(--color-divider-dark);
-  color: var(--color-text-dark-disabled);
+  color: var(--color-text-secondary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-1);
 }
@@ -785,7 +818,7 @@ main {
 #article .footnotes { /* Generated content below article */
   padding-top: var(--font-size-3);
   border-top: 1px solid var(--color-divider-dark);
-  color: var(--color-text-dark-secondary);
+  color: var(--color-text-secondary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-2);
   word-wrap: break-word;
@@ -1104,7 +1137,7 @@ main {
   }
 
   #home > #post-list h2 > a {
-    color: var(--color-text-dark-secondary);
+    color: var(--color-text-secondary);
   }
 
   /* Article */

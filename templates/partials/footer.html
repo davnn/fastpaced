@@ -1,16 +1,18 @@
-<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700&display=swap" rel="stylesheet">$if(mathematics)$
+$if(mathematics)$
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
-<script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script defer>
     document.addEventListener("DOMContentLoaded", function () {
         var inline = document.getElementsByClassName("math inline");
         var display = document.getElementsByClassName("math display");
-        for (var i = 0; i < inline.length; i++) {
-            katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
-        }
-        for (var i = 0; i < display.length; i++) {
-            katex.render(display[i].textContent, display[i], {displayMode: true, output: "html", throwOnError: false});
-        }
+        setTimeout(function () {
+            for (var i = 0; i < inline.length; i++) {
+                katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
+            }
+            for (var i = 0; i < display.length; i++) {
+                katex.render(display[i].textContent, display[i], {displayMode: true, output: "html", throwOnError: false});
+            }
+        })
     });
 </script>
 $endif$
