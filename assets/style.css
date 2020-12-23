@@ -1176,8 +1176,7 @@ main {
   }
 
   #site-header .site-logo {
-    margin: 0 auto;
-    padding-top: var(--spacing-3);
+    margin: var(--spacing-3) auto 0 auto;
     -webkit-tap-highlight-color: transparent;
   }
 
