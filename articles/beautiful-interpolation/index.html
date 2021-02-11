@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZGQ3G707W"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-BZGQ3G707W');</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#7f0000">
+    <link rel="manifest" href="/assets/manifest/manifest.json">
+    <link rel="alternate" type="application/rss+xml" title="Beautiful Interpolation" href="https://fastpaced.com/atom.xml">
+    <link rel="canonical" href="https://fastpaced.com">
+    <title>Beautiful Interpolation</title>
+    <meta name="description" content="Interpolation is the process of deriving a function from a set of data points so that the function passes through all the given points and can be used to estimate points in-between the given ones.">
+    <meta property="og:url" content="https://fastpaced.com">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Beautiful Interpolation" />
+    <meta property="og:site_name" content="fastpaced">
+    <meta property="og:description" content="Interpolation is the process of deriving a function from a set of data points so that the function passes through all the given points and can be used to estimate points in-between the given ones.">
+    <meta property="og:image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "@id": "https://fastpaced.com",
+            "name": "fastpaced",
+            "description": "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning doctoral student, currently working and living in beautiful Austria.",
+            "author": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "creator": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "inLanguage": "en-US"
+        }
+    </script>
+    <style>@font-face{font-family:'PT Serif';font-style:italic;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRTQgYoZZY2vCFuvAFT_r21cgT9rcs.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'PT Serif';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRVQgYoZZY2vCFuvAFWzr-_dSb_.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'PT Serif';font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRSQgYoZZY2vCFuvAnt66qSVyvVp8NA.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}:root{--color-brand:#b71c1c;--color-brand-dark:#7f0000;--color-text:rgba(0,0,0,.82);--color-text-secondary:rgba(0,0,0,.54);--color-tap-highlight:rgba(0,0,0,.075);--color-syntax-generic:black;--color-syntax-keyword:blue;--color-syntax-keyword-secondary:#000080;--color-syntax-comment:grey;--color-syntax-number:blue;--color-syntax-string:darkred;--color-syntax-error:red;--color-divider-dark:rgba(0,0,0,.12);--color-divider-light:rgba(255,255,255,.12);--font-family-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--font-family-serif:"PT serif","Palatino","Georgia","Cambria","Times New Roman",serif;--font-family-mono:monospace;--font-size-1:.875rem;--font-size-2:1rem;--font-size-3:1.25rem;--font-size-4:1.5rem;--font-size-5:2rem;--font-size-6:3rem;--font-size-headline:4.5rem;--footer-height:30px;--header-width:400px;--header-height:85px;--logo-width:45px;--spacing-0:1rem;--spacing-1:1.5rem;--spacing-2:2.25rem;--spacing-3:3.375rem;--spacing-4:5.0625rem;--spacing-5:7.59375rem;--container-padding:1rem;--container-narrow:720px;--container-medium:1024px;--container-large:1160px;--measure-small:32em;--measure:35em;--zindex-navigation:100;--zindex-navigation-icon:101}*,::before,::after{background-repeat:no-repeat;box-sizing:inherit}::before,::after{text-decoration:inherit;vertical-align:inherit}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}svg{fill:currentColor}audio,canvas,iframe,img,svg,video{vertical-align:middle}a,area,button,input,label,select,summary,textarea,[tabindex]{-ms-touch-action:manipulation;touch-action:manipulation}[hidden]{display:none}[aria-busy="true"]{cursor:progress}[aria-controls]{cursor:pointer}[aria-hidden="false"][hidden]:not(:focus){clip:rect(0,0,0,0);display:inherit;position:absolute}[aria-disabled]{cursor:default}body,h1,h2,h3,h4,h5,h6,p,blockquote,pre,hr,dl,dd,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}button,select{border:none;outline:none;font-family:inherit}a,button,input,select,textarea{-webkit-tap-highlight-color:transparent}blockquote,q{quotes:none}blockquote::before,blockquote::after{content:none}table{border-spacing:0}html{height:100%;box-sizing:border-box;cursor:default;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{position:relative;min-height:100%;padding-bottom:30px;font-family:var(--font-family-serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;text-rendering:optimizeLegibility}*::-webkit-scrollbar{width:5px;height:5px}*::-webkit-scrollbar-track{border:1px solid rgba(0,0,0,.1)}*::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(0,0,0,0.04)}a{color:var(--color-brand);text-decoration:none;-webkit-tap-highlight-color:var(--color-tap-highlight)}a:visited{color:var(--color-brand)}a:active{color:var(--color-brand-dark)}label{-webkit-tap-highlight-color:var(--color-tap-highlight)}img{max-width:100%}pre{font-family:monospace;hyphens:none}main{padding:var(--spacing-2) 0}.sourceCode a{color:var(--color-syntax-generic)}.sourceCode .va,.sourceCode .kw,.sourceCode .im,.sourceCode .cf{color:var(--color-syntax-keyword)}.sourceCode .in,.sourceCode .an,.sourceCode .cv,.sourceCode .do,.sourceCode .co{color:var(--color-syntax-comment)}.sourceCode .dv,.sourceCode .bn,.sourceCode .fl{color:var(--color-syntax-number)}.sourceCode .cn,.sourceCode .sc,.sourceCode .vs,.sourceCode .ss,.sourceCode .ch,.sourceCode .st{color:var(--color-syntax-string)}.sourceCode .al,.sourceCode .wa,.sourceCode .er{color:var(--color-syntax-error)}.sourceCode .dt{font-weight:bold}.sourceCode .bu,.sourceCode .fu{color:var(--color-syntax-keyword-secondary)}#site-header{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);height:var(--header-height);font-family:var(--font-family-sans);letter-spacing:.1em;line-height:2}#site-header>nav{display:flex;position:relative;align-items:center;justify-content:space-between;height:100%}#site-header .site-navigation{position:absolute;top:0;right:0;left:0;margin:calc(var(--container-padding)/2) calc(var(--container-padding)/-2) 0 calc(var(--container-padding)/-2);padding:var(--spacing-2);pointer-events:none;transform:scale(.95);transform-origin:100% 0;transition-duration:.25s;transition-property:transform,opacity;background-color:#fff;box-shadow:0 10px 30px rgba(50,50,93,.1),0 5px 15px rgba(50,50,93,.15),0 5px 15px rgba(0,0,0,.1);will-change:transform,opacity;opacity:0;overflow:hidden;z-index:var(--zindex-navigation)}#site-header h4{margin-bottom:.5em}#site-header .contact>a{display:block}#site-header .site-logo{display:block;width:36px;height:36px}#site-header .site-logo>svg{transition:fill .25s}#site-header .site-logo>svg:active{fill:var(--color-brand-dark)}#site-header #nav-toggle+label{width:36px;height:36px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label>.icon-close{display:none}#site-header #nav-toggle:checked~.site-navigation{transform:none;opacity:1;pointer-events:auto}#site-header #nav-toggle:checked+label{z-index:var(--zindex-navigation-icon)}#site-header #nav-toggle:checked+label>.icon-close{display:inline-block}#site-header #nav-toggle:checked+label>.icon-open{display:none}#home>#intro,#home>#post-list{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding)}#home>#intro>h1{max-width:10em;margin-bottom:var(--spacing-3);color:var(--color-text);font-size:var(--font-size-6);line-height:1.2}#home>#intro>p{max-width:var(--measure-small);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-3);hyphens:auto}#home>#intro .dots+label{display:inline;margin:0 auto;user-select:none;transition:opacity .5s;white-space:nowrap;cursor:pointer}#home>#intro .dots+label>*{transition:color .25s;color:var(--color-brand)}#home>#intro .dots+label>*:active,#home>#intro .dots+label>*:focus{color:var(--color-brand-dark)}#home>#intro .dots:checked+label{opacity:0;pointer-events:none}#home>#intro .dots+label+span{display:block;height:0;transform:translateY(-25%);transition-duration:.5s;transition-property:opacity,transform;will-change:opacity,transform;opacity:0}#home>#intro .dots:checked+label+span{height:initial;margin-top:var(--spacing-1);transform:none;opacity:1}#home>#post-list{position:relative;padding-top:var(--spacing-3)}#home>#post-list ul>li:not(:last-child){border-bottom:1px solid var(--color-divider-dark)}#home>#post-list h2{display:flex;flex-direction:column;margin:1.5rem 0;font-weight:normal}#home>#post-list h2>span{display:flex;justify-content:space-between;min-width:225px;padding-top:.5rem;font-family:var(--font-family-sans);font-size:var(--font-size-1)}#home>#post-list h2>a{font-size:var(--font-size-5)}#home>#post-list h2>a,#home>#post-list h2>span>a{transition-duration:.25s;transition-property:color}#home>#post-list h2>span>a{color:var(--color-text-secondary)}#home>#post-list h2 a:hover,#home>#post-list h2 a:focus{color:var(--color-brand)}#article{font-size:var(--font-size-3);color:var(--color-text)}#article .noscript{font-size:80%;color:var(--color-text-secondary)}#article article{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);max-width:var(--container-medium);hyphens:auto}#article .abstract{font-size:var(--font-size-3);max-width:var(--measure);padding-bottom:var(--spacing-1);color:black}#article .meta{display:flex;flex-direction:column;padding-top:.5rem;padding-bottom:var(--spacing-1);border-top:1px solid var(--color-divider-dark);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-1)}#article ul,#article ol{padding-left:1.05em}#article ul{list-style-type:disc}#article ol{list-style-type:decimal}#article pre{padding:.3rem .5rem;border:1px solid #cfcfcf;border-radius:2px;background:#f7f7f7;line-height:1.5;overflow:auto}#article p{text-align:justify}#article img{display:block}#article hr{border-color:var(--color-divider-dark)}#article p,#article ol,#article ul,#article blockquote,#article hr{max-width:var(--measure)}#article header>h1{max-width:52.5rem;padding-bottom:var(--spacing-2)}#article .content>*:first-child{margin-top:0}#article .content>*+*{margin-top:var(--font-size-3)}#article .content>h1,#article .content>h2,#article .content>h3,#article .content>h4,#article .content>h5,#article .content>h6{margin-top:1em}#article .content>div,#article .content>section,#article .content>figure,#article .content>blockquote,#article .content>table,#article .content>ul,#article .content>ol{margin-top:var(--font-size-3);margin-bottom:var(--font-size-3)}#article .content>ul li:not(:first-child){margin-top:var(--font-size-1)}#article .content>figure{padding-top:1em;padding-bottom:1em}#article .content>blockquote{position:relative;padding-left:1.05em;font-style:italic}#article .content>blockquote::before{position:absolute;top:0;left:0;width:3px;height:100%;background-color:var(--color-divider-dark);content:""}#article .content>blockquote cite{display:block;margin-top:.5rem;font-size:var(--font-size-2);font-style:normal;font-weight:bold}#article .content>blockquote cite::before{content:"— "}#article .appendix,#article .references,#article .footnotes{padding-top:var(--font-size-3);border-top:1px solid var(--color-divider-dark);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-2);word-wrap:break-word}#article .citation,#article .references>div{font-style:italic}#article .citation{font-size:90%}#article .appendix *+*,#article .references *+*,#article .footnotes *+*{margin-top:var(--font-size-1)}#article .appendix>h4:not(:first-child){margin-top:var(--font-size-3)}#article .references::before,#article .footnotes::before{display:block;margin-bottom:1rem;font-weight:bold}#article .references::before{content:"References"}#article .footnotes::before{content:"Footnotes"}#article .footnotes hr{display:none}#article .references~.footnotes,#article .references~.appendix,#article .footnotes~.appendix{padding-top:0;border-top:0}#article table{font-size:var(--font-size-2)}#article thead{border-bottom:1px solid black;vertical-align:bottom}#article td,#article th{padding:.5rem}#article #disqus_thread{margin-top:var(--spacing-5);padding-top:var(--spacing-2);border-top:1px dashed var(--color-brand)}#article figcaption{display:block;padding-top:.25em;font-size:var(--font-size-2);text-align:left}#article figcaption::before{font-weight:bold;content:"Figure: "}#article img:not(.caption)+figcaption{display:none}#article .math{font-size:1.05rem;color:black}#article .math.display{display:block;overflow:auto}#article .math.inline .katex{white-space:normal}#article .content h1,#article .content h2,#article .content h3,#article .content h4,#article .content h5,#article .content h6,#article .content figcaption,#article .content .references,#article .content .footnotes,#article .content .appendix{max-width:43.75rem}#article article.centered figcaption{margin:auto}#article article.centered header>h1{margin:auto;text-align:center}#article article.centered .content>*{margin-right:auto;margin-left:auto}#article article.centered .meta,#article article.centered .abstract{text-align:center;margin:auto}#article article.centered .meta{justify-content:center}#article .width-small{width:17.5rem}#article .width-medium{width:21.875rem}#article .width-large{width:26.25rem}#article .width-full{width:43.75rem}#article .width-small,#article .width-medium,#article .width-large,#article .width-full{max-width:100%;margin:auto}#article .definition,#article .proof,#article .theorem{max-width:var(--measure);padding:1em 0 1em 0;border:solid var(--color-divider-dark);border-width:1px 0 1px 0}#article .definition>*+*,#article .proof>*+*,#article .theorem>*+*{margin-top:var(--font-size-1)}#article .definition::before,#article .proof::before,#article .theorem::before{float:left;font-weight:bold;padding-right:1em}#article .definition::before{content:"Definition"}#article .proof::before{content:"Proof"}#article .theorem::before{content:"Theorem"}#error{min-height:calc(100vh - var(--header-height));background-image:url(/assets/images/404.svg);background-repeat:repeat;background-size:var(--font-size-5);text-align:center;animation:bgslide 15s linear infinite;overflow:hidden}#error p{margin-right:-10vh;transform:rotate(90deg);color:var(--color-brand);font-size:45vh;font-weight:bold;user-select:none}@media screen and (max-aspect-ratio:5/6){#error p{margin-right:-10vw;font-size:45vw}}@keyframes bgslide{from{background-position:0 0}to{background-position:100% 0}}@media screen and (max-width:599px){#article .meta p>span:first-child{display:none}}@media screen and (min-width:600px){#site-header .site-navigation{left:auto;padding:var(--spacing-2) var(--spacing-5) var(--spacing-2) var(--spacing-2)}#article{font-size:var(--font-size-3)}#article .abstract{font-size:var(--font-size-4)}#article .meta{flex-direction:row;justify-content:flex-end}#article .meta p>span:first-child{font-weight:bold}#article .meta>*:not(:last-child){margin-right:1rem;padding-right:1rem}}@media screen and (min-width:47.75rem){:root{--container-padding:2rem}#article article:not(.centered) .width-small{margin-left:13.125rem}#article article:not(.centered) .width-medium{margin-left:10.9375rem}#article article:not(.centered) .width-large{margin-left:8.75rem}#article article:not(.centered) .width-full{margin-left:0}}@media screen and (min-width:900px){#home>#intro,#home>#post-list{max-width:var(--container-large)}#home>#intro>h1{font-size:var(--font-size-headline)}#home>#post-list h2{flex-direction:row;align-items:baseline;justify-content:space-between}#home>#post-list h2>a{color:var(--color-text-secondary)}#article header>h1{font-size:var(--font-size-6)}#error{animation-duration:60s}}@media screen and (min-width:1680px){main{padding:var(--spacing-5) 0 var(--spacing-2) var(--header-width)}#site-header{position:fixed;top:0;left:0;width:var(--header-width);height:100%;border-right:1px solid var(--color-divider-dark);background-color:white}#site-header>nav{flex-direction:column;align-items:initial}#site-header .site-logo{margin:var(--spacing-3) auto 0 auto;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label{display:none}#site-header .site-navigation{position:initial;box-shadow:initial;pointer-events:initial;opacity:1}#error{min-height:100vh;animation-duration:90s}}</style>
+</head>
+
+<body>
+<header id="site-header">
+    <nav>
+        <a href="/" class="site-logo" title="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+</svg>
+        </a>
+
+        <input type="checkbox" id="nav-toggle" hidden>
+        <label for="nav-toggle">
+            <i class="icon-open"><svg fill="#000000" height="36" viewBox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+</svg></i>
+            <i class="icon-close"><svg fill="#000000" height="36" viewBox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+</svg></i>
+        </label>
+
+        <div class="site-navigation">
+            <div class="contact">
+                <h4>Get in touch</h4>
+                <a href="&#x6D;&#x61;&#x69;&#x6C;&#x74;&#x6F;&#x3A;&#x64;&#x6D;&#x75;&#x68;&#x72;&#x40;&#x68;&#x6F;&#x74;&#x6D;&#x61;&#x69;&#x6C;&#x2E;&#x63;&#x6F;&#x6D;">Email</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<main id="article">
+<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/beautiful-interpolation/" />
+    <header>
+        <h1 itemprop="name headline">Beautiful Interpolation</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Interpolation is the process of deriving a function from a set of data points so that the function passes through all the given points and can be used to estimate points in-between the given ones.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">March  1, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>Approximating continuously defined functions from given discrete data is an unavoidable task in various fields. Interpolation represents the relatively easiest approach, where an approximating function is constructed that has to perfectly agree with the given points.</p>
+<p>If <span class="math inline">x_0 \ldots x_n</span> and <span class="math inline">f(x_0) \ldots f(x_n)</span> are known and if <span class="math inline">x_0 &lt; x &lt; x_n</span>, then the estimated value of <span class="math inline">f(x)</span> is said to be an <em>Interpolation</em>. If <span class="math inline">x &lt; x_0</span> or <span class="math inline">x &gt; x_n</span> then the estimated value is said to be an <em>Extrapolation</em>.</p>
+<figure>
+<img src="interpolation-extrapolation.png" class="width-medium" alt="" /><figcaption>Interpolation and Extrapolation</figcaption>
+</figure>
+<p>In other words: with interpolation, we want to estimate values <em>between</em> already known values, and with extrapolation, we want to estimate values <em>outside</em> already known values.</p>
+<h2 id="polynomial-interpolation">Polynomial Interpolation</h2>
+<p>Polynomial interpolation interpolates a given data set by the polynomial of the lowest possible degree that passes through all the dataset points. Interpolation inevitably leads to a problem in linear algebra where we have to solve a system of linear equations.</p>
+<p>Let’s work through an example with the points</p>
+<p><span class="math display">(0, 4)\qquad (2, 4)\qquad (4, 1).</span></p>
+<p>The example points can be visualized as follows.</p>
+<figure>
+<img src="example-data.png" class="width-medium" alt="" /><figcaption>Example Points</figcaption>
+</figure>
+<h3 id="direct-interpolation">Direct Interpolation</h3>
+<p>We need at least <span class="math inline">n + 1</span> data points to solve a polynomial of degree <span class="math inline">n</span>.</p>
+<div class="theorem">
+<p>The resulting polynomial is <em>unique</em> because an <span class="math inline">n</span>-degree polynomial has at most <span class="math inline">n</span> roots.</p>
+</div>
+<div class="proof">
+<p>Suppose we interpolate through <span class="math inline">n + 1</span> data points with a polynomial <span class="math inline">p(x)</span> of degree <span class="math inline">\leq n</span>. Suppose another polynomial <span class="math inline">q(x)</span> exists also of degree <span class="math inline">\leq n</span> that also interpolates the <span class="math inline">n + 1</span> points.</p>
+<ol type="1">
+<li>Consider <span class="math inline">r(x) = p(x) - q(x)</span></li>
+</ol>
+<p>We know that <span class="math inline">r(x)</span> is is a polynomial of degree at most <span class="math inline">n</span> because we are just subtracting polynomials. At the <span class="math inline">n + 1</span> data points <span class="math inline">r(x_i) = p(x_i) -q(x_i) = 0</span>, therefore <span class="math inline">r(x)</span> has <span class="math inline">n + 1</span> roots.</p>
+<ol start="2" type="1">
+<li>We get <span class="math inline">r(x) = 0</span></li>
+</ol>
+<p>By the fundamental theorem of algebra <span class="math inline">r(x)</span> can only have more than <span class="math inline">n</span> roots if <span class="math inline">r(x) = 0</span>.</p>
+<ol start="3" type="1">
+<li>Therefore <span class="math inline">r(x) = 0 \implies p(x) = q(x)</span></li>
+</ol>
+</div>
+<p>The direct method assumes the following polynomial:</p>
+<p><span class="math display">y=f(x)=c_0+c_1x + c_2 x^2 + \ldots + c_n x^n</span></p>
+<p>With <span class="math inline">n + 1</span> given points <span class="math inline">(x_0,y_0) \ldots (x_n,y_n)</span> we have to solve <span class="math inline">n + 1</span> linear equations to find all coefficients <span class="math inline">c_0, c_1,\ldots, c_n</span> for the interpolating polynomial of degree <span class="math inline">n</span>.</p>
+<p><span class="math display">
+\begin{aligned}
+4 = c_0 + 0c_1 + 0^2c_2 \\
+4 = c_0 + 2c_1 + 2^2c_2 \\
+1 = c_0 + 4c_1 + 4^2c_2
+\end{aligned}
+</span></p>
+<p>This linear system of equations can be described by a special kind of matrix known as the <a href="https://en.wikipedia.org/wiki/Vandermonde_matrix">Vandermonde Matrix</a>.</p>
+<p><span class="math display">
+\left(
+\begin{array}{ccc}
+ 1 &amp; 0 &amp; 0 \\
+ 1 &amp; 2 &amp; 4 \\
+ 1 &amp; 4 &amp; 16 \\
+\end{array}
+\right)
+\left(
+\begin{array}{ccc}
+ c_0 \\
+ c_1 \\
+ c_2 \\
+\end{array}
+\right) =
+\left(
+\begin{array}{ccc}
+ 4 \\
+ 4 \\
+ 1 \\
+\end{array}
+\right)
+</span></p>
+<p>The polynomial basis looks like <span class="math inline">B = \{1, x, x^2, \ldots, x^n\}</span>, as represented by the columns of the Vandermonde matrix. Our resulting interpolating polynomial is a <em>linear combination</em> of this basis.</p>
+<p><span class="math display">P(x) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<p>Unfortunately, we have to invert the Vandermonde matrix to solve for the coefficients <span class="math inline">c_0, c_1 \ldots, c_n</span>. Let’s see if we can find a better basis to find the coefficients.</p>
+<h3 id="lagrange-interpolation">Lagrange Interpolation</h3>
+<p>Lagrange polynomials are based on the beautiful idea that you could express the interpolating polynomial <span class="math inline">P</span> as a linear combination of polynomials <span class="math inline">p_0 \ldots p_n</span>, that individually fit a specific given point.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>We will arrive at the same unique polynomial that we have calculated before but with a completely different way of constructing it.</p>
+<p>Our goal is to create multiple polynomials that are <span class="math inline">1</span> at a specific point <span class="math inline">(x_i, y_i)</span> and <span class="math inline">0</span> at all other given points.</p>
+<p>Let’s create a polynomial <span class="math inline">p(x) = (x - 0)(x - 2)(x - 4)</span> that is <span class="math inline">0</span> at all values for <span class="math inline">x</span>. We will now create polynomials that individually cancel out one of the terms.</p>
+<p><span class="math display">
+\begin{aligned}
+p_0(x) = p(x)/(x - 0) \\
+p_1(x) = p(x)/(x - 2) \\
+p_2(x) = p(x)/(x - 4)
+\end{aligned}
+</span></p>
+<p>Each of these polynomials is <span class="math inline">1</span> at a point <span class="math inline">x_i</span>, and simultaneously <span class="math inline">0</span> at all other points. Because we know the values <span class="math inline">y_i</span> for each <span class="math inline">x_i</span>, we have found our coefficients without having to invert a matrix!</p>
+<p>Notice that we can now create a basis <span class="math inline">B = \{\frac{p_0(x)}{p_0(x_0)}, \frac{p_1(x)}{p_1(x_1)}, \ldots, \frac{p_n(x)}{p_n(x_n)}\}</span> for which we know that the coefficients are <span class="math inline">y_0, y_1 \ldots y_n</span>. We can again write the polynomial <span class="math inline">P</span> as a linear combination of our new basis <span class="math inline">B</span>.</p>
+<p><span class="math display">
+P(x) = 4 \frac{p_0(x)}{p_0(0)} + 4 \frac{p_1(x)}{p_1(2)} + 1 \frac{p_2(x)}{p_2(4)}
+</span></p>
+<p>Keep in mind that this <a href="https://math.stackexchange.com/questions/523907/explanation-of-lagrange-interpolating-polynomial">intuitive way of writing Lagrange polynomials</a> requires simplification before evaluation to avoid division by zero.</p>
+<p><span class="math display">P(x) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<h3 id="newton-interpolation">Newton Interpolation</h3>
+<p>One of the most important features of Newton’s interpolation method is that we can gradually increase the interpolated data points without recomputing what is already computed.</p>
+<p>When an additional point <span class="math inline">(x_{n+1}, y_{n+1})</span> is to be used, all previous basis polynomials and their corresponding coefficients remain unchanged, and we only need to obtain a new basis polynomial of degree <span class="math inline">n + 1</span>.</p>
+<p>Let’s calculate the Newton interpolation for our example.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p><span class="math display">
+\begin{aligned}
+4 = c_0 + c_1(0 - 0) + c_2(0 - 0)(0 - 2) \\
+4 = c_0 + c_1(2 - 0) + c_2(2 - 0)(2 - 2) \\
+1 = c_0 + c_1(4 - 0) + c_2(4 - 0)(4 - 2) \\
+\end{aligned}
+</span></p>
+<p>We can simplify that expression and write it in matrix form</p>
+<p><span class="math display">
+\left(
+\begin{array}{ccc}
+ 1 &amp; 0 &amp; 0 \\
+ 1 &amp; 2 - 0 &amp; 0 \\
+ 1 &amp; 4 - 0 &amp; (4 - 0)(4 - 2) \\
+\end{array}
+\right)
+\left(  
+\begin{array}{ccc}
+ c_0 \\
+ c_1 \\
+ c_2 \\
+\end{array}
+\right) =
+\left(
+\begin{array}{ccc}
+ 4 \\
+ 4 \\
+ 1 \\
+\end{array}
+\right).
+</span></p>
+<p>We can solve that system of linear equations progressively from top to bottom without having to invert the matrix. In contrast to the other interpolation methods, the basis now looks like</p>
+<p><span class="math display">B = \{1, (x - x_0), (x - x_0)(x - x_1), \ldots, \prod_{i=0}^n(x - x_i)\}.</span></p>
+<p>If we need to interpolate another point, we can reuse our previous results and solve another row.</p>
+<p><span class="math display">P(x) = 4 + 0(x-0) - \frac{3}{8}(x-0)(x-2) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<h3 id="runges-phenomenon">Runge’s Phenomenon</h3>
+<p>We have now seen that all polynomial interpolation methods for <span class="math inline">n + 1</span> data points result in the same unique polynomial of degree <span class="math inline">n</span>. All of the methods for polynomial interpolation were expressed in terms of a basis <span class="math inline">B</span> weighted by some coefficients. The interpolating polynomial for our previous example looks as follows.</p>
+<figure>
+<img src="interpolating-polynomial.png" class="width-medium" alt="" /><figcaption>Interpolating Polynomial of 3 Points</figcaption>
+</figure>
+<p>A problem that arises with polynomial interpolation is the interpolating function tends to oscillate more and more with more points added. This is called the <em>Runge’s phenomenon</em>. It limits the use cases where simple polynomial interpolation is appropriate.</p>
+<figure>
+<img src="runge-phenomenon.png" class="width-medium" alt="" /><figcaption>Interpolating Polynomial of 10 Points</figcaption>
+</figure>
+<p>Another limitation of polynomial interpolation is that touching a single point causes a recalculation of all other points.</p>
+<h2 id="piecewise-interpolation">Piecewise Interpolation</h2>
+<p>To address the limitations mentioned, we could combine multiple polynomials of lower degree that each fit an interval between two points.</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{cc}
+P_0(x) &amp; x_0 \le x \le x_1 \\
+\vdots &amp; \vdots\\
+P_n(x) &amp; x_{n-1} \le x \le x_n
+\end{array}\right.
+</span></p>
+<p>The function <span class="math inline">S(x)</span> defined by piecewise polynomials is known as a <em>Spline</em>. We usually want a spline interpolation to consist of low-degree polynomials, to be <em>continuous</em> and to be <em>smooth</em>.</p>
+<p>In other words we want two consecutive piecewise polynomials to meet at some point <span class="math inline">P_i(x_i) = P_{i + 1}(x_i)</span> and to have the same derivative at that point <span class="math inline">P_i^{(k)}(x_i) = P_{i + 1}^{(k)}(x_i)</span> where <span class="math inline">k</span> stands for the <em>kth</em>-derivative.</p>
+<h3 id="linear-splines">Linear Splines</h3>
+<p>A linear spline, as the name implies, describes first-degree polynomials of the form <span class="math inline">P(x) = c_0 + c_1 x</span>. Each linear polynomial has <span class="math inline">2</span> unkown parameters, our spline of <span class="math inline">n</span> piecewise polynomials for <span class="math inline">n + 1</span> data points thus has a total of <span class="math inline">2n</span> unknown parameters.</p>
+<figure>
+<img src="linear-spline.png" class="width-medium" alt="" /><figcaption>Linear Spline</figcaption>
+</figure>
+<p>The <em>continuity condition</em>, that consecutive polynomials to meet at some point, needs <span class="math inline">2n</span> free parameters to be fulfilled. Linear splines can thus only fulfill that condition.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} &amp; 4 &amp;= a_0 + 0 a_1 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i &amp; 4 &amp;= a_0 + 2 a_1 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i &amp; 4 &amp;= b_0 + 2 b_1 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} &amp; 1 &amp;= b_0 + 4 b_1
+\end{aligned}
+</span></p>
+<p>This leads to a major drawback of linear splines: they are not smooth and hence are usually not differentiable at points where two consecutive polynomials meet.</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = 7 - \frac{3}{2}x &amp; 2 \le x \le 4
+\end{array}\right.
+</span></p>
+<h3 id="quadratic-splines">Quadratic Splines</h3>
+<p>Quadratic polynomials add one more degree of freedom, and quadratic splines consequently have <span class="math inline">3n</span> unknown parameters. Again, we need <span class="math inline">2n</span> parameters for continuity, but we can now also specify that two consecutive polynomials should match in their first derivative.</p>
+<figure>
+<img src="quadratic-spline.png" class="width-medium" alt="" /><figcaption>Quadratic Spline</figcaption>
+</figure>
+<p>The <em>smoothness condition</em> needs <span class="math inline">n - 1</span> free parameters, because there are <span class="math inline">n - 1</span> “inner points” for <span class="math inline">n + 1</span> data points.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0(x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} + a_2 x_{i - 1}^2 &amp; 4 &amp;= a_0 + 0 a_1 + 0^2 a_2 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i + a_2 x_i^2 &amp; 4 &amp;= a_0 + 2 a_1 + 2^2 a_2 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i + b_2 x_i^2 &amp; 4 &amp;= b_0 + 2 b_1 + 2^2 b_2 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 &amp; 1 &amp;= b_0 + 4 b_1 + 4^2 b_2
+\end{aligned}
+</span></p>
+<p>We need another equation (<span class="math inline">n - 1 = 1</span>) to make sure that two consecutive polynomials have a common first derivative.</p>
+<p><span class="math display">
+P_0&#39;(x_i) = P_1&#39;(x_i)\qquad a_1 + 4 a_2 = b_1 + 4 b_2
+</span></p>
+<p>Now, we have a total of <span class="math inline">5</span> equations for <span class="math inline">3n = 6</span> unknown parameters. For us to be able to solve the equations we have <span class="math inline">3n - 2n - (n - 1) = 1</span> free parameter left. We can choose one more solvable constraint of our liking, for example, that the first derivative should be <span class="math inline">0</span> at the last point.</p>
+<p><span class="math display">
+P_1&#39;(x_n) = 0\qquad 0 = b_1 + 8 b_2
+</span></p>
+<p>Our quadratic spline is now defined as</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 + 3x - \frac{3}{2}x^2 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = 13 - 6x + \frac{3}{4}x^2 &amp; 2 \le x \le 4
+\end{array}\right..
+</span></p>
+<h3 id="cubic-splines">Cubic Splines</h3>
+<p>With another degree of freedom, we can specify that two consecutive polynomials share a common first and second derivative at the point they meet.</p>
+<figure>
+<img src="cubic-spline.png" class="width-medium" alt="" /><figcaption>Cubic Spline</figcaption>
+</figure>
+<p>We now have <span class="math inline">4n</span> unknown parameters of which <span class="math inline">2n</span> are bound by the continuity condition.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0(x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} + a_2 x_{i - 1}^2 + a_3 x_{i - 1}^3 &amp; 4 &amp;= a_0 + 0 a_1 + 0^2 a_2 + 0^3 a_3 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i + a_2 x_i^2 + a_3 x_i^3 &amp; 4 &amp;= a_0 + 2 a_1 + 2^2 a_2 + 2^3 a_3 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i + b_2 x_i^2 + b_3 x_i^3 &amp; 4 &amp;= b_0 + 2 b_1 + 2^2 b_2 + 2^3 b_3 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 + b_3 x_{i + 1}^3 &amp; 1 &amp;= b_0 + 4 b_1 + 4^2 b_2 + 4^3 b_3
+\end{aligned}
+</span></p>
+<p>A further <span class="math inline">2(n - 1)</span> parameters are bound by the smoothness condition for the first and second derivatives.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0&#39;(x_i) &amp;= P_1&#39;(x_i) &amp; a_1 + 4 a_2 + 12 a_3 &amp;= b_1 + 4 b_2 + 12 b_3 \\
+P_0&#39;&#39;(x_i) &amp;= P_1&#39;&#39;(x_i) &amp; 2 a_2 + 12 a_3 &amp;= 2 b_2 + 12 b_3
+\end{aligned}
+</span></p>
+<p>We now have <span class="math inline">4n - 2n - 2(n - 1) = 2</span> parameters left for constraints of our choice, which is often exactly what we want for spline interpolation.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0&#39;&#39;(x_0) &amp;= 0 &amp; a_1 = 0 \\
+P_1&#39;&#39;(x_n) &amp;= 0 &amp; b_1 + 8 b_2 + 48 b_3 = 0
+\end{aligned}
+</span></p>
+<p>Our cubic spline is now defined as</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 + \frac{9}{16}x^2 - \frac{9}{32}x^3 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
+\end{array}\right..
+</span></p>
+<p>The following constraints are often used for the two free parameters:</p>
+<ul>
+<li><em>Natural</em> cubic splines have their second derivative at the first and last point set to zero. <span class="math inline">P_0&#39;&#39;(x_0) = 0</span> and <span class="math inline">P_n&#39;&#39;(x_n) = 0</span>.</li>
+<li><em>Complete</em> cubic splines use the first derivative of the function to be interpolated if known <span class="math inline">P_0&#39;(x_0) = f&#39;(x_0)</span> and <span class="math inline">P_n&#39;(x_n) = f&#39;(x_n)</span></li>
+<li><em>Correct</em> cubic splines use the second derivative of the function to be interpolated if known <span class="math inline">P_0&#39;&#39;(x_0) = f&#39;&#39;(x_0)</span> and <span class="math inline">P_n&#39;&#39;(x_n) = f&#39;&#39;(x_n)</span>.</li>
+</ul>
+<p>Finally, we have covered all the basics about splines!<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>MathTheBeautiful offers a series of videos on polynomial interpolation that contains an <a href="https://www.youtube.com/watch?v=XK4G5Ndy-m8">introduction to Lagrange polynomials</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Ruye Wang wrote a more in-depth tutorial on Newton interpolation and other interpolation methods, which can be found <a href="http://fourier.eng.hmc.edu/e176/lectures/ch7/node4.html">here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>For more information about splines, the University of Houston offers a <a href="https://www.math.uh.edu/~jingqiu/math4364/spline.pdf">great tutorial</a> on how to calculate different splines.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/";
+        this.page.identifier = "/articles/beautiful-interpolation/";
+        this.page.title = "Beautiful Interpolation";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+
+</main>
+</body>
+</html>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css"/>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        var inline = document.getElementsByClassName("math inline");
+        var display = document.getElementsByClassName("math display");
+        setTimeout(function () {
+            for (var i = 0; i < inline.length; i++) {
+                katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
+            }
+            for (var i = 0; i < display.length; i++) {
+                katex.render(display[i].textContent, display[i], {displayMode: true, output: "html", throwOnError: false});
+            }
+        })
+    });
+</script>
+
+

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZGQ3G707W"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-BZGQ3G707W');</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#7f0000">
+    <link rel="manifest" href="/assets/manifest/manifest.json">
+    <link rel="alternate" type="application/rss+xml" title="Principal Component Analysis" href="https://fastpaced.com/atom.xml">
+    <link rel="canonical" href="https://fastpaced.com">
+    <title>Principal Component Analysis</title>
+    <meta name="description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
+    <meta property="og:url" content="https://fastpaced.com">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Principal Component Analysis" />
+    <meta property="og:site_name" content="fastpaced">
+    <meta property="og:description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
+    <meta property="og:image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "@id": "https://fastpaced.com",
+            "name": "fastpaced",
+            "description": "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning doctoral student, currently working and living in beautiful Austria.",
+            "author": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "creator": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "David Muhr"
+            },
+            "inLanguage": "en-US"
+        }
+    </script>
+    <style>@font-face{font-family:'PT Serif';font-style:italic;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRTQgYoZZY2vCFuvAFT_r21cgT9rcs.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'PT Serif';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRVQgYoZZY2vCFuvAFWzr-_dSb_.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'PT Serif';font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/ptserif/v12/EJRSQgYoZZY2vCFuvAnt66qSVyvVp8NA.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}:root{--color-brand:#b71c1c;--color-brand-dark:#7f0000;--color-text:rgba(0,0,0,.82);--color-text-secondary:rgba(0,0,0,.54);--color-tap-highlight:rgba(0,0,0,.075);--color-syntax-generic:black;--color-syntax-keyword:blue;--color-syntax-keyword-secondary:#000080;--color-syntax-comment:grey;--color-syntax-number:blue;--color-syntax-string:darkred;--color-syntax-error:red;--color-divider-dark:rgba(0,0,0,.12);--color-divider-light:rgba(255,255,255,.12);--font-family-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--font-family-serif:"PT serif","Palatino","Georgia","Cambria","Times New Roman",serif;--font-family-mono:monospace;--font-size-1:.875rem;--font-size-2:1rem;--font-size-3:1.25rem;--font-size-4:1.5rem;--font-size-5:2rem;--font-size-6:3rem;--font-size-headline:4.5rem;--footer-height:30px;--header-width:400px;--header-height:85px;--logo-width:45px;--spacing-0:1rem;--spacing-1:1.5rem;--spacing-2:2.25rem;--spacing-3:3.375rem;--spacing-4:5.0625rem;--spacing-5:7.59375rem;--container-padding:1rem;--container-narrow:720px;--container-medium:1024px;--container-large:1160px;--measure-small:32em;--measure:35em;--zindex-navigation:100;--zindex-navigation-icon:101}*,::before,::after{background-repeat:no-repeat;box-sizing:inherit}::before,::after{text-decoration:inherit;vertical-align:inherit}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}svg{fill:currentColor}audio,canvas,iframe,img,svg,video{vertical-align:middle}a,area,button,input,label,select,summary,textarea,[tabindex]{-ms-touch-action:manipulation;touch-action:manipulation}[hidden]{display:none}[aria-busy="true"]{cursor:progress}[aria-controls]{cursor:pointer}[aria-hidden="false"][hidden]:not(:focus){clip:rect(0,0,0,0);display:inherit;position:absolute}[aria-disabled]{cursor:default}body,h1,h2,h3,h4,h5,h6,p,blockquote,pre,hr,dl,dd,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}button,select{border:none;outline:none;font-family:inherit}a,button,input,select,textarea{-webkit-tap-highlight-color:transparent}blockquote,q{quotes:none}blockquote::before,blockquote::after{content:none}table{border-spacing:0}html{height:100%;box-sizing:border-box;cursor:default;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{position:relative;min-height:100%;padding-bottom:30px;font-family:var(--font-family-serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;text-rendering:optimizeLegibility}*::-webkit-scrollbar{width:5px;height:5px}*::-webkit-scrollbar-track{border:1px solid rgba(0,0,0,.1)}*::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(0,0,0,0.04)}a{color:var(--color-brand);text-decoration:none;-webkit-tap-highlight-color:var(--color-tap-highlight)}a:visited{color:var(--color-brand)}a:active{color:var(--color-brand-dark)}label{-webkit-tap-highlight-color:var(--color-tap-highlight)}img{max-width:100%}pre{font-family:monospace;hyphens:none}main{padding:var(--spacing-2) 0}.sourceCode a{color:var(--color-syntax-generic)}.sourceCode .va,.sourceCode .kw,.sourceCode .im,.sourceCode .cf{color:var(--color-syntax-keyword)}.sourceCode .in,.sourceCode .an,.sourceCode .cv,.sourceCode .do,.sourceCode .co{color:var(--color-syntax-comment)}.sourceCode .dv,.sourceCode .bn,.sourceCode .fl{color:var(--color-syntax-number)}.sourceCode .cn,.sourceCode .sc,.sourceCode .vs,.sourceCode .ss,.sourceCode .ch,.sourceCode .st{color:var(--color-syntax-string)}.sourceCode .al,.sourceCode .wa,.sourceCode .er{color:var(--color-syntax-error)}.sourceCode .dt{font-weight:bold}.sourceCode .bu,.sourceCode .fu{color:var(--color-syntax-keyword-secondary)}#site-header{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);height:var(--header-height);font-family:var(--font-family-sans);letter-spacing:.1em;line-height:2}#site-header>nav{display:flex;position:relative;align-items:center;justify-content:space-between;height:100%}#site-header .site-navigation{position:absolute;top:0;right:0;left:0;margin:calc(var(--container-padding)/2) calc(var(--container-padding)/-2) 0 calc(var(--container-padding)/-2);padding:var(--spacing-2);pointer-events:none;transform:scale(.95);transform-origin:100% 0;transition-duration:.25s;transition-property:transform,opacity;background-color:#fff;box-shadow:0 10px 30px rgba(50,50,93,.1),0 5px 15px rgba(50,50,93,.15),0 5px 15px rgba(0,0,0,.1);will-change:transform,opacity;opacity:0;overflow:hidden;z-index:var(--zindex-navigation)}#site-header h4{margin-bottom:.5em}#site-header .contact>a{display:block}#site-header .site-logo{display:block;width:36px;height:36px}#site-header .site-logo>svg{transition:fill .25s}#site-header .site-logo>svg:active{fill:var(--color-brand-dark)}#site-header #nav-toggle+label{width:36px;height:36px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label>.icon-close{display:none}#site-header #nav-toggle:checked~.site-navigation{transform:none;opacity:1;pointer-events:auto}#site-header #nav-toggle:checked+label{z-index:var(--zindex-navigation-icon)}#site-header #nav-toggle:checked+label>.icon-close{display:inline-block}#site-header #nav-toggle:checked+label>.icon-open{display:none}#home>#intro,#home>#post-list{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding)}#home>#intro>h1{max-width:10em;margin-bottom:var(--spacing-3);color:var(--color-text);font-size:var(--font-size-6);line-height:1.2}#home>#intro>p{max-width:var(--measure-small);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-3);hyphens:auto}#home>#intro .dots+label{display:inline;margin:0 auto;user-select:none;transition:opacity .5s;white-space:nowrap;cursor:pointer}#home>#intro .dots+label>*{transition:color .25s;color:var(--color-brand)}#home>#intro .dots+label>*:active,#home>#intro .dots+label>*:focus{color:var(--color-brand-dark)}#home>#intro .dots:checked+label{opacity:0;pointer-events:none}#home>#intro .dots+label+span{display:block;height:0;transform:translateY(-25%);transition-duration:.5s;transition-property:opacity,transform;will-change:opacity,transform;opacity:0}#home>#intro .dots:checked+label+span{height:initial;margin-top:var(--spacing-1);transform:none;opacity:1}#home>#post-list{position:relative;padding-top:var(--spacing-3)}#home>#post-list ul>li:not(:last-child){border-bottom:1px solid var(--color-divider-dark)}#home>#post-list h2{display:flex;flex-direction:column;margin:1.5rem 0;font-weight:normal}#home>#post-list h2>span{display:flex;justify-content:space-between;min-width:225px;padding-top:.5rem;font-family:var(--font-family-sans);font-size:var(--font-size-1)}#home>#post-list h2>a{font-size:var(--font-size-5)}#home>#post-list h2>a,#home>#post-list h2>span>a{transition-duration:.25s;transition-property:color}#home>#post-list h2>span>a{color:var(--color-text-secondary)}#home>#post-list h2 a:hover,#home>#post-list h2 a:focus{color:var(--color-brand)}#article{font-size:var(--font-size-3);color:var(--color-text)}#article .noscript{font-size:80%;color:var(--color-text-secondary)}#article article{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);max-width:var(--container-medium);hyphens:auto}#article .abstract{font-size:var(--font-size-3);max-width:var(--measure);padding-bottom:var(--spacing-1);color:black}#article .meta{display:flex;flex-direction:column;padding-top:.5rem;padding-bottom:var(--spacing-1);border-top:1px solid var(--color-divider-dark);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-1)}#article ul,#article ol{padding-left:1.05em}#article ul{list-style-type:disc}#article ol{list-style-type:decimal}#article pre{padding:.3rem .5rem;border:1px solid #cfcfcf;border-radius:2px;background:#f7f7f7;line-height:1.5;overflow:auto}#article p{text-align:justify}#article img{display:block}#article hr{border-color:var(--color-divider-dark)}#article p,#article ol,#article ul,#article blockquote,#article hr{max-width:var(--measure)}#article header>h1{max-width:52.5rem;padding-bottom:var(--spacing-2)}#article .content>*:first-child{margin-top:0}#article .content>*+*{margin-top:var(--font-size-3)}#article .content>h1,#article .content>h2,#article .content>h3,#article .content>h4,#article .content>h5,#article .content>h6{margin-top:1em}#article .content>div,#article .content>section,#article .content>figure,#article .content>blockquote,#article .content>table,#article .content>ul,#article .content>ol{margin-top:var(--font-size-3);margin-bottom:var(--font-size-3)}#article .content>ul li:not(:first-child){margin-top:var(--font-size-1)}#article .content>figure{padding-top:1em;padding-bottom:1em}#article .content>blockquote{position:relative;padding-left:1.05em;font-style:italic}#article .content>blockquote::before{position:absolute;top:0;left:0;width:3px;height:100%;background-color:var(--color-divider-dark);content:""}#article .content>blockquote cite{display:block;margin-top:.5rem;font-size:var(--font-size-2);font-style:normal;font-weight:bold}#article .content>blockquote cite::before{content:"— "}#article .appendix,#article .references,#article .footnotes{padding-top:var(--font-size-3);border-top:1px solid var(--color-divider-dark);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-2);word-wrap:break-word}#article .citation,#article .references>div{font-style:italic}#article .citation{font-size:90%}#article .appendix *+*,#article .references *+*,#article .footnotes *+*{margin-top:var(--font-size-1)}#article .appendix>h4:not(:first-child){margin-top:var(--font-size-3)}#article .references::before,#article .footnotes::before{display:block;margin-bottom:1rem;font-weight:bold}#article .references::before{content:"References"}#article .footnotes::before{content:"Footnotes"}#article .footnotes hr{display:none}#article .references~.footnotes,#article .references~.appendix,#article .footnotes~.appendix{padding-top:0;border-top:0}#article table{font-size:var(--font-size-2)}#article thead{border-bottom:1px solid black;vertical-align:bottom}#article td,#article th{padding:.5rem}#article #disqus_thread{margin-top:var(--spacing-5);padding-top:var(--spacing-2);border-top:1px dashed var(--color-brand)}#article figcaption{display:block;padding-top:.25em;font-size:var(--font-size-2);text-align:left}#article figcaption::before{font-weight:bold;content:"Figure: "}#article img:not(.caption)+figcaption{display:none}#article .math{font-size:1.05rem;color:black}#article .math.display{display:block;overflow:auto}#article .math.inline .katex{white-space:normal}#article .content h1,#article .content h2,#article .content h3,#article .content h4,#article .content h5,#article .content h6,#article .content figcaption,#article .content .references,#article .content .footnotes,#article .content .appendix{max-width:43.75rem}#article article.centered figcaption{margin:auto}#article article.centered header>h1{margin:auto;text-align:center}#article article.centered .content>*{margin-right:auto;margin-left:auto}#article article.centered .meta,#article article.centered .abstract{text-align:center;margin:auto}#article article.centered .meta{justify-content:center}#article .width-small{width:17.5rem}#article .width-medium{width:21.875rem}#article .width-large{width:26.25rem}#article .width-full{width:43.75rem}#article .width-small,#article .width-medium,#article .width-large,#article .width-full{max-width:100%;margin:auto}#article .definition,#article .proof,#article .theorem{max-width:var(--measure);padding:1em 0 1em 0;border:solid var(--color-divider-dark);border-width:1px 0 1px 0}#article .definition>*+*,#article .proof>*+*,#article .theorem>*+*{margin-top:var(--font-size-1)}#article .definition::before,#article .proof::before,#article .theorem::before{float:left;font-weight:bold;padding-right:1em}#article .definition::before{content:"Definition"}#article .proof::before{content:"Proof"}#article .theorem::before{content:"Theorem"}#error{min-height:calc(100vh - var(--header-height));background-image:url(/assets/images/404.svg);background-repeat:repeat;background-size:var(--font-size-5);text-align:center;animation:bgslide 15s linear infinite;overflow:hidden}#error p{margin-right:-10vh;transform:rotate(90deg);color:var(--color-brand);font-size:45vh;font-weight:bold;user-select:none}@media screen and (max-aspect-ratio:5/6){#error p{margin-right:-10vw;font-size:45vw}}@keyframes bgslide{from{background-position:0 0}to{background-position:100% 0}}@media screen and (max-width:599px){#article .meta p>span:first-child{display:none}}@media screen and (min-width:600px){#site-header .site-navigation{left:auto;padding:var(--spacing-2) var(--spacing-5) var(--spacing-2) var(--spacing-2)}#article{font-size:var(--font-size-3)}#article .abstract{font-size:var(--font-size-4)}#article .meta{flex-direction:row;justify-content:flex-end}#article .meta p>span:first-child{font-weight:bold}#article .meta>*:not(:last-child){margin-right:1rem;padding-right:1rem}}@media screen and (min-width:47.75rem){:root{--container-padding:2rem}#article article:not(.centered) .width-small{margin-left:13.125rem}#article article:not(.centered) .width-medium{margin-left:10.9375rem}#article article:not(.centered) .width-large{margin-left:8.75rem}#article article:not(.centered) .width-full{margin-left:0}}@media screen and (min-width:900px){#home>#intro,#home>#post-list{max-width:var(--container-large)}#home>#intro>h1{font-size:var(--font-size-headline)}#home>#post-list h2{flex-direction:row;align-items:baseline;justify-content:space-between}#home>#post-list h2>a{color:var(--color-text-secondary)}#article header>h1{font-size:var(--font-size-6)}#error{animation-duration:60s}}@media screen and (min-width:1680px){main{padding:var(--spacing-5) 0 var(--spacing-2) var(--header-width)}#site-header{position:fixed;top:0;left:0;width:var(--header-width);height:100%;border-right:1px solid var(--color-divider-dark);background-color:white}#site-header>nav{flex-direction:column;align-items:initial}#site-header .site-logo{margin:var(--spacing-3) auto 0 auto;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label{display:none}#site-header .site-navigation{position:initial;box-shadow:initial;pointer-events:initial;opacity:1}#error{min-height:100vh;animation-duration:90s}}</style>
+</head>
+
+<body>
+<header id="site-header">
+    <nav>
+        <a href="/" class="site-logo" title="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+</svg>
+        </a>
+
+        <input type="checkbox" id="nav-toggle" hidden>
+        <label for="nav-toggle">
+            <i class="icon-open"><svg fill="#000000" height="36" viewBox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+</svg></i>
+            <i class="icon-close"><svg fill="#000000" height="36" viewBox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+</svg></i>
+        </label>
+
+        <div class="site-navigation">
+            <div class="contact">
+                <h4>Get in touch</h4>
+                <a href="&#x6D;&#x61;&#x69;&#x6C;&#x74;&#x6F;&#x3A;&#x64;&#x6D;&#x75;&#x68;&#x72;&#x40;&#x68;&#x6F;&#x74;&#x6D;&#x61;&#x69;&#x6C;&#x2E;&#x63;&#x6F;&#x6D;">Email</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<main id="article">
+<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/" />
+    <header>
+        <h1 itemprop="name headline">Principal Component Analysis</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">February 20, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>A data set of real-valued measurements can be described by a matrix <span class="math inline">X</span>. We have some number of measurements <span class="math inline">n</span>, each with a number of attributes <span class="math inline">m</span>. Thus, <span class="math inline">X</span> can be represented as a Matrix <span class="math inline">\mathbb{R}^{n \times m}</span>.</p>
+<p>PCA is about finding a new basis that expresses our data in a lower-dimensional space. That is, we want to find a transformation matrix <span class="math inline">P</span> to transform <span class="math inline">X</span> into a lower-dimensional matrix <span class="math inline">Y</span> that provides a reasonable characterization of the complete data set.</p>
+<p><span class="math display">Y = P \cdot X</span></p>
+<p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
+<figure>
+<img src="redundancy.png" class="width-large" alt="" /><figcaption>Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
+</figure>
+<p>PCA comes with assumptions:</p>
+<ol type="1">
+<li><em>Linearity &amp; Orthogonality</em> - we use covariance, a linear relationship, as a measure of redundancy and are restricted to express the data set in an orthogonal basis<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li><em>Greater Variance Means Greater Information</em>, directions with greater variance are assumed to represent a more interesting structure</li>
+</ol>
+<p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>distribution = <span class="fu">MultinormalDistribution</span>[{<span class="dv">1</span>, <span class="dv">2</span>}, {{<span class="dv">1</span>, <span class="fl">.5</span>}, {.<span class="dv">5</span>, <span class="dv">1</span>}}];</span></code></pre></div>
+<figure>
+<img src="distribution.png" class="width-medium" alt="" /><figcaption>Two-Dimensional Example Distribution</figcaption>
+</figure>
+<p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>data = <span class="fu">RandomVariate</span>[distribution, <span class="dv">10</span>^<span class="dv">4</span>];</span></code></pre></div>
+<figure>
+<img src="data.png" class="width-medium" alt="" /><figcaption>Raw Example Data</figcaption>
+</figure>
+<h2 id="standardization">Standardization</h2>
+<p>Standardization is also known as feature scaling, and there are <a href="https://en.wikipedia.org/wiki/Feature_scaling">different ways to scale variables</a>. It’s on us to decide if there are features that should contribute more or less.</p>
+<p>In our example, we know that the data is normally distributed, and we want to scale our variables to mean <span class="math inline">0</span> and standard deviation <span class="math inline">1</span>, also known as <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">standard normalization</a>: <span class="math inline">X - \mu \over \sigma</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">standardize</span>[<span class="dt">A_</span>] := (<span class="fu">A</span> - <span class="fu">Mean</span>[<span class="fu">A</span>])/<span class="fu">StandardDeviation</span>[<span class="fu">A</span>];</span></code></pre></div>
+<p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>data = <span class="fu">Map</span>[<span class="fu">standardize</span>, <span class="fu">Transpose</span>[data]] // <span class="fu">Transpose</span>;</span></code></pre></div>
+<figure>
+<img src="data-standardized.png" class="width-medium" alt="" /><figcaption>Standardized Example Data</figcaption>
+</figure>
+<h2 id="covariance-matrix">Covariance Matrix</h2>
+<p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
+<p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
+<figure>
+<img src="covariance.png" class="width-medium" alt="" /><figcaption>Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
+</figure>
+<p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>covarianceMatrix[<span class="dt">A_</span>] := <span class="fu">Module</span>[{Ats},</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  Ats = <span class="fu">Map</span>[# - <span class="fu">Mean</span>[#] &amp;, <span class="fu">Transpose</span>[<span class="fu">A</span>]];</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  Ats.(<span class="fu">Transpose</span> [Ats])/(<span class="fu">Length</span>[<span class="fu">A</span>] - <span class="dv">1</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>]</span></code></pre></div>
+<p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
+<figure>
+<img src="covariance.gif" class="width-medium" alt="" /><figcaption>Covariance Intuition</figcaption>
+</figure>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>covmat = covarianceMatrix[data]</span></code></pre></div>
+<p>An interesting thing about covariance matrices is that they define a specific linear transformation - a linear transformation in the directions of variance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Can you guess what the covariance matrix of our standardized data looks like?</p>
+<p><span class="math display">
+\text{covmat} \approxeq
+\left(
+\begin{array}{cc}
+ 1 &amp; \frac{1}{2}  \\
+ \frac{1}{2}  &amp; 1 \\
+\end{array}
+\right)
+</span></p>
+<p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
+<figure>
+<img src="covariance-transform.gif" class="width-medium" alt="" /><figcaption>Applying the Linear Transformation to a Vector</figcaption>
+</figure>
+<h2 id="eigendecomposition">Eigendecomposition</h2>
+<p>Eigenvectors are the directions along which a linear transformation acts by stretching/compressing or flipping space. Eigenvalues, on the other hand, determine the magnitude of the transformation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ol class="example" type="1">
+<li>Let <span class="math inline">A</span> be a square matrix, a scalar <span class="math inline">\lambda</span> is called <strong>Eigenvalue</strong> of <span class="math inline">A</span> if there is a <em>non-zero</em> vector <span class="math inline">v</span>, called an <strong>Eigenvector</strong>, such that <span class="math inline">Av = \lambda v</span>.</li>
+</ol>
+<p>The eigenvalues and eigenvectors can be calculated by directly solving (1). Let us, therefore, rewrite the equation:</p>
+<p><span class="math display">Av - \lambda v = 0</span> <span class="math display">(A - \lambda I) v = 0</span></p>
+<p>We have now formed a homogeneous linear system of equations. A homogeneous linear system has a nonzero solution if and only if it’s coefficient matrix, in this case, <span class="math inline">A - \lambda I</span>, is singular:</p>
+<p><span class="math display">\text{det}(A - λ I) = 0</span></p>
+<p>Let’s solve this equation for our simple example to get the eigenvalues.</p>
+<p><span class="math display">
+\begin{aligned}
+\text{det}
+\left(
+\begin{array}{cc}
+ 1 - \lambda &amp; \frac{1}{2} \\
+ \frac{1}{2} &amp; 1 - \lambda \\
+\end{array}
+\right) = 0 \\
+(1 - \lambda)^2 - \frac{1}{4} = 0 \\
+\lambda_1 = \frac{1}{2}, \lambda_2 = \frac{3}{2}
+\end{aligned}
+</span></p>
+<p>We can now solve (1) to get the eigenvectors.</p>
+<p><span class="math display">
+\begin{aligned}
+v_1 + \frac{1}{2}v_2 = \frac{1}{2}v_1 \\
+\frac{1}{2}v_1 + v_2 = \frac{1}{2}v_2 \\
+-v_1 = v_2
+\end{aligned}
+</span></p>
+<p><span class="math display">
+\begin{aligned}
+v_1 + \frac{1}{2}v_2 = \frac{3}{2}v_1 \\
+\frac{1}{2}v_1 + v_2 = \frac{3}{2}v_2 \\
+v_1 = v_2
+\end{aligned}
+</span></p>
+<p>A solution for our eigenvectors thus is <span class="math inline">(-1, 1)</span> and <span class="math inline">(1, 1)</span> - the mysterious black arrows from the figure above! We can check our solution with:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">Eigensystem</span>[covmat]</span></code></pre></div>
+<h2 id="principal-components">Principal Components</h2>
+<p>Principal components are defined in a way that the first principal component has the largest possible variance in a specific direction (that is, accounts for as much of the variability in the data as possible), and each succeeding component, in turn, has the highest variance possible under the constraint that it is orthogonal to the preceding components.</p>
+<p>We have to sort all eigenvalues in descending order and choose <span class="math inline">k</span> eigenvectors that correspond to the <span class="math inline">k</span> largest eigenvalues. The eigenvalues in the case of the covariance matrix represent the magnitude of variance.</p>
+<p>The <span class="math inline">k</span> chosen vectors are our principal components! Principal components are thus nothing more than sorted eigenvectors of the covariance matrix represented as a transformation matrix <span class="math inline">P</span>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="fu">Transpose</span>[<span class="fu">Eigenvectors</span>[covmat]]</span></code></pre></div>
+<p><span class="math display">
+P =
+\left(
+\begin{array}{cc}
+ 1 &amp; -1 \\
+ 1 &amp; 1 \\
+\end{array}
+\right)
+</span></p>
+<p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
+<figure>
+<img src="pca-projection.gif" class="width-medium" alt="" /><figcaption>Applying the PCA Transformation</figcaption>
+</figure>
+<p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
+<p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
+<figure>
+<img src="explained-variance.png" class="width-medium" alt="" /><figcaption>Explained Variance by Component</figcaption>
+</figure>
+<p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
+<p><span class="math display">
+P =
+\left(
+\begin{array}{cc}
+ 1 \\
+ 1
+\end{array}
+\right)
+</span></p>
+<figure>
+<img src="dimensionality-reduction.gif" class="width-medium" alt="" /><figcaption>Dimensionality Reduction Transformation</figcaption>
+</figure>
+<p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
+<div id="ref-Hedderich:2015ge">
+<p>Hedderich, Jürgen, and Lothar Sachs. 2015. <em>Angewandte Statistik</em>. Methodensammlung Mit R. Berlin, Heidelberg: Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-45691-0">https://doi.org/10.1007/978-3-662-45691-0</a>.</p>
+</div>
+<div id="ref-Shlens:2014vi">
+<p>Shlens, Jonathon. 2014. “A Tutorial on Principal Component Analysis.” <em>arXiv.org</em>, April. <a href="http://arxiv.org/abs/1404.1100v1">http://arxiv.org/abs/1404.1100v1</a>.</p>
+</div>
+</div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>We are restricted to an orthogonal basis because the covariance matrix, on which our calculations are based on, is symmetric. Check out <a href="https://stats.stackexchange.com/a/130884">this StackExchange answer</a> for more information.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Vincent Spruyt wrote <a href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">an article</a> about the geometric interpretation of covariance matrices.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>There are excellent introductions to eigenvalues and eigenvectors available online, see <a href="http://setosa.io/ev/eigenvectors-and-eigenvalues/">Explained Visually</a>, <a href="https://math.stackexchange.com/questions/23312/what-is-the-importance-of-eigenvalues-eigenvectors/23325">Stackexchange</a>, <a href="https://www.youtube.com/watch?v=PFDu9oVAE-g">Youtube</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/principal-component-analysis/";
+        this.page.identifier = "/articles/principal-component-analysis/";
+        this.page.title = "Principal Component Analysis";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+
+</main>
+</body>
+</html>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css"/>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        var inline = document.getElementsByClassName("math inline");
+        var display = document.getElementsByClassName("math display");
+        setTimeout(function () {
+            for (var i = 0; i < inline.length; i++) {
+                katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
+            }
+            for (var i = 0; i < display.length; i++) {
+                katex.render(display[i].textContent, display[i], {displayMode: true, output: "html", throwOnError: false});
+            }
+        })
+    });
+</script>
+
+
