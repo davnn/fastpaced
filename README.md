@@ -1,5 +1,7 @@
 # fastpaced
 
+[![Build Status](https://www.travis-ci.org/davnn/fastpaced.svg?branch=master)](https://www.travis-ci.org/davnn/fastpaced)
+
 This is a private blog proudly powered by [Hakyll](https://github.com/jaspervdj/hakyll), the Haskell static site generator.
 
 Articles are in their own repository to keep code and content separate; they are included via git submodule. Use
