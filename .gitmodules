@@ -1,4 +1,4 @@
 [submodule "articles"]
 	path = articles
 	url = https://github.com/davnn/fastpaced-articles
-  branch = master
+  branch = main
