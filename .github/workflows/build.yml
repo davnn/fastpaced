@@ -1,0 +1,56 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+name: build
+jobs:
+  run:
+    name: Build hakyll site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup stack
+        id: setup
+        uses: haskell-actions/setup@v2
+        with:
+          enable-stack: true
+          stack-no-global: true
+          stack-version: 'latest'
+
+      - name: Restore cached dependencies
+        uses: actions/cache/restore@v4
+        id: cache
+        env:
+          key: ${{ runner.os }}-stack-${{ steps.setup.outputs.stack-version }}
+        with:
+          path: ${{ steps.setup.outputs.stack-root }}
+          key: ${{ env.key }}-package-${{ hashFiles('package.yaml') }}
+          restore-keys: ${{ env.key }}-
+
+      - name: Build project
+        # If we had an exact cache hit, the dependencies will be up to date.
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: stack build
+
+      # Cache dependencies already here, so that we do not have to rebuild them should the subsequent steps fail.
+      - name: Save cached dependencies
+        uses: actions/cache/save@v4
+        # If we had an exact cache hit, trying to save the cache would error because of key clash.
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.setup.outputs.stack-root }}
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+
+      - name: Build site
+        run: stack exec fastpaced build
+
+      - name: Deploy site
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.event_name == 'push'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site

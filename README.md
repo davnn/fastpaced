@@ -1,6 +1,6 @@
 # fastpaced
 
-[![Build Status](https://www.travis-ci.org/davnn/fastpaced.svg?branch=master)](https://www.travis-ci.org/davnn/fastpaced)
+[![Build Status](https://github.com/davnn/fastpaced/actions/workflows/build.yml/badge.svg)](https://github.com/davnn/fastpaced/actions?query=workflow%3Abuild)
 
 This is a private blog proudly powered by [Hakyll](https://github.com/jaspervdj/hakyll), the Haskell static site generator.
 
@@ -13,7 +13,13 @@ git submodule update --remote
 
 to initialize and update the articles.
 
-[Travis CI](https://travis-ci.org/) is used to build this repository and to push the results to the github-pages branch. An update to the master branch of the [fastpaced articles repository](https://github.com/davnn/fastpaced-articles) automatically triggers a new Travis build.
+### Updating code
+
+1. Make sure [stack](https://github.com/commercialhaskell/stack) is installed and up-to-date.
+2. Run ``stack build`` to build the ``fastpaced`` executable.
+3. Run ``stack exec fastpaced`` to apply the static site compiler, e.g. using ``build`` or ``watch``.
+
+### Updating content
 
 Articles are written in [Markdown](https://www.markdownguide.org/) and [Pandoc](https://pandoc.org/) is used to transform the ``.md`` files into ``.html`` files. Each article lives in its own folder inside ``/articles``. The folder name of an article also represents its HTML ``path``.
 
