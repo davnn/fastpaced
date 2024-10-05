@@ -44,7 +44,7 @@ main = do
         >>= loadAndApplyTemplate "templates/default.html" articleCtx
 
     -- Compile Files
-    match ("assets/images/**" .||. "assets/manifest/**" .||. "articles/**") $ do
+    match ("CNAME" .||. "assets/images/**" .||. "assets/manifest/**" .||. "articles/**") $ do
       route idRoute
       compile copyFileCompiler
 
