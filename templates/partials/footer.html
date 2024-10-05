@@ -9,8 +9,8 @@ $if(mathematics)$
             for (var i = 0; i < inline.length; i++) {
                 katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
             }
-            for (var i = 0; i < display.length; i++) {
-                katex.render(display[i].textContent, display[i], {displayMode: true, output: "html", throwOnError: false});
+            for (var j = 0; j < display.length; j++) {
+                katex.render(display[j].textContent, display[j], {displayMode: true, output: "html", throwOnError: false});
             }
         })
     });
