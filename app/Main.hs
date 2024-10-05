@@ -29,7 +29,7 @@ main = do
     -- Compile Styles
     match "assets/style.css" $
       -- Compress the CSS and transform to Template
-      compile $ fmap readTemplate <$> compressCssCompiler
+      compile $ compressCssCompiler >>= compileTemplateItem >>= makeItem
 
     -- Compile Bibliography
     match "assets/csl/*.csl" $ compile cslCompiler
