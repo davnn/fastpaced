@@ -10,7 +10,7 @@ import Lib.Configuration (feedConfig)
 import Lib.Context (indexCtx, articleCtx, errorCtx)
 
 -- The path to our articles in Hakyll's pattern notation
-articlePath = "articles/*/*.md"
+articlePath = "articles/*/index.md"
 
 --------------------------------------------------------------------------------
 main :: IO ()
