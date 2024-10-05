@@ -10,6 +10,784 @@
         <email>muhrdavid+atom@gmail.com</email>
         
     </author>
-    <updated>Unknown</updated>
+    <updated>2018-03-01T00:00:00Z</updated>
+    <entry>
+    <title>Beautiful Interpolation</title>
+    <link href="https://fastpaced.com/articles/beautiful-interpolation/" />
+    <id>https://fastpaced.com/articles/beautiful-interpolation/</id>
+    <published>2018-03-01</published>
+    <updated>2018-03-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/beautiful-interpolation/" />
+    <header>
+        <h1 itemprop="name headline">Beautiful Interpolation</h1>
+    </header>
+
     
+    <div class="abstract" itemprop="abstract">
+        Interpolation is the process of deriving a function from a set of data points so that the function passes through all the given points and can be used to estimate points in-between the given ones.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">March  1, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>Approximating continuously defined functions from given discrete data is an unavoidable task in various fields. Interpolation represents the relatively easiest approach, where an approximating function is constructed that has to perfectly agree with the given points.</p>
+<p>If <span class="math inline">x_0 \ldots x_n</span> and <span class="math inline">f(x_0) \ldots f(x_n)</span> are known and if <span class="math inline">x_0 &lt; x &lt; x_n</span>, then the estimated value of <span class="math inline">f(x)</span> is said to be an <em>Interpolation</em>. If <span class="math inline">x &lt; x_0</span> or <span class="math inline">x &gt; x_n</span> then the estimated value is said to be an <em>Extrapolation</em>.</p>
+<figure>
+<img src="interpolation-extrapolation.png" class="width-medium" alt="Interpolation and Extrapolation" />
+<figcaption aria-hidden="true">Interpolation and Extrapolation</figcaption>
+</figure>
+<p>In other words: with interpolation, we want to estimate values <em>between</em> already known values, and with extrapolation, we want to estimate values <em>outside</em> already known values.</p>
+<h2 id="polynomial-interpolation">Polynomial Interpolation</h2>
+<p>Polynomial interpolation interpolates a given data set by the polynomial of the lowest possible degree that passes through all the dataset points. Interpolation inevitably leads to a problem in linear algebra where we have to solve a system of linear equations.</p>
+<p>Let’s work through an example with the points</p>
+<p><span class="math display">(0, 4)\qquad (2, 4)\qquad (4, 1).</span></p>
+<p>The example points can be visualized as follows.</p>
+<figure>
+<img src="example-data.png" class="width-medium" alt="Example Points" />
+<figcaption aria-hidden="true">Example Points</figcaption>
+</figure>
+<h3 id="direct-interpolation">Direct Interpolation</h3>
+<p>We need at least <span class="math inline">n + 1</span> data points to solve a polynomial of degree <span class="math inline">n</span>.</p>
+<div class="theorem">
+<p>The resulting polynomial is <em>unique</em> because an <span class="math inline">n</span>-degree polynomial has at most <span class="math inline">n</span> roots.</p>
+</div>
+<div class="proof">
+<p>Suppose we interpolate through <span class="math inline">n + 1</span> data points with a polynomial <span class="math inline">p(x)</span> of degree <span class="math inline">\leq n</span>. Suppose another polynomial <span class="math inline">q(x)</span> exists also of degree <span class="math inline">\leq n</span> that also interpolates the <span class="math inline">n + 1</span> points.</p>
+<ol type="1">
+<li>Consider <span class="math inline">r(x) = p(x) - q(x)</span></li>
+</ol>
+<p>We know that <span class="math inline">r(x)</span> is is a polynomial of degree at most <span class="math inline">n</span> because we are just subtracting polynomials. At the <span class="math inline">n + 1</span> data points <span class="math inline">r(x_i) = p(x_i) -q(x_i) = 0</span>, therefore <span class="math inline">r(x)</span> has <span class="math inline">n + 1</span> roots.</p>
+<ol start="2" type="1">
+<li>We get <span class="math inline">r(x) = 0</span></li>
+</ol>
+<p>By the fundamental theorem of algebra <span class="math inline">r(x)</span> can only have more than <span class="math inline">n</span> roots if <span class="math inline">r(x) = 0</span>.</p>
+<ol start="3" type="1">
+<li>Therefore <span class="math inline">r(x) = 0 \implies p(x) = q(x)</span></li>
+</ol>
+</div>
+<p>The direct method assumes the following polynomial:</p>
+<p><span class="math display">y=f(x)=c_0+c_1x + c_2 x^2 + \ldots + c_n x^n</span></p>
+<p>With <span class="math inline">n + 1</span> given points <span class="math inline">(x_0,y_0) \ldots (x_n,y_n)</span> we have to solve <span class="math inline">n + 1</span> linear equations to find all coefficients <span class="math inline">c_0, c_1,\ldots, c_n</span> for the interpolating polynomial of degree <span class="math inline">n</span>.</p>
+<p><span class="math display">
+\begin{aligned}
+4 = c_0 + 0c_1 + 0^2c_2 \\
+4 = c_0 + 2c_1 + 2^2c_2 \\
+1 = c_0 + 4c_1 + 4^2c_2
+\end{aligned}
+</span></p>
+<p>This linear system of equations can be described by a special kind of matrix known as the <a href="https://en.wikipedia.org/wiki/Vandermonde_matrix">Vandermonde Matrix</a>.</p>
+<p><span class="math display">
+\left(
+\begin{array}{ccc}
+ 1 &amp; 0 &amp; 0 \\
+ 1 &amp; 2 &amp; 4 \\
+ 1 &amp; 4 &amp; 16 \\
+\end{array}
+\right)
+\left(
+\begin{array}{ccc}
+ c_0 \\
+ c_1 \\
+ c_2 \\
+\end{array}
+\right) =
+\left(
+\begin{array}{ccc}
+ 4 \\
+ 4 \\
+ 1 \\
+\end{array}
+\right)
+</span></p>
+<p>The polynomial basis looks like <span class="math inline">B = \{1, x, x^2, \ldots, x^n\}</span>, as represented by the columns of the Vandermonde matrix. Our resulting interpolating polynomial is a <em>linear combination</em> of this basis.</p>
+<p><span class="math display">P(x) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<p>Unfortunately, we have to invert the Vandermonde matrix to solve for the coefficients <span class="math inline">c_0, c_1 \ldots, c_n</span>. Let’s see if we can find a better basis to find the coefficients.</p>
+<h3 id="lagrange-interpolation">Lagrange Interpolation</h3>
+<p>Lagrange polynomials are based on the beautiful idea that you could express the interpolating polynomial <span class="math inline">P</span> as a linear combination of polynomials <span class="math inline">p_0 \ldots p_n</span>, that individually fit a specific given point.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>We will arrive at the same unique polynomial that we have calculated before but with a completely different way of constructing it.</p>
+<p>Our goal is to create multiple polynomials that are <span class="math inline">1</span> at a specific point <span class="math inline">(x_i, y_i)</span> and <span class="math inline">0</span> at all other given points.</p>
+<p>Let’s create a polynomial <span class="math inline">p(x) = (x - 0)(x - 2)(x - 4)</span> that is <span class="math inline">0</span> at all values for <span class="math inline">x</span>. We will now create polynomials that individually cancel out one of the terms.</p>
+<p><span class="math display">
+\begin{aligned}
+p_0(x) = p(x)/(x - 0) \\
+p_1(x) = p(x)/(x - 2) \\
+p_2(x) = p(x)/(x - 4)
+\end{aligned}
+</span></p>
+<p>Each of these polynomials is <span class="math inline">1</span> at a point <span class="math inline">x_i</span>, and simultaneously <span class="math inline">0</span> at all other points. Because we know the values <span class="math inline">y_i</span> for each <span class="math inline">x_i</span>, we have found our coefficients without having to invert a matrix!</p>
+<p>Notice that we can now create a basis <span class="math inline">B = \{\frac{p_0(x)}{p_0(x_0)}, \frac{p_1(x)}{p_1(x_1)}, \ldots, \frac{p_n(x)}{p_n(x_n)}\}</span> for which we know that the coefficients are <span class="math inline">y_0, y_1 \ldots y_n</span>. We can again write the polynomial <span class="math inline">P</span> as a linear combination of our new basis <span class="math inline">B</span>.</p>
+<p><span class="math display">
+P(x) = 4 \frac{p_0(x)}{p_0(0)} + 4 \frac{p_1(x)}{p_1(2)} + 1 \frac{p_2(x)}{p_2(4)}
+</span></p>
+<p>Keep in mind that this <a href="https://math.stackexchange.com/questions/523907/explanation-of-lagrange-interpolating-polynomial">intuitive way of writing Lagrange polynomials</a> requires simplification before evaluation to avoid division by zero.</p>
+<p><span class="math display">P(x) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<h3 id="newton-interpolation">Newton Interpolation</h3>
+<p>One of the most important features of Newton’s interpolation method is that we can gradually increase the interpolated data points without recomputing what is already computed.</p>
+<p>When an additional point <span class="math inline">(x_{n+1}, y_{n+1})</span> is to be used, all previous basis polynomials and their corresponding coefficients remain unchanged, and we only need to obtain a new basis polynomial of degree <span class="math inline">n + 1</span>.</p>
+<p>Let’s calculate the Newton interpolation for our example.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p><span class="math display">
+\begin{aligned}
+4 = c_0 + c_1(0 - 0) + c_2(0 - 0)(0 - 2) \\
+4 = c_0 + c_1(2 - 0) + c_2(2 - 0)(2 - 2) \\
+1 = c_0 + c_1(4 - 0) + c_2(4 - 0)(4 - 2) \\
+\end{aligned}
+</span></p>
+<p>We can simplify that expression and write it in matrix form</p>
+<p><span class="math display">
+\left(
+\begin{array}{ccc}
+ 1 &amp; 0 &amp; 0 \\
+ 1 &amp; 2 - 0 &amp; 0 \\
+ 1 &amp; 4 - 0 &amp; (4 - 0)(4 - 2) \\
+\end{array}
+\right)
+\left(  
+\begin{array}{ccc}
+ c_0 \\
+ c_1 \\
+ c_2 \\
+\end{array}
+\right) =
+\left(
+\begin{array}{ccc}
+ 4 \\
+ 4 \\
+ 1 \\
+\end{array}
+\right).
+</span></p>
+<p>We can solve that system of linear equations progressively from top to bottom without having to invert the matrix. In contrast to the other interpolation methods, the basis now looks like</p>
+<p><span class="math display">B = \{1, (x - x_0), (x - x_0)(x - x_1), \ldots, \prod_{i=0}^n(x - x_i)\}.</span></p>
+<p>If we need to interpolate another point, we can reuse our previous results and solve another row.</p>
+<p><span class="math display">P(x) = 4 + 0(x-0) - \frac{3}{8}(x-0)(x-2) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
+<h3 id="runges-phenomenon">Runge’s Phenomenon</h3>
+<p>We have now seen that all polynomial interpolation methods for <span class="math inline">n + 1</span> data points result in the same unique polynomial of degree <span class="math inline">n</span>. All of the methods for polynomial interpolation were expressed in terms of a basis <span class="math inline">B</span> weighted by some coefficients. The interpolating polynomial for our previous example looks as follows.</p>
+<figure>
+<img src="interpolating-polynomial.png" class="width-medium" alt="Interpolating Polynomial of 3 Points" />
+<figcaption aria-hidden="true">Interpolating Polynomial of 3 Points</figcaption>
+</figure>
+<p>A problem that arises with polynomial interpolation is the interpolating function tends to oscillate more and more with more points added. This is called the <em>Runge’s phenomenon</em>. It limits the use cases where simple polynomial interpolation is appropriate.</p>
+<figure>
+<img src="runge-phenomenon.png" class="width-medium" alt="Interpolating Polynomial of 10 Points" />
+<figcaption aria-hidden="true">Interpolating Polynomial of 10 Points</figcaption>
+</figure>
+<p>Another limitation of polynomial interpolation is that touching a single point causes a recalculation of all other points.</p>
+<h2 id="piecewise-interpolation">Piecewise Interpolation</h2>
+<p>To address the limitations mentioned, we could combine multiple polynomials of lower degree that each fit an interval between two points.</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{cc}
+P_0(x) &amp; x_0 \le x \le x_1 \\
+\vdots &amp; \vdots\\
+P_n(x) &amp; x_{n-1} \le x \le x_n
+\end{array}\right.
+</span></p>
+<p>The function <span class="math inline">S(x)</span> defined by piecewise polynomials is known as a <em>Spline</em>. We usually want a spline interpolation to consist of low-degree polynomials, to be <em>continuous</em> and to be <em>smooth</em>.</p>
+<p>In other words we want two consecutive piecewise polynomials to meet at some point <span class="math inline">P_i(x_i) = P_{i + 1}(x_i)</span> and to have the same derivative at that point <span class="math inline">P_i^{(k)}(x_i) = P_{i + 1}^{(k)}(x_i)</span> where <span class="math inline">k</span> stands for the <em>kth</em>-derivative.</p>
+<h3 id="linear-splines">Linear Splines</h3>
+<p>A linear spline, as the name implies, describes first-degree polynomials of the form <span class="math inline">P(x) = c_0 + c_1 x</span>. Each linear polynomial has <span class="math inline">2</span> unkown parameters, our spline of <span class="math inline">n</span> piecewise polynomials for <span class="math inline">n + 1</span> data points thus has a total of <span class="math inline">2n</span> unknown parameters.</p>
+<figure>
+<img src="linear-spline.png" class="width-medium" alt="Linear Spline" />
+<figcaption aria-hidden="true">Linear Spline</figcaption>
+</figure>
+<p>The <em>continuity condition</em>, that consecutive polynomials to meet at some point, needs <span class="math inline">2n</span> free parameters to be fulfilled. Linear splines can thus only fulfill that condition.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} &amp; 4 &amp;= a_0 + 0 a_1 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i &amp; 4 &amp;= a_0 + 2 a_1 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i &amp; 4 &amp;= b_0 + 2 b_1 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} &amp; 1 &amp;= b_0 + 4 b_1
+\end{aligned}
+</span></p>
+<p>This leads to a major drawback of linear splines: they are not smooth and hence are usually not differentiable at points where two consecutive polynomials meet.</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = 7 - \frac{3}{2}x &amp; 2 \le x \le 4
+\end{array}\right.
+</span></p>
+<h3 id="quadratic-splines">Quadratic Splines</h3>
+<p>Quadratic polynomials add one more degree of freedom, and quadratic splines consequently have <span class="math inline">3n</span> unknown parameters. Again, we need <span class="math inline">2n</span> parameters for continuity, but we can now also specify that two consecutive polynomials should match in their first derivative.</p>
+<figure>
+<img src="quadratic-spline.png" class="width-medium" alt="Quadratic Spline" />
+<figcaption aria-hidden="true">Quadratic Spline</figcaption>
+</figure>
+<p>The <em>smoothness condition</em> needs <span class="math inline">n - 1</span> free parameters, because there are <span class="math inline">n - 1</span> “inner points” for <span class="math inline">n + 1</span> data points.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0(x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} + a_2 x_{i - 1}^2 &amp; 4 &amp;= a_0 + 0 a_1 + 0^2 a_2 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i + a_2 x_i^2 &amp; 4 &amp;= a_0 + 2 a_1 + 2^2 a_2 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i + b_2 x_i^2 &amp; 4 &amp;= b_0 + 2 b_1 + 2^2 b_2 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 &amp; 1 &amp;= b_0 + 4 b_1 + 4^2 b_2
+\end{aligned}
+</span></p>
+<p>We need another equation (<span class="math inline">n - 1 = 1</span>) to make sure that two consecutive polynomials have a common first derivative.</p>
+<p><span class="math display">
+P_0&#39;(x_i) = P_1&#39;(x_i)\qquad a_1 + 4 a_2 = b_1 + 4 b_2
+</span></p>
+<p>Now, we have a total of <span class="math inline">5</span> equations for <span class="math inline">3n = 6</span> unknown parameters. For us to be able to solve the equations we have <span class="math inline">3n - 2n - (n - 1) = 1</span> free parameter left. We can choose one more solvable constraint of our liking, for example, that the first derivative should be <span class="math inline">0</span> at the last point.</p>
+<p><span class="math display">
+P_1&#39;(x_n) = 0\qquad 0 = b_1 + 8 b_2
+</span></p>
+<p>Our quadratic spline is now defined as</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 + 3x - \frac{3}{2}x^2 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = 13 - 6x + \frac{3}{4}x^2 &amp; 2 \le x \le 4
+\end{array}\right..
+</span></p>
+<h3 id="cubic-splines">Cubic Splines</h3>
+<p>With another degree of freedom, we can specify that two consecutive polynomials share a common first and second derivative at the point they meet.</p>
+<figure>
+<img src="cubic-spline.png" class="width-medium" alt="Cubic Spline" />
+<figcaption aria-hidden="true">Cubic Spline</figcaption>
+</figure>
+<p>We now have <span class="math inline">4n</span> unknown parameters of which <span class="math inline">2n</span> are bound by the continuity condition.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0(x_{i - 1}) &amp;= a_0 + a_1 x_{i - 1} + a_2 x_{i - 1}^2 + a_3 x_{i - 1}^3 &amp; 4 &amp;= a_0 + 0 a_1 + 0^2 a_2 + 0^3 a_3 \\
+P_0(x_i) &amp;= a_0 + a_1 x_i + a_2 x_i^2 + a_3 x_i^3 &amp; 4 &amp;= a_0 + 2 a_1 + 2^2 a_2 + 2^3 a_3 \\
+P_1(x_i) &amp;= b_0 + b_1 x_i + b_2 x_i^2 + b_3 x_i^3 &amp; 4 &amp;= b_0 + 2 b_1 + 2^2 b_2 + 2^3 b_3 \\
+P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 + b_3 x_{i + 1}^3 &amp; 1 &amp;= b_0 + 4 b_1 + 4^2 b_2 + 4^3 b_3
+\end{aligned}
+</span></p>
+<p>A further <span class="math inline">2(n - 1)</span> parameters are bound by the smoothness condition for the first and second derivatives.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0&#39;(x_i) &amp;= P_1&#39;(x_i) &amp; a_1 + 4 a_2 + 12 a_3 &amp;= b_1 + 4 b_2 + 12 b_3 \\
+P_0&#39;&#39;(x_i) &amp;= P_1&#39;&#39;(x_i) &amp; 2 a_2 + 12 a_3 &amp;= 2 b_2 + 12 b_3
+\end{aligned}
+</span></p>
+<p>We now have <span class="math inline">4n - 2n - 2(n - 1) = 2</span> parameters left for constraints of our choice, which is often exactly what we want for spline interpolation.</p>
+<p><span class="math display">
+\begin{aligned}
+P_0&#39;&#39;(x_0) &amp;= 0 &amp; a_1 = 0 \\
+P_1&#39;&#39;(x_n) &amp;= 0 &amp; b_1 + 8 b_2 + 48 b_3 = 0
+\end{aligned}
+</span></p>
+<p>Our cubic spline is now defined as</p>
+<p><span class="math display">
+S(x)=
+\left\{\begin{array}{lc}
+P_0(x) = 4 + \frac{9}{16}x^2 - \frac{9}{32}x^3 &amp; 0 \le x \le 2 \\
+&amp; \\
+P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
+\end{array}\right..
+</span></p>
+<p>The following constraints are often used for the two free parameters:</p>
+<ul>
+<li><em>Natural</em> cubic splines have their second derivative at the first and last point set to zero. <span class="math inline">P_0&#39;&#39;(x_0) = 0</span> and <span class="math inline">P_n&#39;&#39;(x_n) = 0</span>.</li>
+<li><em>Complete</em> cubic splines use the first derivative of the function to be interpolated if known <span class="math inline">P_0&#39;(x_0) = f&#39;(x_0)</span> and <span class="math inline">P_n&#39;(x_n) = f&#39;(x_n)</span></li>
+<li><em>Correct</em> cubic splines use the second derivative of the function to be interpolated if known <span class="math inline">P_0&#39;&#39;(x_0) = f&#39;&#39;(x_0)</span> and <span class="math inline">P_n&#39;&#39;(x_n) = f&#39;&#39;(x_n)</span>.</li>
+</ul>
+<p>Finally, we have covered all the basics about splines!<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>MathTheBeautiful offers a series of videos on polynomial interpolation that contains an <a href="https://www.youtube.com/watch?v=XK4G5Ndy-m8">introduction to Lagrange polynomials</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ruye Wang wrote a more in-depth tutorial on Newton interpolation and other interpolation methods, which can be found <a href="http://fourier.eng.hmc.edu/e176/lectures/ch7/node4.html">here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>For more information about splines, the University of Houston offers a <a href="https://www.math.uh.edu/~jingqiu/math4364/spline.pdf">great tutorial</a> on how to calculate different splines.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/";
+        this.page.identifier = "/articles/beautiful-interpolation/";
+        this.page.title = "Beautiful Interpolation";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+]]></summary>
+</entry>
+<entry>
+    <title>Principal Component Analysis</title>
+    <link href="https://fastpaced.com/articles/principal-component-analysis/" />
+    <id>https://fastpaced.com/articles/principal-component-analysis/</id>
+    <published>2018-02-20</published>
+    <updated>2018-02-20T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/" />
+    <header>
+        <h1 itemprop="name headline">Principal Component Analysis</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">February 20, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>A data set of real-valued measurements can be described by a matrix <span class="math inline">X</span>. We have some number of measurements <span class="math inline">n</span>, each with a number of attributes <span class="math inline">m</span>. Thus, <span class="math inline">X</span> can be represented as a Matrix <span class="math inline">\mathbb{R}^{n \times m}</span>.</p>
+<p>PCA is about finding a new basis that expresses our data in a lower-dimensional space. That is, we want to find a transformation matrix <span class="math inline">P</span> to transform <span class="math inline">X</span> into a lower-dimensional matrix <span class="math inline">Y</span> that provides a reasonable characterization of the complete data set.</p>
+<p><span class="math display">Y = P \cdot X</span></p>
+<p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
+<figure>
+<img src="redundancy.png" class="width-large" alt="Correlation and Redundancy (Shlens 2014)" />
+<figcaption aria-hidden="true">Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
+</figure>
+<p>PCA comes with assumptions:</p>
+<ol type="1">
+<li><em>Linearity &amp; Orthogonality</em> - we use covariance, a linear relationship, as a measure of redundancy and are restricted to express the data set in an orthogonal basis<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li><em>Greater Variance Means Greater Information</em>, directions with greater variance are assumed to represent a more interesting structure</li>
+</ol>
+<p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
+<figure>
+<img src="distribution.png" class="width-medium" alt="Two-Dimensional Example Distribution" />
+<figcaption aria-hidden="true">Two-Dimensional Example Distribution</figcaption>
+</figure>
+<p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
+<figure>
+<img src="data.png" class="width-medium" alt="Raw Example Data" />
+<figcaption aria-hidden="true">Raw Example Data</figcaption>
+</figure>
+<h2 id="standardization">Standardization</h2>
+<p>Standardization is also known as feature scaling, and there are <a href="https://en.wikipedia.org/wiki/Feature_scaling">different ways to scale variables</a>. It’s on us to decide if there are features that should contribute more or less.</p>
+<p>In our example, we know that the data is normally distributed, and we want to scale our variables to mean <span class="math inline">0</span> and standard deviation <span class="math inline">1</span>, also known as <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">standard normalization</a>: <span class="math inline">X - \mu \over \sigma</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize</span><span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> (<span class="fu">A</span> <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>)<span class="sc">/</span><span class="fu">StandardDeviation</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>;</span></code></pre></div>
+<p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
+<figure>
+<img src="data-standardized.png" class="width-medium" alt="Standardized Example Data" />
+<figcaption aria-hidden="true">Standardized Example Data</figcaption>
+</figure>
+<h2 id="covariance-matrix">Covariance Matrix</h2>
+<p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
+<p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
+<figure>
+<img src="covariance.png" class="width-medium" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
+<figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
+</figure>
+<p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covarianceMatrix<span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> <span class="fu">Module</span><span class="op">[{</span>Ats<span class="op">},</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Ats <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span># <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span>#<span class="op">]</span> &amp;<span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span><span class="fu">A</span><span class="op">]]</span>;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Ats.(<span class="fu">Transpose</span> <span class="op">[</span>Ats<span class="op">]</span>)<span class="sc">/</span>(<span class="fu">Length</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span> <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
+<p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
+<figure>
+<img src="covariance.gif" class="width-medium" alt="Covariance Intuition" />
+<figcaption aria-hidden="true">Covariance Intuition</figcaption>
+</figure>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
+<p>An interesting thing about covariance matrices is that they define a specific linear transformation - a linear transformation in the directions of variance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Can you guess what the covariance matrix of our standardized data looks like?</p>
+<p><span class="math display">
+\text{covmat} \approxeq
+\left(
+\begin{array}{cc}
+ 1 &amp; \frac{1}{2}  \\
+ \frac{1}{2}  &amp; 1 \\
+\end{array}
+\right)
+</span></p>
+<p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
+<figure>
+<img src="covariance-transform.gif" class="width-medium" alt="Applying the Linear Transformation to a Vector" />
+<figcaption aria-hidden="true">Applying the Linear Transformation to a Vector</figcaption>
+</figure>
+<h2 id="eigendecomposition">Eigendecomposition</h2>
+<p>Eigenvectors are the directions along which a linear transformation acts by stretching/compressing or flipping space. Eigenvalues, on the other hand, determine the magnitude of the transformation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ol class="example" type="1">
+<li>Let <span class="math inline">A</span> be a square matrix, a scalar <span class="math inline">\lambda</span> is called <strong>Eigenvalue</strong> of <span class="math inline">A</span> if there is a <em>non-zero</em> vector <span class="math inline">v</span>, called an <strong>Eigenvector</strong>, such that <span class="math inline">Av = \lambda v</span>.</li>
+</ol>
+<p>The eigenvalues and eigenvectors can be calculated by directly solving (1). Let us, therefore, rewrite the equation:</p>
+<p><span class="math display">Av - \lambda v = 0</span>
+<span class="math display">(A - \lambda I) v = 0</span></p>
+<p>We have now formed a homogeneous linear system of equations. A homogeneous linear system has a nonzero solution if and only if it’s coefficient matrix, in this case, <span class="math inline">A - \lambda I</span>, is singular:</p>
+<p><span class="math display">\text{det}(A - λ I) = 0</span></p>
+<p>Let’s solve this equation for our simple example to get the eigenvalues.</p>
+<p><span class="math display">
+\begin{aligned}
+\text{det}
+\left(
+\begin{array}{cc}
+ 1 - \lambda &amp; \frac{1}{2} \\
+ \frac{1}{2} &amp; 1 - \lambda \\
+\end{array}
+\right) = 0 \\
+(1 - \lambda)^2 - \frac{1}{4} = 0 \\
+\lambda_1 = \frac{1}{2}, \lambda_2 = \frac{3}{2}
+\end{aligned}
+</span></p>
+<p>We can now solve (1) to get the eigenvectors.</p>
+<p><span class="math display">
+\begin{aligned}
+v_1 + \frac{1}{2}v_2 = \frac{1}{2}v_1 \\
+\frac{1}{2}v_1 + v_2 = \frac{1}{2}v_2 \\
+-v_1 = v_2
+\end{aligned}
+</span></p>
+<p><span class="math display">
+\begin{aligned}
+v_1 + \frac{1}{2}v_2 = \frac{3}{2}v_1 \\
+\frac{1}{2}v_1 + v_2 = \frac{3}{2}v_2 \\
+v_1 = v_2
+\end{aligned}
+</span></p>
+<p>A solution for our eigenvectors thus is <span class="math inline">(-1, 1)</span> and <span class="math inline">(1, 1)</span> - the mysterious black arrows from the figure above! We can check our solution with:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Eigensystem</span><span class="op">[</span>covmat<span class="op">]</span></span></code></pre></div>
+<h2 id="principal-components">Principal Components</h2>
+<p>Principal components are defined in a way that the first principal component has the largest possible variance in a specific direction (that is, accounts for as much of the variability in the data as possible), and each succeeding component, in turn, has the highest variance possible under the constraint that it is orthogonal to the preceding components.</p>
+<p>We have to sort all eigenvalues in descending order and choose <span class="math inline">k</span> eigenvectors that correspond to the <span class="math inline">k</span> largest eigenvalues. The eigenvalues in the case of the covariance matrix represent the magnitude of variance.</p>
+<p>The <span class="math inline">k</span> chosen vectors are our principal components! Principal components are thus nothing more than sorted eigenvectors of the covariance matrix represented as a transformation matrix <span class="math inline">P</span>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Transpose</span><span class="op">[</span><span class="fu">Eigenvectors</span><span class="op">[</span>covmat<span class="op">]]</span></span></code></pre></div>
+<p><span class="math display">
+P =
+\left(
+\begin{array}{cc}
+ 1 &amp; -1 \\
+ 1 &amp; 1 \\
+\end{array}
+\right)
+</span></p>
+<p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
+<figure>
+<img src="pca-projection.gif" class="width-medium" alt="Applying the PCA Transformation" />
+<figcaption aria-hidden="true">Applying the PCA Transformation</figcaption>
+</figure>
+<p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
+<p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
+<figure>
+<img src="explained-variance.png" class="width-medium" alt="Explained Variance by Component" />
+<figcaption aria-hidden="true">Explained Variance by Component</figcaption>
+</figure>
+<p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
+<p><span class="math display">
+P =
+\left(
+\begin{array}{cc}
+ 1 \\
+ 1
+\end{array}
+\right)
+</span></p>
+<figure>
+<img src="dimensionality-reduction.gif" class="width-medium" alt="Dimensionality Reduction Transformation" />
+<figcaption aria-hidden="true">Dimensionality Reduction Transformation</figcaption>
+</figure>
+<p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Hedderich:2015ge" class="csl-entry" role="listitem">
+Hedderich, Jürgen, and Lothar Sachs. 2015. <em><span>Angewandte Statistik</span></em>. Methodensammlung Mit r. Berlin, Heidelberg: Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-45691-0">https://doi.org/10.1007/978-3-662-45691-0</a>.
+</div>
+<div id="ref-Shlens:2014vi" class="csl-entry" role="listitem">
+Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Component Analysis</span>.”</span> <em>arXiv.org</em>, April. <a href="http://arxiv.org/abs/1404.1100v1">http://arxiv.org/abs/1404.1100v1</a>.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>We are restricted to an orthogonal basis because the covariance matrix, on which our calculations are based on, is symmetric. Check out <a href="https://stats.stackexchange.com/a/130884">this StackExchange answer</a> for more information.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Vincent Spruyt wrote <a href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">an article</a> about the geometric interpretation of covariance matrices.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>There are excellent introductions to eigenvalues and eigenvectors available online, see <a href="http://setosa.io/ev/eigenvectors-and-eigenvalues/">Explained Visually</a>, <a href="https://math.stackexchange.com/questions/23312/what-is-the-importance-of-eigenvalues-eigenvectors/23325">Stackexchange</a>, <a href="https://www.youtube.com/watch?v=PFDu9oVAE-g">Youtube</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/principal-component-analysis/";
+        this.page.identifier = "/articles/principal-component-analysis/";
+        this.page.title = "Principal Component Analysis";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+]]></summary>
+</entry>
+<entry>
+    <title>The Styleguide</title>
+    <link href="https://fastpaced.com/articles/the-styleguide/" />
+    <id>https://fastpaced.com/articles/the-styleguide/</id>
+    <published>2018-01-01</published>
+    <updated>2018-01-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<article  class="centered"  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/the-styleguide/" />
+    <header>
+        <h1 itemprop="name headline">The Styleguide</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        This is a showcase of the different styles used on this blog. This blog is powered by Hakyll, the Haskell static site generator. The focus lies on readability and simplicity.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">January  1, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <h2 id="headlines">Headlines</h2>
+<hr />
+<h1 id="headline-1">Headline 1</h1>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="headline-2">Headline 2</h2>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h3 id="headline-3">Headline 3</h3>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h4 id="headline-4">Headline 4</h4>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h5 id="headline-5">Headline 5</h5>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h6 id="headline-6">Headline 6</h6>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="quotation">Quotation</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<blockquote>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+</blockquote>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<blockquote>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups. <cite>Lorem Ipsum</cite></p>
+</blockquote>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="lists">Lists</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<ol type="1">
+<li>Lorem</li>
+<li>Ipsum</li>
+<li>Placeholder</li>
+</ol>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<ul>
+<li>Lorem</li>
+<li>Ipsum</li>
+<li>Placeholder</li>
+</ul>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="mathematics">Mathematics</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text <span class="math inline">a = 1</span> commonly used in the graphic, print, and publishing <span class="math inline">b = 1</span> industries for previewing layouts and visual mockups.</p>
+<p><span class="math display">a + b = 2</span></p>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<div class="definition">
+<p>There is an option to make definitions stand out.</p>
+</div>
+<div class="theorem">
+<p>There is an option to make theorem stand out.</p>
+</div>
+<div class="proof">
+<p>There is an option to make proofs stand out.</p>
+</div>
+<h2 id="tables">Tables</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Right</th>
+<th>Left</th>
+<th>Center</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>12</td>
+<td>12</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>123</td>
+<td>123</td>
+<td>123</td>
+<td>123</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="code">Code</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="fu">print</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell width-full"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="fu">print</span> <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="images">Images</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<figure>
+<img src="/assets/images/galaxy.jpg" alt="A huge image" />
+<figcaption aria-hidden="true">A huge image</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/galaxy.jpg" class="width-full" alt="A full image" />
+<figcaption aria-hidden="true">A full image</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/galaxy.jpg" class="width-large" alt="A large image" />
+<figcaption aria-hidden="true">A large image</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/galaxy.jpg" class="width-medium" alt="A medium image" />
+<figcaption aria-hidden="true">A medium image</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/galaxy.jpg" class="width-small" alt="A small image" />
+<figcaption aria-hidden="true">A small image</figcaption>
+</figure>
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+<h2 id="footnotes">Footnotes</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h2 id="citations">Citations</h2>
+<hr />
+<p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups <span class="citation" data-cites="small">(Freely 1997)</span>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-small" class="csl-entry" role="listitem">
+Freely, I. P. 1997. <span>“A Small Paper.”</span> <em>The Journal of Small Papers</em> -1. <a href="https://smallpapers.org">https://smallpapers.org</a>.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Lorem Ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/the-styleguide/";
+        this.page.identifier = "/articles/the-styleguide/";
+        this.page.title = "The Styleguide";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+]]></summary>
+</entry>
+
 </feed>
