@@ -10,8 +10,99 @@
         <email>muhrdavid+atom@gmail.com</email>
         
     </author>
-    <updated>2018-03-01T00:00:00Z</updated>
+    <updated>2024-10-06T00:00:00Z</updated>
     <entry>
+    <title>The importance of local development</title>
+    <link href="https://fastpaced.com/articles/local-development/" />
+    <id>https://fastpaced.com/articles/local-development/</id>
+    <published>2024-10-06</published>
+    <updated>2024-10-06T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/local-development/" />
+    <header>
+        <h1 itemprop="name headline">The importance of local development</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Local development is crucial for efficient software development, it enables faster iteration, better debugging and ensures consistency between local and production environments.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">October  6, 2024</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        
+        <p>A good developer experience (DX) increases productivity, reduces cognitive load, and improves developer satisfaction,
+leading to higher code quality, faster onboarding, and talent retention.
+An easy-to-use local development environment might be the foundation for good DX.</p>
+<p>I regularly think back to the
+<a href="https://www.youtube.com/watch?v=FkNkSQ42jg4">hilarious discussion, where Elon Musk proposed to rewrite Twitter</a> reminding
+me about the following statement.</p>
+<blockquote>
+<p>One of the biggest problems is that you can’t run Twitter locally. When I was at Facebook, you could run all of Facebook on a laptop. There is no way to run Twitter outside of a very bespoke configuration in a datacenter and it makes it nearly impossible to build anything new on it. <cite>George Hotz</cite></p>
+</blockquote>
+<p>The importance of a good developer experience seems to correlate with the number of people working on a project.
+As a lone fighter, it’s quite simple to spin-up a bespoke setup, because its configuration is known to a single person.</p>
+<p>I was a lone fighter myself for much of the research journey during my PhD, which might be the reason why I
+previously neglected developer experience, except for my own experience.</p>
+<p>It’s common to think about technical debt when adding new tools or features, but that is possibly not the
+entire story. The concept of <mark>DX-debt</mark> is equally relevant, yet it is not sufficiently discussed, in my opinion.</p>
+<p>Nowadays, there are options such as <a href="https://github.com/Azure/draft/">Draft</a>,
+<a href="https://github.com/GoogleContainerTools/skaffold">Skaffold</a>, <a href="https://github.com/tilt-dev/tilt">Tilt</a> or
+<a href="https://github.com/garden-io/garden">Garden</a> to spin-up entire clusters locally, or provide
+<a href="https://github.com/readme/guides/developer-onboarding">pseudo-local</a> development environments.
+It’s never been easier to provide a great developer experience. What do you think?</p>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var disqus_config = function () {
+        this.shortname = "fastpaced";
+        this.page.url = "https://fastpaced.com/articles/local-development/";
+        this.page.identifier = "/articles/local-development/";
+        this.page.title = "The importance of local development";
+    };
+
+    function loadDisqus() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fastpaced.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+</script>
+]]></summary>
+</entry>
+<entry>
     <title>Beautiful Interpolation</title>
     <link href="https://fastpaced.com/articles/beautiful-interpolation/" />
     <id>https://fastpaced.com/articles/beautiful-interpolation/</id>
