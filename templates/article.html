@@ -47,18 +47,27 @@
 
 $if(comments)$<script>
     var disqus_config = function () {
-        this.shortname = "fastpaced";
         this.page.url = "$site$$url$";
         this.page.identifier = "$url$";
         this.page.title = "$title$";
     };
 
-    function loadDisqus() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://fastpaced.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    }
-
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, { threshold: [0] });
+    disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>$endif$
