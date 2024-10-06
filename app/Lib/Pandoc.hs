@@ -8,7 +8,7 @@ import System.FilePath (takeDirectory)
 
 -- Additional extensions for pandoc
 pandocReaderExtensions :: Extensions
-pandocReaderExtensions = extensionsFromList [Ext_footnotes, Ext_inline_notes, Ext_tex_math_dollars, Ext_citations, Ext_fenced_divs]
+pandocReaderExtensions = extensionsFromList [Ext_mark, Ext_footnotes, Ext_inline_notes, Ext_tex_math_dollars, Ext_citations, Ext_fenced_divs]
 
 -- Enhance default ReaderOptions
 pandocReaderOptions :: ReaderOptions
