@@ -85,20 +85,29 @@ It’s never been easier to provide a great developer experience. What do you th
 
 <script>
     var disqus_config = function () {
-        this.shortname = "fastpaced";
         this.page.url = "https://fastpaced.com/articles/local-development/";
         this.page.identifier = "/articles/local-development/";
         this.page.title = "The importance of local development";
     };
 
-    function loadDisqus() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://fastpaced.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    }
-
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, { threshold: [0] });
+    disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
@@ -419,20 +428,29 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 
 <script>
     var disqus_config = function () {
-        this.shortname = "fastpaced";
         this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/";
         this.page.identifier = "/articles/beautiful-interpolation/";
         this.page.title = "Beautiful Interpolation";
     };
 
-    function loadDisqus() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://fastpaced.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    }
-
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, { threshold: [0] });
+    disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
@@ -655,20 +673,29 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
 
 <script>
     var disqus_config = function () {
-        this.shortname = "fastpaced";
         this.page.url = "https://fastpaced.com/articles/principal-component-analysis/";
         this.page.identifier = "/articles/principal-component-analysis/";
         this.page.title = "Principal Component Analysis";
     };
 
-    function loadDisqus() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://fastpaced.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    }
-
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) || loadDisqus()
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, { threshold: [0] });
+    disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
