@@ -346,7 +346,6 @@ html {
 body {
   position: relative; /* Keep footer at bottom */
   min-height: 100%; /* Keep footer at bottom */
-  padding-bottom: 30px; /* Footer Height */
   font-family: var(--font-family-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -400,6 +399,22 @@ pre {
 
 main {
   padding: var(--spacing-2) 0; /* Default top and bottom padding */
+}
+
+#home, #article {
+  opacity: 0; /* Start state for the fadeIn animation */
+  transform: translateY(var(--spacing-1)); /* Start state for the slideIn animation */
+  animation: fadeIn .5s ease-in forwards, slideIn .75s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(var(var(--spacing-1))); }
+  to { transform: translateY(0); }
 }
 
 /* ==========================================================================
@@ -473,6 +488,7 @@ main {
    Header
    ========================================================================== */
 #site-header {
+  z-index: 1;
   margin: 0 auto;
   padding-right: var(--container-padding);
   padding-left: var(--container-padding);
@@ -1134,7 +1150,7 @@ main {
 @media screen and (min-width: 1680px) {
   /* Presets */
   main {
-    padding: var(--spacing-5) 0 var(--spacing-2) var(--header-width);
+    padding: var(--spacing-3) 0 var(--spacing-2) var(--header-width);
   }
 
   /* Header */
@@ -1174,4 +1190,12 @@ main {
     min-height: 100vh;
     animation-duration: 90s;
   }
+}
+
+@media screen and (min-width: 1920px) {
+  #home { padding-top: var(--spacing-4); }
+}
+
+@media screen and (min-width: 2560px) {
+  #home { padding-top: var(--spacing-5); }
 }
