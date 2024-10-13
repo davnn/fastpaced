@@ -18,9 +18,9 @@
     <published>2024-10-06</published>
     <updated>2024-10-06T00:00:00Z</updated>
     <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <meta itemprop="isPartOf" content="https://fastpaced.com">
-    <meta itemprop="mainEntityOfPage" content="/articles/local-development/" />
+    <meta itemprop="mainEntityOfPage" content="/articles/local-development/">
     <header>
         <h1 itemprop="name headline">The importance of local development</h1>
     </header>
@@ -83,17 +83,15 @@ It’s never been easier to provide a great developer experience. What do you th
 
 </article>
 
+
 <script>
-    var disqus_config = function () {
-        this.page.url = "https://fastpaced.com/articles/local-development/";
-        this.page.identifier = "/articles/local-development/";
-        this.page.title = "The importance of local development";
-    };
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
     /**
      * Lazy loading disqus comments once the comment section is reached
      * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
      */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/local-development/"; this.page.identifier = "/articles/local-development/"; this.page.title = "The importance of local development";};
     var disqus_observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
             /* #region Code from Disqus */
@@ -106,8 +104,8 @@ It’s never been easier to provide a great developer experience. What do you th
             /* #endregion Code from Disqus */
             disqus_observer.disconnect();
         }
-    }, { threshold: [0] });
-    disqus_observer.observe(document.querySelector("#disqus_thread"));
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
@@ -118,9 +116,9 @@ It’s never been easier to provide a great developer experience. What do you th
     <published>2018-03-01</published>
     <updated>2018-03-01T00:00:00Z</updated>
     <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <meta itemprop="isPartOf" content="https://fastpaced.com">
-    <meta itemprop="mainEntityOfPage" content="/articles/beautiful-interpolation/" />
+    <meta itemprop="mainEntityOfPage" content="/articles/beautiful-interpolation/">
     <header>
         <h1 itemprop="name headline">Beautiful Interpolation</h1>
     </header>
@@ -426,17 +424,15 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 
 </article>
 
+
 <script>
-    var disqus_config = function () {
-        this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/";
-        this.page.identifier = "/articles/beautiful-interpolation/";
-        this.page.title = "Beautiful Interpolation";
-    };
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
     /**
      * Lazy loading disqus comments once the comment section is reached
      * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
      */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/"; this.page.identifier = "/articles/beautiful-interpolation/"; this.page.title = "Beautiful Interpolation";};
     var disqus_observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
             /* #region Code from Disqus */
@@ -449,8 +445,8 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
             /* #endregion Code from Disqus */
             disqus_observer.disconnect();
         }
-    }, { threshold: [0] });
-    disqus_observer.observe(document.querySelector("#disqus_thread"));
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
@@ -461,9 +457,9 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
     <published>2018-02-20</published>
     <updated>2018-02-20T00:00:00Z</updated>
     <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg" />
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <meta itemprop="isPartOf" content="https://fastpaced.com">
-    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/" />
+    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/">
     <header>
         <h1 itemprop="name headline">Principal Component Analysis</h1>
     </header>
@@ -671,17 +667,15 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
 
 </article>
 
+
 <script>
-    var disqus_config = function () {
-        this.page.url = "https://fastpaced.com/articles/principal-component-analysis/";
-        this.page.identifier = "/articles/principal-component-analysis/";
-        this.page.title = "Principal Component Analysis";
-    };
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
     /**
      * Lazy loading disqus comments once the comment section is reached
      * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
      */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/principal-component-analysis/"; this.page.identifier = "/articles/principal-component-analysis/"; this.page.title = "Principal Component Analysis";};
     var disqus_observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
             /* #region Code from Disqus */
@@ -694,8 +688,8 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
             /* #endregion Code from Disqus */
             disqus_observer.disconnect();
         }
-    }, { threshold: [0] });
-    disqus_observer.observe(document.querySelector("#disqus_thread"));
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>
 ]]></summary>
 </entry>
