@@ -402,7 +402,6 @@ main {
 }
 
 #home, #article {
-  opacity: 0; /* Start state for the fadeIn animation */
   transform: translateY(var(--spacing-1)); /* Start state for the slideIn animation */
   animation: fadeIn .5s ease-in forwards, slideIn .75s ease-out forwards;
 }
