@@ -1,7 +1,7 @@
 <article $if(centered)$ class="centered" $endif$ itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$" />
+    <meta itemprop="image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
     <meta itemprop="isPartOf" content="$site$">
-    <meta itemprop="mainEntityOfPage" content="$url$" />
+    <meta itemprop="mainEntityOfPage" content="$url$">
     <header>
         <h1 itemprop="name headline">$title$</h1>
     </header>
@@ -45,17 +45,15 @@
 
 </article>
 
-$if(comments)$<script>
-    var disqus_config = function () {
-        this.page.url = "$site$$url$";
-        this.page.identifier = "$url$";
-        this.page.title = "$title$";
-    };
+$if(comments)$
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
     /**
      * Lazy loading disqus comments once the comment section is reached
      * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
      */
+    var disqus_config = function () {this.page.url = "$site$$url$"; this.page.identifier = "$url$"; this.page.title = "$title$";};
     var disqus_observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
             /* #region Code from Disqus */
@@ -68,6 +66,6 @@ $if(comments)$<script>
             /* #endregion Code from Disqus */
             disqus_observer.disconnect();
         }
-    }, { threshold: [0] });
-    disqus_observer.observe(document.querySelector("#disqus_thread"));
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
 </script>$endif$
