@@ -5,7 +5,7 @@ import System.FilePath (dropFileName)
 
 site = "https://fastpaced.com"
 title = "Data. Science. Code. Design. Thoughts. - fastpaced"
-description = "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning doctoral student, currently working and living in beautiful Austria."
+description = "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning and software engineering leader in Austria."
 
 -- Based on `urlField`
 shortUrlField :: String -> Context a
@@ -17,6 +17,7 @@ extendedDefaultContext :: Context String
 extendedDefaultContext =
   constField "site" site <>
   constField "defaultdescription" description <>
+  mapContext dropFileName (urlField "url") <>
   defaultContext
 
 indexCtx :: [Item String] -> Context String
