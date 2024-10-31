@@ -83,7 +83,6 @@ It’s never been easier to provide a great developer experience. What do you th
 
 </article>
 
-
 <script>
     var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
@@ -424,7 +423,6 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 
 </article>
 
-
 <script>
     var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
@@ -666,7 +664,6 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
     </div>
 
 </article>
-
 
 <script>
     var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
