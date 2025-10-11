@@ -41,15 +41,108 @@
             "inLanguage": "en-US"
         }
     </script>
-    <style>$partial("assets/style.css")$</style>
+    <script>
+        (function () {
+            const storageKey = "theme";
+            const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
+            const saved = localStorage.getItem(storageKey);
+
+            // Decide initial theme before first paint
+            const theme = saved ? saved : (darkMq.matches ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", theme);
+
+            // Also keep theme-color consistent for browser UI
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", theme === "dark" ? "#c62828" : "#7f0000");
+        })();
+    </script>
+    <style>
+        $partial("assets/style.css")$
+    </style>
 </head>
 
 <body>
-$partial("templates/partials/header.html")$
+    $partial("templates/partials/header.html")$
+    <main id="$layout$">
+        $body$
+    </main>
+    <script>
+        (function () {
+            const KEY = "theme"; // "light" | "dark" | null (System/Auto)
+            const root = document.documentElement;
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
 
-<main id="$layout$">
-$body$
-</main>
+            // Grab theme links by ID
+            const systemLink = document.getElementById("theme-system");
+            const lightLink = document.getElementById("theme-light");
+            const darkLink = document.getElementById("theme-dark");
+            if (!systemLink || !lightLink || !darkLink) return;
+
+            // --- Helpers -------------------------------------------------------------
+            const osTheme = () => (darkMq.matches ? "dark" : "light");
+            const getSaved = () => localStorage.getItem(KEY); // "light" | "dark" | null
+            const save = (v) => (v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY));
+            const effective = () => getSaved() || osTheme();
+
+            const applyTheme = (theme) => {
+                root.setAttribute("data-theme", theme);
+                if (metaTheme)
+                    metaTheme.setAttribute("content", theme === "dark" ? "#c62828" : "#7f0000");
+            };
+
+            const updateUI = () => {
+                const saved = getSaved(); // null = system
+                const eff = effective();
+
+                // Bold the active one
+                systemLink.style.fontWeight = saved === null ? "bold" : "";
+                lightLink.style.fontWeight = saved === "light" ? "bold" : "";
+                darkLink.style.fontWeight = saved === "dark" ? "bold" : "";
+
+                // Accessible state
+                systemLink.setAttribute("aria-current", saved === null ? "true" : "false");
+                lightLink.setAttribute("aria-current", saved === "light" ? "true" : "false");
+                darkLink.setAttribute("aria-current", saved === "dark" ? "true" : "false");
+            };
+
+            // --- Init ----------------------------------------------------------------
+            applyTheme(effective());
+            updateUI();
+
+            // Follow OS while in "System"
+            const onOSChange = (e) => {
+                if (!getSaved()) {
+                    applyTheme(e.matches ? "dark" : "light");
+                    updateUI();
+                }
+            };
+            darkMq.addEventListener?.("change", onOSChange) ||
+                darkMq.addListener(onOSChange); // legacy support
+
+            // --- Click Handlers ------------------------------------------------------
+            systemLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                save(null);
+                applyTheme(osTheme());
+                updateUI();
+            });
+
+            lightLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                save("light");
+                applyTheme("light");
+                updateUI();
+            });
+
+            darkLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                save("dark");
+                applyTheme("dark");
+                updateUI();
+            });
+        })();
+    </script>
 </body>
 </html>
 
