@@ -34,9 +34,18 @@
   --color-syntax-string: darkred;
   --color-syntax-error: red;
 
-  /* UI Colors */
-  --color-divider-dark: rgba(0, 0, 0, .12);
-  --color-divider-light: rgba(255, 255, 255, .12);
+  /* Background colors */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+
+  /* Unify divider usage across components */
+  --color-divider: rgba(0, 0, 0, .12);
+
+  /* Scrollbars & elevation */
+  --scrollbar-thumb: rgba(0, 0, 0, 0.25);
+  --elevation-1: 0 10px 30px rgba(50, 50, 93, .1),
+                  0 5px 15px rgba(50, 50, 93, .15),
+                  0 5px 15px rgba(0, 0, 0, .1);
 
   /* Typography */
   --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -77,6 +86,39 @@
   /* Z-Indices */
   --zindex-navigation: 100;
   --zindex-navigation-icon: 101;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --color-brand: #ef5350;
+  --color-brand-dark: #c62828;
+
+  --color-text: rgba(255, 255, 255, 0.87);
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-tap-highlight: rgba(255, 255, 255, 0.1);
+
+  /* New unified tokens */
+  --color-background: #121212;
+  --color-surface: #1c1c1c;
+  --color-divider: rgba(255, 255, 255, .12);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.25);
+
+  /* Stronger shadow for dark backgrounds */
+  --elevation-1: 0 10px 30px rgba(0, 0, 0, .6),
+                 0 5px 15px rgba(0, 0, 0, .5),
+                 0 5px 15px rgba(0, 0, 0, .4);
+
+  background-color: var(--color-background);
+  color: var(--color-text);
+
+  /* Adapt syntax highlighting colors */
+  --color-syntax-generic: #e0e0e0;
+  --color-syntax-keyword: #82aaff;
+  --color-syntax-keyword-secondary: #b2c7ff;
+  --color-syntax-comment: #9aa0a6;
+  --color-syntax-number: #add6ff;
+  --color-syntax-string: #ffab91;
+  --color-syntax-error: #ff6e6e;
 }
 
 /* ==========================================================================
@@ -320,8 +362,7 @@ html {
   height: 100%; /* Keep footer at bottom */
   box-sizing: border-box; /* gets inherited to all children */
   cursor: default;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+  color-scheme: light dark;
 }
 
 body {
@@ -332,6 +373,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 *::-webkit-scrollbar {
@@ -340,12 +383,12 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  border: 1px solid rgba(0, 0, 0, .1);
+  border: 1px solid var(--color-divider);
 }
 
 *::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--scrollbar-thumb);
 }
 
 a {
@@ -498,11 +541,20 @@ main {
   transform-origin: 100% 0;
   transition-duration: .25s;
   transition-property: transform, opacity;
-  background-color: #fff;
-  box-shadow: 0 10px 30px rgba(50, 50, 93, .1), 0 5px 15px rgba(50, 50, 93, .15), 0 5px 15px rgba(0, 0, 0, .1);
+  background-color: var(--color-surface);
+  box-shadow: var(--elevation-1);
   opacity: 0;
   overflow: hidden;
   z-index: var(--zindex-navigation);
+}
+
+#site-header .site-navigation > div:first-child {
+  margin-bottom: var(--spacing-0);
+}
+
+.site-navigation a[aria-current="true"] {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 #site-header h4 {
@@ -590,7 +642,7 @@ main {
 }
 
 #home > #post-list ul > li:not(:last-child) {
-  border-bottom: 1px solid var(--color-divider-dark);
+  border-bottom: 1px solid var(--color-divider);
 }
 
 #home > #post-list h2 {
@@ -656,7 +708,7 @@ main {
   font-size: var(--font-size-4);
   max-width: var(--measure);
   padding-bottom: var(--spacing-1);
-  color: black;
+  color: var(--color-text);
 }
 
 #article .meta { /* Area for date and author */
@@ -664,7 +716,7 @@ main {
   flex-direction: column;
   padding-top: .5rem;
   padding-bottom: var(--spacing-1);
-  border-top: 1px solid var(--color-divider-dark);
+  border-top: 1px solid var(--color-divider);
   color: var(--color-text-secondary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-1);
@@ -685,9 +737,8 @@ main {
 
 #article pre { /* Code */
   padding: .3rem .5rem;
-  border: 1px solid #cfcfcf;
+  border: 1px solid var(--color-divider);
   border-radius: 2px;
-  background: #f7f7f7;
   line-height: 1.5;
   overflow: auto;
 }
@@ -701,7 +752,7 @@ main {
 }
 
 #article hr { /* Uniform divider color */
-  border-color: var(--color-divider-dark);
+  border-color: var(--color-divider);
 }
 
 #article p,
@@ -767,7 +818,7 @@ main {
   left: 0;
   width: 3px;
   height: 100%;
-  background-color: var(--color-divider-dark);
+  background-color: var(--color-divider);
   content: "";
 }
 
@@ -787,7 +838,7 @@ main {
 #article .references,
 #article .footnotes { /* Generated content below article */
   padding-top: var(--font-size-3);
-  border-top: 1px solid var(--color-divider-dark);
+  border-top: 1px solid var(--color-divider);
   color: var(--color-text-secondary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-2);
@@ -843,7 +894,7 @@ main {
 }
 
 #article thead {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-text);
   vertical-align: bottom;
 }
 
@@ -863,6 +914,7 @@ main {
   padding-top: .25em;
   font-size: var(--font-size-2);
   text-align: left;
+  color: var(--color-text-secondary);
 }
 
 #article figcaption::before {
@@ -876,7 +928,7 @@ main {
 
 #article .math { /* Math */
   font-size: 1.05rem; /* font size for both inline and display math */
-  color: black;
+  color: var(--color-text);
 }
 
 #article .math.display { /* prevent overflow when math is too wide */
@@ -955,7 +1007,7 @@ main {
 #article .theorem {
   max-width: var(--measure);
   padding: 1em 0 1em 0; /* same as ol and ul */
-  border: solid var(--color-divider-dark);
+  border: solid var(--color-divider);
   border-width: 1px 0 1px 0;
 }
 
@@ -1139,8 +1191,8 @@ main {
     left: 0;
     width: var(--header-width);
     height: 100%;
-    border-right: 1px solid var(--color-divider-dark);
-    background-color: white;
+    border-right: 1px solid var(--color-divider);
+    background-color: var(--color-surface);
   }
 
   #site-header > nav {
