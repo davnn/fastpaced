@@ -362,7 +362,6 @@ html {
   height: 100%; /* Keep footer at bottom */
   box-sizing: border-box; /* gets inherited to all children */
   cursor: default;
-  color-scheme: light dark;
 }
 
 body {
@@ -436,7 +435,7 @@ main {
 }
 
 @keyframes slideIn {
-  from { transform: translateY(var(var(--spacing-1))); }
+  from { transform: translateY(var(--spacing-1)); }
   to { transform: translateY(0); }
 }
 

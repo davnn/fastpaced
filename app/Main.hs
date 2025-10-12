@@ -28,7 +28,8 @@ main = do
 
     -- Compile Styles
     match "assets/style.css" $
-      -- Compress the CSS and transform to Template
+      compile $ compressCssCompiler >>= compileTemplateItem >>= makeItem
+    match "assets/theme.css" $
       compile $ compressCssCompiler >>= compileTemplateItem >>= makeItem
 
     -- Compile Bibliography

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <script>
         (function () {
             const KEY = "theme";                 // "light" | "dark" | null (system/auto)
@@ -14,6 +15,9 @@
             document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
         })();
     </script>
+    <style>
+        $partial("assets/theme.css")$
+    </style>
     <link rel="manifest" href="/assets/manifest/manifest.json">
     <link rel="alternate" type="application/rss+xml" title="$title$" href="$site$/atom.xml">
     <link rel="canonical" href="$site$$url$">
