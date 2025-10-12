@@ -4,7 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#7f0000">
+    <script>
+        (function () {
+            const KEY = "theme";                 // "light" | "dark" | null (system/auto)
+            const saved = localStorage.getItem(KEY);
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const theme = saved || (prefersDark ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", theme);
+            document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
+        })();
+    </script>
     <link rel="manifest" href="/assets/manifest/manifest.json">
     <link rel="alternate" type="application/rss+xml" title="$title$" href="$site$/atom.xml">
     <link rel="canonical" href="$site$$url$">
@@ -41,21 +50,6 @@
             "inLanguage": "en-US"
         }
     </script>
-    <script>
-        (function () {
-            const storageKey = "theme";
-            const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
-            const saved = localStorage.getItem(storageKey);
-
-            // Decide initial theme before first paint
-            const theme = saved ? saved : (darkMq.matches ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-
-            // Also keep theme-color consistent for browser UI
-            const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute("content", theme === "dark" ? "#c62828" : "#7f0000");
-        })();
-    </script>
     <style>
         $partial("assets/style.css")$
     </style>
@@ -68,16 +62,16 @@
     </main>
     <script>
         (function () {
-            const KEY = "theme"; // "light" | "dark" | null (System/Auto)
+            const KEY = "theme";
             const root = document.documentElement;
-            const metaTheme = document.querySelector('meta[name="theme-color"]');
             const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
 
-            // Grab theme links by ID
-            const systemLink = document.getElementById("theme-system");
-            const lightLink = document.getElementById("theme-light");
-            const darkLink = document.getElementById("theme-dark");
-            if (!systemLink || !lightLink || !darkLink) return;
+            const links = {
+                system: document.getElementById("theme-system"),
+                light: document.getElementById("theme-light"),
+                dark: document.getElementById("theme-dark"),
+            };
+            if (!links.system || !links.light || !links.dark) return;
 
             // --- Helpers -------------------------------------------------------------
             const osTheme = () => (darkMq.matches ? "dark" : "light");
@@ -87,30 +81,29 @@
 
             const applyTheme = (theme) => {
                 root.setAttribute("data-theme", theme);
-                if (metaTheme)
-                    metaTheme.setAttribute("content", theme === "dark" ? "#c62828" : "#7f0000");
+                root.style.colorScheme = theme; // keep controls in sync
             };
 
             const updateUI = () => {
                 const saved = getSaved(); // null = system
-                const eff = effective();
-
-                // Bold the active one
-                systemLink.style.fontWeight = saved === null ? "bold" : "";
-                lightLink.style.fontWeight = saved === "light" ? "bold" : "";
-                darkLink.style.fontWeight = saved === "dark" ? "bold" : "";
-
-                // Accessible state
-                systemLink.setAttribute("aria-current", saved === null ? "true" : "false");
-                lightLink.setAttribute("aria-current", saved === "light" ? "true" : "false");
-                darkLink.setAttribute("aria-current", saved === "dark" ? "true" : "false");
+                Object.entries(links).forEach(([name, el]) => {
+                    const isActive = (name === "system" && saved === null) || saved === name;
+                    el.style.fontWeight = isActive ? "bold" : "";
+                    el.setAttribute("aria-current", isActive ? "true" : "false");
+                });
             };
 
-            // --- Init ----------------------------------------------------------------
-            applyTheme(effective());
+            const setTheme = (value) => {
+                save(value);
+                applyTheme(value || osTheme());
+                updateUI();
+            };
+
+            // --- Init (no duplicate theme set; just sync UI and meta) --------------
+            applyTheme(effective()); // needed only to style the links (active)
             updateUI();
 
-            // Follow OS while in "System"
+            // --- Respond to OS changes while in “system” mode ----------------------
             const onOSChange = (e) => {
                 if (!getSaved()) {
                     applyTheme(e.matches ? "dark" : "light");
@@ -120,30 +113,17 @@
             darkMq.addEventListener?.("change", onOSChange) ||
                 darkMq.addListener(onOSChange); // legacy support
 
-            // --- Click Handlers ------------------------------------------------------
-            systemLink.addEventListener("click", (e) => {
-                e.preventDefault();
-                save(null);
-                applyTheme(osTheme());
-                updateUI();
-            });
-
-            lightLink.addEventListener("click", (e) => {
-                e.preventDefault();
-                save("light");
-                applyTheme("light");
-                updateUI();
-            });
-
-            darkLink.addEventListener("click", (e) => {
-                e.preventDefault();
-                save("dark");
-                applyTheme("dark");
-                updateUI();
+            // --- Click Handlers ----------------------------------------------------
+            Object.entries(links).forEach(([name, el]) => {
+                el.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    setTheme(name === "system" ? null : name);
+                });
             });
         })();
     </script>
 </body>
+
 </html>
 
 $partial("templates/partials/footer.html")$
