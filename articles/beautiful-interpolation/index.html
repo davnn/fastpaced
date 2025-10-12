@@ -153,7 +153,7 @@
         <p>Approximating continuously defined functions from given discrete data is an unavoidable task in various fields. Interpolation represents the relatively easiest approach, where an approximating function is constructed that has to perfectly agree with the given points.</p>
 <p>If <span class="math inline">x_0 \ldots x_n</span> and <span class="math inline">f(x_0) \ldots f(x_n)</span> are known and if <span class="math inline">x_0 &lt; x &lt; x_n</span>, then the estimated value of <span class="math inline">f(x)</span> is said to be an <em>Interpolation</em>. If <span class="math inline">x &lt; x_0</span> or <span class="math inline">x &gt; x_n</span> then the estimated value is said to be an <em>Extrapolation</em>.</p>
 <figure>
-<img src="interpolation-extrapolation.png" class="width-medium" alt="Interpolation and Extrapolation" />
+<img src="interpolation-extrapolation.png" class="width-medium themed" alt="Interpolation and Extrapolation" />
 <figcaption aria-hidden="true">Interpolation and Extrapolation</figcaption>
 </figure>
 <p>In other words: with interpolation, we want to estimate values <em>between</em> already known values, and with extrapolation, we want to estimate values <em>outside</em> already known values.</p>
@@ -163,7 +163,7 @@
 <p><span class="math display">(0, 4)\qquad (2, 4)\qquad (4, 1).</span></p>
 <p>The example points can be visualized as follows.</p>
 <figure>
-<img src="example-data.png" class="width-medium" alt="Example Points" />
+<img src="example-data.png" class="width-medium themed" alt="Example Points" />
 <figcaption aria-hidden="true">Example Points</figcaption>
 </figure>
 <h3 id="direct-interpolation">Direct Interpolation</h3>
@@ -283,12 +283,12 @@ P(x) = 4 \frac{p_0(x)}{p_0(0)} + 4 \frac{p_1(x)}{p_1(2)} + 1 \frac{p_2(x)}{p_2(4
 <h3 id="runges-phenomenon">Runge’s Phenomenon</h3>
 <p>We have now seen that all polynomial interpolation methods for <span class="math inline">n + 1</span> data points result in the same unique polynomial of degree <span class="math inline">n</span>. All of the methods for polynomial interpolation were expressed in terms of a basis <span class="math inline">B</span> weighted by some coefficients. The interpolating polynomial for our previous example looks as follows.</p>
 <figure>
-<img src="interpolating-polynomial.png" class="width-medium" alt="Interpolating Polynomial of 3 Points" />
+<img src="interpolating-polynomial.png" class="width-medium themed" alt="Interpolating Polynomial of 3 Points" />
 <figcaption aria-hidden="true">Interpolating Polynomial of 3 Points</figcaption>
 </figure>
 <p>A problem that arises with polynomial interpolation is the interpolating function tends to oscillate more and more with more points added. This is called the <em>Runge’s phenomenon</em>. It limits the use cases where simple polynomial interpolation is appropriate.</p>
 <figure>
-<img src="runge-phenomenon.png" class="width-medium" alt="Interpolating Polynomial of 10 Points" />
+<img src="runge-phenomenon.png" class="width-medium themed" alt="Interpolating Polynomial of 10 Points" />
 <figcaption aria-hidden="true">Interpolating Polynomial of 10 Points</figcaption>
 </figure>
 <p>Another limitation of polynomial interpolation is that touching a single point causes a recalculation of all other points.</p>
@@ -307,7 +307,7 @@ P_n(x) &amp; x_{n-1} \le x \le x_n
 <h3 id="linear-splines">Linear Splines</h3>
 <p>A linear spline, as the name implies, describes first-degree polynomials of the form <span class="math inline">P(x) = c_0 + c_1 x</span>. Each linear polynomial has <span class="math inline">2</span> unkown parameters, our spline of <span class="math inline">n</span> piecewise polynomials for <span class="math inline">n + 1</span> data points thus has a total of <span class="math inline">2n</span> unknown parameters.</p>
 <figure>
-<img src="linear-spline.png" class="width-medium" alt="Linear Spline" />
+<img src="linear-spline.png" class="width-medium themed" alt="Linear Spline" />
 <figcaption aria-hidden="true">Linear Spline</figcaption>
 </figure>
 <p>The <em>continuity condition</em>, that consecutive polynomials to meet at some point, needs <span class="math inline">2n</span> free parameters to be fulfilled. Linear splines can thus only fulfill that condition.</p>
@@ -331,7 +331,7 @@ P_1(x) = 7 - \frac{3}{2}x &amp; 2 \le x \le 4
 <h3 id="quadratic-splines">Quadratic Splines</h3>
 <p>Quadratic polynomials add one more degree of freedom, and quadratic splines consequently have <span class="math inline">3n</span> unknown parameters. Again, we need <span class="math inline">2n</span> parameters for continuity, but we can now also specify that two consecutive polynomials should match in their first derivative.</p>
 <figure>
-<img src="quadratic-spline.png" class="width-medium" alt="Quadratic Spline" />
+<img src="quadratic-spline.png" class="width-medium themed" alt="Quadratic Spline" />
 <figcaption aria-hidden="true">Quadratic Spline</figcaption>
 </figure>
 <p>The <em>smoothness condition</em> needs <span class="math inline">n - 1</span> free parameters, because there are <span class="math inline">n - 1</span> “inner points” for <span class="math inline">n + 1</span> data points.</p>
@@ -363,7 +363,7 @@ P_1(x) = 13 - 6x + \frac{3}{4}x^2 &amp; 2 \le x \le 4
 <h3 id="cubic-splines">Cubic Splines</h3>
 <p>With another degree of freedom, we can specify that two consecutive polynomials share a common first and second derivative at the point they meet.</p>
 <figure>
-<img src="cubic-spline.png" class="width-medium" alt="Cubic Spline" />
+<img src="cubic-spline.png" class="width-medium themed" alt="Cubic Spline" />
 <figcaption aria-hidden="true">Cubic Spline</figcaption>
 </figure>
 <p>We now have <span class="math inline">4n</span> unknown parameters of which <span class="math inline">2n</span> are bound by the continuity condition.</p>

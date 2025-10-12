@@ -155,7 +155,7 @@
 <p><span class="math display">Y = P \cdot X</span></p>
 <p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
 <figure>
-<img src="redundancy.png" class="width-large" alt="Correlation and Redundancy (Shlens 2014)" />
+<img src="redundancy.png" class="width-large themed" alt="Correlation and Redundancy (Shlens 2014)" />
 <figcaption aria-hidden="true">Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
 </figure>
 <p>PCA comes with assumptions:</p>
@@ -166,13 +166,13 @@
 <p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
 <figure>
-<img src="distribution.png" class="width-medium" alt="Two-Dimensional Example Distribution" />
+<img src="distribution.png" class="width-medium themed" alt="Two-Dimensional Example Distribution" />
 <figcaption aria-hidden="true">Two-Dimensional Example Distribution</figcaption>
 </figure>
 <p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
 <figure>
-<img src="data.png" class="width-medium" alt="Raw Example Data" />
+<img src="data.png" class="width-medium themed" alt="Raw Example Data" />
 <figcaption aria-hidden="true">Raw Example Data</figcaption>
 </figure>
 <h2 id="standardization">Standardization</h2>
@@ -182,14 +182,14 @@
 <p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
 <figure>
-<img src="data-standardized.png" class="width-medium" alt="Standardized Example Data" />
+<img src="data-standardized.png" class="width-medium themed" alt="Standardized Example Data" />
 <figcaption aria-hidden="true">Standardized Example Data</figcaption>
 </figure>
 <h2 id="covariance-matrix">Covariance Matrix</h2>
 <p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
 <p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
 <figure>
-<img src="covariance.png" class="width-medium" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
+<img src="covariance.png" class="width-medium themed" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
 <figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
 </figure>
 <p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
@@ -199,7 +199,7 @@
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
 <p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
 <figure>
-<img src="covariance.gif" class="width-medium" alt="Covariance Intuition" />
+<img src="covariance.gif" class="width-medium themed" alt="Covariance Intuition" />
 <figcaption aria-hidden="true">Covariance Intuition</figcaption>
 </figure>
 <div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
@@ -215,7 +215,7 @@
 </span></p>
 <p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
 <figure>
-<img src="covariance-transform.gif" class="width-medium" alt="Applying the Linear Transformation to a Vector" />
+<img src="covariance-transform.gif" class="width-medium themed" alt="Applying the Linear Transformation to a Vector" />
 <figcaption aria-hidden="true">Applying the Linear Transformation to a Vector</figcaption>
 </figure>
 <h2 id="eigendecomposition">Eigendecomposition</h2>
@@ -275,13 +275,13 @@ P =
 </span></p>
 <p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
 <figure>
-<img src="pca-projection.gif" class="width-medium" alt="Applying the PCA Transformation" />
+<img src="pca-projection.gif" class="width-medium themed" alt="Applying the PCA Transformation" />
 <figcaption aria-hidden="true">Applying the PCA Transformation</figcaption>
 </figure>
 <p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
 <p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
 <figure>
-<img src="explained-variance.png" class="width-medium" alt="Explained Variance by Component" />
+<img src="explained-variance.png" class="width-medium themed" alt="Explained Variance by Component" />
 <figcaption aria-hidden="true">Explained Variance by Component</figcaption>
 </figure>
 <p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
@@ -295,7 +295,7 @@ P =
 \right)
 </span></p>
 <figure>
-<img src="dimensionality-reduction.gif" class="width-medium" alt="Dimensionality Reduction Transformation" />
+<img src="dimensionality-reduction.gif" class="width-medium themed" alt="Dimensionality Reduction Transformation" />
 <figcaption aria-hidden="true">Dimensionality Reduction Transformation</figcaption>
 </figure>
 <p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
