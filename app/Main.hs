@@ -29,8 +29,6 @@ main = do
     -- Compile Styles
     match "assets/style.css" $
       compile $ compressCssCompiler >>= compileTemplateItem >>= makeItem
-    match "assets/theme.css" $
-      compile $ compressCssCompiler >>= compileTemplateItem >>= makeItem
 
     -- Compile Bibliography
     match "assets/csl/*.csl" $ compile cslCompiler

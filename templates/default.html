@@ -5,19 +5,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <script>
+    <script data-cfasync="false">
+        /** A safe, no-throw storage wrapper.
+         *  - Uses localStorage if it’s writable.
+         *  - Falls back to an in-memory Map (lost on reload) if not.
+         *  API: storage.get(key, fallback), storage.set(key, value), storage.remove(key)
+         */
+        const storage = (() => {
+            try {
+                const s = window.localStorage;
+                const probe = "__probe__" + Math.random();
+                s.setItem(probe, "1"); s.removeItem(probe);   // verify writability
+                return {
+                    get: (k, fallback = null) => s.getItem(k) ?? fallback,
+                    set: (k, v) => { try { s.setItem(k, v); } catch { } },
+                    remove: (k) => { try { s.removeItem(k); } catch { } },
+                };
+            } catch {
+                const mem = new Map();                        // ephemeral fallback
+                return {
+                    get: (k, fallback = null) => mem.has(k) ? mem.get(k) : fallback,
+                    set: (k, v) => { mem.set(k, v); },
+                    remove: (k) => { mem.delete(k); },
+                };
+            }
+        })();
+
         (function () {
             const KEY = "theme";                 // "light" | "dark" | null (system/auto)
-            const saved = localStorage.getItem(KEY);
+            const saved = storage.get(KEY);
             const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
             const theme = saved || (prefersDark ? "dark" : "light");
             document.documentElement.setAttribute("data-theme", theme);
             document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
         })();
     </script>
-    <style>
-        $partial("assets/theme.css")$
-    </style>
     <link rel="manifest" href="/assets/manifest/manifest.json">
     <link rel="alternate" type="application/rss+xml" title="$title$" href="$site$/atom.xml">
     <link rel="canonical" href="$site$$url$">
@@ -79,8 +101,8 @@
 
             // --- Helpers -------------------------------------------------------------
             const osTheme = () => (darkMq.matches ? "dark" : "light");
-            const getSaved = () => localStorage.getItem(KEY); // "light" | "dark" | null
-            const save = (v) => (v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY));
+            const getSaved = () => storage.get(KEY); // "light" | "dark" | null
+            const save = (v) => (v ? storage.set(KEY, v) : storage.remove(KEY));
             const effective = () => getSaved() || osTheme();
 
             const applyTheme = (theme) => {

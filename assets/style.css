@@ -108,9 +108,6 @@
                  0 5px 15px rgba(0, 0, 0, .5),
                  0 5px 15px rgba(0, 0, 0, .4);
 
-  background-color: var(--color-background);
-  color: var(--color-text);
-
   /* Adapt syntax highlighting colors */
   --color-syntax-generic: #e0e0e0;
   --color-syntax-keyword: #82aaff;
@@ -356,7 +353,7 @@ table {
 
 /* ==========================================================================
    Presets
-   ========================================================================== */
+   ========================================================================= */
 
 html {
   height: 100%; /* Keep footer at bottom */
@@ -425,7 +422,7 @@ main {
 }
 
 #home, #article {
-  transform: translateY(var(--spacing-1)); /* Start state for the slideIn animation */
+  transform: translateY(var(--spacing-0)); /* Start state for the slideIn animation */
   animation: fadeIn .5s ease-in forwards, slideIn .75s ease-out forwards;
 }
 
@@ -435,7 +432,7 @@ main {
 }
 
 @keyframes slideIn {
-  from { transform: translateY(var(--spacing-1)); }
+  from { transform: translateY(var(--spacing-0)); }
   to { transform: translateY(0); }
 }
 
