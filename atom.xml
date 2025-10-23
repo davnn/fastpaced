@@ -10,8 +10,133 @@
         <email>muhrdavid+atom@gmail.com</email>
         
     </author>
-    <updated>2024-10-06T00:00:00Z</updated>
+    <updated>2025-10-23T00:00:00Z</updated>
     <entry>
+    <title>Meaningful work</title>
+    <link href="https://fastpaced.com/articles/meaningful-work/" />
+    <id>https://fastpaced.com/articles/meaningful-work/</id>
+    <published>2025-10-23</published>
+    <updated>2025-10-23T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/meaningful-work/">
+    <header>
+        <h1 itemprop="name headline">Meaningful work</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Meaningful work can be understood as activity that adds value to society. Work adds value to society when its outcomes enhance what that specific society values - whether socially, materially, or environmentally. This article proposes a concise definition of meaningful work grounded in societal value creation.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">October 23, 2025</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        
+        <p>After reading about <a href="https://en.wikipedia.org/wiki/Bullshit_Jobs">Bullshit Jobs</a>, a rant about meaningless jobs, I wanted to find a concise, useful definition of meaningful work. Surprisingly, I found none that were concise and generic, which motivated this short article.</p>
+<p>The first assumption is that meaningful work comprises activities that contribute to society.
+There is not one uniform “society”, but rather an aggregate of people who share a common spatial, cultural, or social context.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+Each society values different aspects of life – material, social, or environmental – and thus defines “contribution” differently.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Societies might value, for example:</p>
+<ol type="1">
+<li><em>Outcomes that improve human well-being</em> - those directly addressing aspects of <a href="https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs">Maslow’s hierarchy of needs</a>.</li>
+<li><em>Outcomes that create economic value</em> - producing goods or services people need or want <span class="citation" data-cites="menghwarCreatingSharedValue2021">(Menghwar and Daood 2021)</span>.</li>
+<li><em>Outcomes that promote sustainability</em> - preserving or enhancing the capacity of future generations to thrive.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+</ol>
+<p>The second assumption is that people in a society (as customers, directly or indirectly) pay for goods and services that enhance these valued aspects.
+To make this abstract notion of societal value more operational, we can borrow from lean manufacturing – a discipline that rigorously distinguishes between value-adding and wasteful activity from the customer’s perspective:</p>
+<blockquote>
+<p>Value can only be defined by the ultimate customer. It is only meaningful when expressed in terms of a specific product (a good, a service, or a combination) which meets the customer’s needs at a specific price and at a specific time. – <span class="citation" data-cites="womackLeanThinkingBanish2003">(Womack and Jones 2003)</span></p>
+</blockquote>
+<p>In lean thinking, all work is categorized as either <em>value-added</em> (directly transforming a product or service in ways the customer values) or <em>non-value-added</em> (supporting or wasteful activity that does not directly add value).
+Obviously, the value a product or service generates must outweigh its cost, which can be visualized as follows:</p>
+<figure>
+<img src="value-cost-waste.png" class="width-medium themed caption" alt="The relationship of value, cost and waste (Hines, Holweg, and Rich 2004)." />
+<figcaption aria-hidden="true">The relationship of value, cost and waste <span class="citation" data-cites="hinesLearningEvolveReview2004">(Hines, Holweg, and Rich 2004)</span>.</figcaption>
+</figure>
+<p>This diagram illustrates two ways in which work can create societal value.
+First, by reducing waste, meaningful work lowers the cost of producing valuable goods or services, making them more accessible to society.
+Second, by developing customer value, meaningful work enhances the usefulness of those outputs, thereby increasing their benefit to society.</p>
+<p>In this view, these two directions - cost reduction and value enhancement - describe the full spectrum of how work can be meaningful.</p>
+<blockquote>
+<p>Meaningful work can be defined as work that directly adds value to society or reduces the cost of products and services that add value to society.</p>
+</blockquote>
+<p>And now, back to my <em><del>bullshit</del> meaningful job</em>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hinesLearningEvolveReview2004" class="csl-entry" role="listitem">
+Hines, Peter, Matthias Holweg, and Nick Rich. 2004. <span>“Learning to Evolve: <span>A</span> Review of Contemporary Lean Thinking.”</span> <em>International Journal of Operations &amp; Production Management</em> 24 (10): 994–1011. <a href="https://doi.org/10.1108/01443570410558049">https://doi.org/10.1108/01443570410558049</a>.
+</div>
+<div id="ref-menghwarCreatingSharedValue2021" class="csl-entry" role="listitem">
+Menghwar, Prem Sagar, and Antonio Daood. 2021. <span>“Creating Shared Value: <span>A</span> Systematic Review, Synthesis and Integrative Perspective.”</span> <em>International Journal of Management Reviews</em> 23 (4): 466–85. <a href="https://doi.org/10.1111/ijmr.12252">https://doi.org/10.1111/ijmr.12252</a>.
+</div>
+<div id="ref-womackLeanThinkingBanish2003" class="csl-entry" role="listitem">
+Womack, James P., and Daniel T. Jones. 2003. <em>Lean <span>Thinking</span>: <span>Banish Waste</span> and <span>Create Wealth</span> in <span>Your Corporation</span>, <span>Revised</span> and <span>Updated</span></em>. New York: Free Press.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>See the definition of <a href="https://en.wikipedia.org/wiki/Society">Society</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This perspective fundamentally differentiates work from personal endeavors: while hobbies or self-improvement may be meaningful to the individual, work gains its meaning from producing outcomes that matter beyond the self – outcomes recognized as valuable by others within a shared social context.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The <a href="https://www.ipcc.ch/reports/">IPCC</a> reports motivate such outcomes.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/meaningful-work/"; this.page.identifier = "/articles/meaningful-work/"; this.page.title = "Meaningful work";};
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+</script>
+]]></summary>
+</entry>
+<entry>
     <title>The importance of local development</title>
     <link href="https://fastpaced.com/articles/local-development/" />
     <id>https://fastpaced.com/articles/local-development/</id>
@@ -521,7 +646,7 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 <p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
 <p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
 <figure>
-<img src="covariance.png" class="width-medium themed" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
+<img src="covariance.png" class="width-medium themed caption" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
 <figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
 </figure>
 <p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
