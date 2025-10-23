@@ -914,7 +914,7 @@ main {
   display: block;
   padding-top: .25em;
   font-size: var(--font-size-2);
-  text-align: left;
+  text-align: center;
   color: var(--color-text-secondary);
 }
 
