@@ -1158,7 +1158,7 @@ main {
 
   #home > #post-list h2 {
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
   }
 
