@@ -5,47 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <script data-cfasync="false">
-        /** A safe, no-throw storage wrapper.
-         *  - Uses localStorage if it’s writable.
-         *  - Falls back to an in-memory Map (lost on reload) if not.
-         *  API: storage.get(key, fallback), storage.set(key, value), storage.remove(key)
-         */
-        const storage = (() => {
-            try {
-                const s = window.localStorage;
-                const probe = "__probe__" + Math.random();
-                s.setItem(probe, "1"); s.removeItem(probe);   // verify writability
-                return {
-                    get: (k, fallback = null) => s.getItem(k) ?? fallback,
-                    set: (k, v) => { try { s.setItem(k, v); } catch { } },
-                    remove: (k) => { try { s.removeItem(k); } catch { } },
-                };
-            } catch {
-                const mem = new Map();                        // ephemeral fallback
-                return {
-                    get: (k, fallback = null) => mem.has(k) ? mem.get(k) : fallback,
-                    set: (k, v) => { mem.set(k, v); },
-                    remove: (k) => { mem.delete(k); },
-                };
-            }
-        })();
+    <link rel="preload" href="/assets/fonts/eb-garamond-subset.woff2" as="font" type="font/woff2" crossorigin>
+    <script data-cfasync=false>(function(){let key=`theme`,root=document.documentElement,media=typeof window.matchMedia==`function`?window.matchMedia(`(prefers-color-scheme: dark)`):{matches:!1},storage=null,preference=null;try{storage=window.localStorage;let saved=storage.getItem(key);(saved===`light`||saved===`dark`)&&(preference=saved)}catch{storage=null}let apply=()=>{let theme=preference||(media.matches?`dark`:`light`);root.setAttribute(`data-theme`,theme),root.style.colorScheme=theme};apply(),document.addEventListener(`DOMContentLoaded`,()=>{let controls=[`system`,`light`,`dark`].map(name=>[name,document.getElementById(`theme-`+name)]).filter(([,element])=>element),updateControls=()=>{controls.forEach(([name,element])=>{element.setAttribute(`aria-current`,String(name===(preference||`system`)))})};controls.forEach(([name,element])=>{element.addEventListener(`click`,event=>{event.preventDefault(),preference=name===`system`?null:name;
+// Keep the in-memory preference if persistent storage fails.
+try{preference?storage?.setItem(key,preference):storage?.removeItem(key)}catch{storage=null}apply(),updateControls()})});let onSystemChange=()=>{preference===null&&apply()};media.addEventListener?media.addEventListener(`change`,onSystemChange):media.addListener&&media.addListener(onSystemChange),updateControls()})})();</script>
 
-        (function () {
-            const KEY = "theme";                 // "light" | "dark" | null (system/auto)
-            const saved = storage.get(KEY);
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            const theme = saved || (prefersDark ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-            document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
-        })();
-    </script>
     <link rel="manifest" href="/assets/manifest/manifest.json">
-    <link rel="alternate" type="application/rss+xml" title="Principal component analysis" href="https://fastpaced.com/atom.xml">
+    <link rel="alternate" type="application/atom+xml" title="Principal component analysis" href="https://fastpaced.com/atom.xml">
     <link rel="canonical" href="https://fastpaced.com/articles/principal-component-analysis/">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fastpaced.disqus.com" crossorigin>
+    
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.7/dist/katex.min.css">
+    
     <title>Principal component analysis</title>
     <meta name="description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
     <meta property="og:url" content="https://fastpaced.com/articles/principal-component-analysis/">
@@ -55,30 +26,9 @@
     <meta property="og:description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
     <meta property="og:image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            "@id": "https://fastpaced.com",
-            "name": "fastpaced",
-            "description": "A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning and software engineering leader in Austria.",
-            "author": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "creator": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "publisher": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "inLanguage": "en-US"
-        }
+        {"@context":"https://schema.org","@id":"https://fastpaced.com","@type":"Blog","author":{"@type":"Person","name":"David Muhr"},"description":"A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning and software engineering leader in Austria.","inLanguage":"en-US","name":"fastpaced"}
     </script>
-    <style>
-        @font-face{font-family:'EB Garamond';font-style:normal;font-weight:400 800;font-display:swap;src:url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}:root{--color-brand:#b71c1c;--color-brand-dark:#7f0000;--color-text:rgba(0,0,0,.82);--color-text-secondary:rgba(0,0,0,.54);--color-tap-highlight:rgba(0,0,0,.075);--color-syntax-generic:black;--color-syntax-keyword:blue;--color-syntax-keyword-secondary:#000080;--color-syntax-comment:grey;--color-syntax-number:blue;--color-syntax-string:darkred;--color-syntax-error:red;--color-background:#fff;--color-surface:#eee;--color-divider:rgba(0,0,0,.12);--scrollbar-thumb:rgba(0,0,0,0.25);--elevation-1:0 10px 30px rgba(50,50,93,.1),0 5px 15px rgba(50,50,93,.15),0 5px 15px rgba(0,0,0,.1);--font-family-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--font-family-serif:"EB Garamond","Palatino","Georgia","Cambria","Times New Roman",serif;--font-family-mono:monospace;--font-size-1:.875rem;--font-size-2:1rem;--font-size-3:1.25rem;--font-size-4:1.5rem;--font-size-5:2rem;--font-size-6:3rem;--font-size-headline:4.5rem;--footer-height:30px;--header-width:400px;--header-height:85px;--logo-width:45px;--spacing-0:1rem;--spacing-1:1.5rem;--spacing-2:2.25rem;--spacing-3:3.375rem;--spacing-4:5.0625rem;--spacing-5:7.59375rem;--container-padding:1rem;--container-narrow:720px;--container-medium:1024px;--container-large:1160px;--measure-small:32em;--measure:35em;--zindex-navigation:100;--zindex-navigation-icon:101}[data-theme="dark"]{--color-brand:#ef5350;--color-brand-dark:#c62828;--color-text:rgba(255,255,255,0.87);--color-text-secondary:rgba(255,255,255,0.6);--color-tap-highlight:rgba(255,255,255,0.1);--color-background:#000;--color-surface:#222;--color-divider:rgba(255,255,255,.12);--scrollbar-thumb:rgba(255,255,255,0.25);--elevation-1:0 10px 30px rgba(50,50,50,0.6),0 5px 30px rgba(50,50,50,.5),0 5px 30px rgba(50,50,50,.4);--color-syntax-generic:#e0e0e0;--color-syntax-keyword:#82aaff;--color-syntax-keyword-secondary:#b2c7ff;--color-syntax-comment:#9aa0a6;--color-syntax-number:#add6ff;--color-syntax-string:#ffab91;--color-syntax-error:#ff6e6e;img.themed{filter:invert(1) hue-rotate(180deg)}}*,::before,::after{background-repeat:no-repeat;box-sizing:inherit}::before,::after{text-decoration:inherit;vertical-align:inherit}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}svg{fill:currentColor}audio,canvas,iframe,img,svg,video{vertical-align:middle}a,area,button,input,label,select,summary,textarea,[tabindex]{-ms-touch-action:manipulation;touch-action:manipulation}[hidden]{display:none}[aria-busy="true"]{cursor:progress}[aria-controls]{cursor:pointer}[aria-hidden="false"][hidden]:not(:focus){clip:rect(0,0,0,0);display:inherit;position:absolute}[aria-disabled]{cursor:default}body,h1,h2,h3,h4,h5,h6,p,blockquote,pre,hr,dl,dd,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}button,select{border:none;outline:none;font-family:inherit}a,button,input,select,textarea{-webkit-tap-highlight-color:transparent}blockquote,q{quotes:none}blockquote::before,blockquote::after{content:none}table{border-spacing:0}html{height:100%;box-sizing:border-box;cursor:default}body{position:relative;min-height:100%;font-family:var(--font-family-serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;text-rendering:optimizeLegibility;background-color:var(--color-background);color:var(--color-text)}*::-webkit-scrollbar{width:5px;height:5px}*::-webkit-scrollbar-track{border:1px solid var(--color-divider)}*::-webkit-scrollbar-thumb{border-radius:5px;background-color:var(--scrollbar-thumb)}a{color:var(--color-brand);text-decoration:none;-webkit-tap-highlight-color:var(--color-tap-highlight)}a:visited{color:var(--color-brand)}a:active{color:var(--color-brand-dark)}label{-webkit-tap-highlight-color:var(--color-tap-highlight)}img{max-width:100%}pre{font-family:monospace;hyphens:none}main{padding:var(--spacing-2) 0}#home,#article{transform:translateY(var(--spacing-0));animation:fadeIn .5s ease-in forwards,slideIn .75s ease-out forwards}@keyframes fadeIn{from{opacity:0.01}to{opacity:1}}@keyframes slideIn{from{transform:translateY(var(--spacing-0))}to{transform:translateY(0)}}.sourceCode{font-size:var(--font-size-2)}.sourceCode a{color:var(--color-syntax-generic)}.sourceCode .va,.sourceCode .kw,.sourceCode .im,.sourceCode .cf{color:var(--color-syntax-keyword)}.sourceCode .in,.sourceCode .an,.sourceCode .cv,.sourceCode .do,.sourceCode .co{color:var(--color-syntax-comment)}.sourceCode .dv,.sourceCode .bn,.sourceCode .fl{color:var(--color-syntax-number)}.sourceCode .cn,.sourceCode .sc,.sourceCode .vs,.sourceCode .ss,.sourceCode .ch,.sourceCode .st{color:var(--color-syntax-string)}.sourceCode .al,.sourceCode .wa,.sourceCode .er{color:var(--color-syntax-error)}.sourceCode .dt{font-weight:bold}.sourceCode .bu,.sourceCode .fu{color:var(--color-syntax-keyword-secondary)}#site-header{z-index:1;margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);height:var(--header-height);font-family:var(--font-family-sans);letter-spacing:.1em;line-height:2}#site-header>nav{display:flex;position:relative;align-items:center;justify-content:space-between;height:100%}#site-header .site-navigation{position:absolute;top:0;right:0;left:0;margin:calc(var(--container-padding)/2) calc(var(--container-padding)/-2) 0 calc(var(--container-padding)/-2);padding:var(--spacing-2);pointer-events:none;transform:scale(.95);transform-origin:100% 0;transition-duration:.25s;transition-property:transform,opacity;background-color:var(--color-surface);box-shadow:var(--elevation-1);opacity:0;overflow:hidden;z-index:var(--zindex-navigation)}#site-header .site-navigation>div:first-child{margin-bottom:var(--spacing-0)}.site-navigation a[aria-current="true"]{font-weight:bold;text-decoration:underline}#site-header h4{margin-bottom:.5em}#site-header .site-logo{display:block;width:36px;height:36px}#site-header .site-logo>svg{transition:fill .25s}#site-header .site-logo>svg:active{fill:var(--color-brand-dark)}#site-header #nav-toggle+label{width:36px;height:36px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label>.icon-close{display:none}#site-header #nav-toggle:checked~.site-navigation{transform:none;opacity:1;pointer-events:auto}#site-header #nav-toggle:checked+label{z-index:var(--zindex-navigation-icon)}#site-header #nav-toggle:checked+label>.icon-close{display:inline-block}#site-header #nav-toggle:checked+label>.icon-open{display:none}#home>#intro,#home>#post-list{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding)}#home>#intro>h1{max-width:10em;margin-bottom:var(--spacing-3);color:var(--color-text);font-size:var(--font-size-6);line-height:1.2}#home>#intro>p{max-width:var(--measure-small);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-3);hyphens:auto}#home>#intro span{display:block;margin-top:var(--spacing-1)}#home>#post-list{position:relative;padding-top:var(--spacing-3)}#home>#post-list ul>li:not(:last-child){border-bottom:1px solid var(--color-divider)}#home>#post-list h2{display:flex;flex-direction:column;margin:1.5rem 0;font-weight:normal}#home>#post-list h2>span{display:flex;justify-content:space-between;min-width:225px;padding-top:.5rem;font-family:var(--font-family-sans);font-size:var(--font-size-1)}#home>#post-list h2>a{font-size:var(--font-size-5)}#home>#post-list h2>a,#home>#post-list h2>span>a{transition-duration:.25s;transition-property:color}#home>#post-list h2>span>a{color:var(--color-text-secondary)}#home>#post-list h2 a:hover,#home>#post-list h2 a:focus{color:var(--color-brand)}#article{font-size:var(--font-size-3);color:var(--color-text)}#article .noscript{font-size:80%;color:var(--color-text-secondary)}#article article{margin:0 auto;padding-right:var(--container-padding);padding-left:var(--container-padding);max-width:var(--container-medium);hyphens:auto}#article .abstract{font-size:var(--font-size-4);max-width:var(--measure);padding-bottom:var(--spacing-1);color:var(--color-text)}#article .meta{display:flex;flex-direction:column;padding-top:.5rem;padding-bottom:var(--spacing-1);border-top:1px solid var(--color-divider);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-1)}#article ul,#article ol{padding-left:1.05em}#article ul{list-style-type:disc}#article ol{list-style-type:decimal}#article pre{padding:.3rem .5rem;border:1px solid var(--color-divider);border-radius:2px;line-height:1.5;overflow:auto}#article p{text-align:justify}#article img{display:block}#article hr{border-color:var(--color-divider)}#article p,#article ol,#article ul,#article blockquote,#article hr{max-width:var(--measure)}#article header>h1{max-width:52.5rem;padding-bottom:var(--spacing-2)}#article .content>*:first-child{margin-top:0}#article .content>*+*{margin-top:var(--font-size-3)}#article .content>h1,#article .content>h2,#article .content>h3,#article .content>h4,#article .content>h5,#article .content>h6{margin-top:1em}#article .content>div,#article .content>section,#article .content>figure,#article .content>blockquote,#article .content>table,#article .content>ul,#article .content>ol{margin-top:var(--font-size-3);margin-bottom:var(--font-size-3)}#article .content>ul>li:not(:first-child),#article .content>ol>li:not(:first-child){margin-top:var(--font-size-1)}#article .content>figure{padding-top:1em;padding-bottom:1em}#article .content>blockquote{position:relative;padding-left:1.05em;font-style:italic}#article .content>blockquote::before{position:absolute;top:0;left:0;width:3px;height:100%;background-color:var(--color-divider);content:""}#article .content>blockquote cite{display:block;margin-top:.5rem;font-size:var(--font-size-2);font-style:normal;font-weight:bold}#article .content>blockquote cite::before{content:"— "}#article .appendix,#article .references,#article .footnotes{padding-top:var(--font-size-3);border-top:1px solid var(--color-divider);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-2);word-wrap:break-word}#article .citation,#article .references>div{font-style:italic}#article .citation{font-size:90%}#article .appendix *+*,#article .references *+*,#article .footnotes *+*{margin-top:var(--font-size-1)}#article .appendix>h4:not(:first-child){margin-top:var(--font-size-3)}#article .references::before,#article .footnotes::before{display:block;margin-bottom:1rem;font-weight:bold}#article .references::before{content:"References"}#article .footnotes::before{content:"Footnotes"}#article .footnotes hr{display:none}#article .references~.footnotes,#article .references~.appendix,#article .footnotes~.appendix{padding-top:0;border-top:0}#article table{font-size:var(--font-size-2)}#article thead{border-bottom:1px solid var(--color-text);vertical-align:bottom}#article td,#article th{padding:.5rem}#article #disqus_thread{margin-top:var(--spacing-5);padding-top:var(--spacing-2);border-top:1px dashed var(--color-brand)}#article figcaption{display:block;padding-top:.25em;font-size:var(--font-size-2);text-align:center;color:var(--color-text-secondary)}#article figcaption::before{font-weight:bold;content:"Figure: "}#article img:not(.caption)+figcaption{display:none}#article .math{font-size:1.05rem;color:var(--color-text)}#article .math.display{display:block;overflow:auto}#article .math.inline .katex{white-space:normal}#article .content h1,#article .content h2,#article .content h3,#article .content h4,#article .content h5,#article .content h6,#article .content figcaption,#article .content .references,#article .content .footnotes,#article .content .appendix{max-width:43.75rem}#article article.centered figcaption{margin:auto}#article article.centered header>h1{margin:auto;text-align:center}#article article.centered .content>*{margin-right:auto;margin-left:auto}#article article.centered .meta,#article article.centered .abstract{text-align:center;margin:auto}#article article.centered .meta{justify-content:center}#article .width-small{width:17.5rem}#article .width-medium{width:21.875rem}#article .width-large{width:26.25rem}#article .width-full{width:43.75rem}#article .width-small,#article .width-medium,#article .width-large,#article .width-full{max-width:100%;margin:auto}#article .definition,#article .proof,#article .theorem{max-width:var(--measure);padding:1em 0 1em 0;border:solid var(--color-divider);border-width:1px 0 1px 0}#article .definition>*+*,#article .proof>*+*,#article .theorem>*+*{margin-top:var(--font-size-1)}#article .definition::before,#article .proof::before,#article .theorem::before{float:left;font-weight:bold;padding-right:1em}#article .definition::before{content:"Definition"}#article .proof::before{content:"Proof"}#article .theorem::before{content:"Theorem"}#error{min-height:calc(100vh - var(--header-height));background-image:url(/assets/images/404.svg);background-repeat:repeat;background-size:var(--font-size-5);text-align:center;animation:bgslide 15s linear infinite;overflow:hidden}#error p{margin-right:-10vh;transform:rotate(90deg);color:var(--color-brand);font-size:45vh;font-weight:bold;user-select:none}@media screen and (max-aspect-ratio:5/6){#error p{margin-right:-10vw;font-size:45vw}}@keyframes bgslide{from{background-position:0 0}to{background-position:100% 0}}@media screen and (max-width:599px){#article .meta p>span:first-child{display:none}}@media screen and (min-width:600px){#site-header .site-navigation{left:auto;padding:var(--spacing-2) var(--spacing-5) var(--spacing-2) var(--spacing-2)}#article{font-size:var(--font-size-3)}#article .abstract{font-size:var(--font-size-4)}#article .meta{flex-direction:row;justify-content:flex-end}#article .meta p>span:first-child{font-weight:bold}#article .meta>*:not(:last-child){margin-right:1rem;padding-right:1rem}}@media screen and (min-width:47.75rem){:root{--container-padding:2rem}#article article:not(.centered) .width-small{margin-left:13.125rem}#article article:not(.centered) .width-medium{margin-left:10.9375rem}#article article:not(.centered) .width-large{margin-left:8.75rem}#article article:not(.centered) .width-full{margin-left:0}}@media screen and (min-width:900px){#home>#intro,#home>#post-list{max-width:var(--container-large)}#home>#intro>h1{font-size:var(--font-size-headline)}#home>#post-list h2{flex-direction:row;align-items:center;justify-content:space-between}#home>#post-list h2>a{color:var(--color-text-secondary)}#article header>h1{font-size:var(--font-size-6)}#error{animation-duration:60s}}@media screen and (min-width:1680px){main{padding:var(--spacing-3) 0 var(--spacing-2) var(--header-width)}#site-header{position:fixed;top:0;left:0;width:var(--header-width);height:100%;border-right:1px solid var(--color-divider)}#site-header>nav{flex-direction:column;align-items:initial}#site-header .site-logo{margin:var(--spacing-3) auto 0 auto;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle+label{display:none}#site-header .site-navigation{position:initial;box-shadow:initial;pointer-events:initial;background-color:var(--color-background);opacity:1}#error{min-height:100vh;animation-duration:90s}}@media screen and (min-width:1920px){#home{padding-top:var(--spacing-4)}}@media screen and (min-width:2560px){#home{padding-top:var(--spacing-5)}}
-    </style>
+    <style>@font-face{font-family:EB Garamond;font-style:normal;font-weight:400 800;font-display:optional;src:url(/assets/fonts/eb-garamond-subset.woff2)format("woff2");unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}:root{--color-brand:#b71c1c;--color-brand-dark:#7f0000;--color-text:#000000d1;--color-text-secondary:#0000008a;--color-tap-highlight:#00000013;--color-syntax-generic:black;--color-syntax-keyword:blue;--color-syntax-keyword-secondary:navy;--color-syntax-comment:grey;--color-syntax-number:blue;--color-syntax-string:darkred;--color-syntax-error:red;--color-background:#fff;--color-surface:#eee;--color-divider:#0000001f;--scrollbar-thumb:#00000040;--elevation-1:0 10px 30px #32325d1a,0 5px 15px #32325d26,0 5px 15px #0000001a;--font-family-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--font-family-serif:"EB Garamond","Palatino","Georgia","Cambria","Times New Roman",serif;--font-family-mono:monospace;--font-size-1:.875rem;--font-size-2:1rem;--font-size-3:1.25rem;--font-size-4:1.5rem;--font-size-5:2rem;--font-size-6:3rem;--font-size-headline:4.5rem;--footer-height:30px;--header-width:400px;--header-height:85px;--logo-width:45px;--spacing-0:1rem;--spacing-1:1.5rem;--spacing-2:2.25rem;--spacing-3:3.375rem;--spacing-4:5.0625rem;--spacing-5:7.59375rem;--container-padding:1rem;--container-narrow:720px;--container-medium:1024px;--container-large:1160px;--measure-small:32em;--measure:35em;--zindex-navigation:100;--zindex-navigation-icon:101}[data-theme=dark]{--color-brand:#ef5350;--color-brand-dark:#c62828;--color-text:#ffffffde;--color-text-secondary:#fff9;--color-tap-highlight:#ffffff1a;--color-background:#000;--color-surface:#222;--color-divider:#ffffff1f;--scrollbar-thumb:#ffffff40;--elevation-1:0 10px 30px #32323299,0 5px 30px #32323280,0 5px 30px #32323266;--color-syntax-generic:#e0e0e0;--color-syntax-keyword:#82aaff;--color-syntax-keyword-secondary:#b2c7ff;--color-syntax-comment:#9aa0a6;--color-syntax-number:#add6ff;--color-syntax-string:#ffab91;--color-syntax-error:#ff6e6e;& img.themed{filter:invert()hue-rotate(180deg)}}*,:before,:after{box-sizing:inherit;background-repeat:no-repeat}:before,:after{text-decoration:inherit;vertical-align:inherit}article,aside,footer,header,nav,section{display:block}h1{margin:.67em 0;font-size:2em}hr{box-sizing:content-box;height:0;overflow:visible}svg{fill:currentColor}audio,canvas,iframe,img,svg,video{vertical-align:middle}a,area,button,input,label,select,summary,textarea,[tabindex]{-ms-touch-action:manipulation;touch-action:manipulation}[hidden]{display:none}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-hidden=false][hidden]:not(:focus){clip:rect(0,0,0,0);display:inherit;position:absolute}[aria-disabled]{cursor:default}body,h1,h2,h3,h4,h5,h6,p,blockquote,pre,hr,dl,dd,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}button,select{border:none;outline:none;font-family:inherit}a,button,input,select,textarea{-webkit-tap-highlight-color:transparent}blockquote,q{quotes:none}blockquote:before,blockquote:after{content:none}table{border-spacing:0}html{box-sizing:border-box;cursor:default;height:100%}body{min-height:100%;font-family:var(--font-family-serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;background-color:var(--color-background);color:var(--color-text);line-height:1.5;position:relative}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{border:1px solid var(--color-divider)}::-webkit-scrollbar-thumb{background-color:var(--scrollbar-thumb);border-radius:5px}a{color:var(--color-brand);-webkit-tap-highlight-color:var(--color-tap-highlight);text-decoration:none}a:visited{color:var(--color-brand)}a:active{color:var(--color-brand-dark)}label{-webkit-tap-highlight-color:var(--color-tap-highlight)}img{max-width:100%}pre{hyphens:none;font-family:monospace}main{padding:var(--spacing-2)0}.sourceCode{font-size:var(--font-size-2)}.sourceCode a{color:var(--color-syntax-generic)}.sourceCode .va,.sourceCode .kw,.sourceCode .im,.sourceCode .cf{color:var(--color-syntax-keyword)}.sourceCode .in,.sourceCode .an,.sourceCode .cv,.sourceCode .do,.sourceCode .co{color:var(--color-syntax-comment)}.sourceCode .dv,.sourceCode .bn,.sourceCode .fl{color:var(--color-syntax-number)}.sourceCode .cn,.sourceCode .sc,.sourceCode .vs,.sourceCode .ss,.sourceCode .ch,.sourceCode .st{color:var(--color-syntax-string)}.sourceCode .al,.sourceCode .wa,.sourceCode .er{color:var(--color-syntax-error)}.sourceCode .dt{font-weight:700}.sourceCode .bu,.sourceCode .fu{color:var(--color-syntax-keyword-secondary)}#site-header{z-index:1;padding-right:var(--container-padding);padding-left:var(--container-padding);height:var(--header-height);font-family:var(--font-family-sans);letter-spacing:.1em;margin:0 auto;line-height:2}#site-header>nav{justify-content:space-between;align-items:center;height:100%;display:flex;position:relative}#site-header .site-navigation{margin:calc(var(--container-padding)/2)calc(var(--container-padding)/-2)0 calc(var(--container-padding)/-2);padding:var(--spacing-2);pointer-events:none;visibility:hidden;transform-origin:100% 0;background-color:var(--color-surface);box-shadow:var(--elevation-1);opacity:0;z-index:var(--zindex-navigation);transition-property:transform,opacity;transition-duration:.25s;position:absolute;top:0;left:0;right:0;overflow:hidden;transform:scale(.95)}#site-header .site-navigation>div:first-child{margin-bottom:var(--spacing-0)}.site-navigation a[aria-current=true]{font-weight:700;text-decoration:underline}#site-header h4{margin-bottom:.5em}#site-header .site-logo{width:36px;height:36px;display:block}#site-header .site-logo>svg{transition:fill .25s}#site-header .site-logo>svg:active{fill:var(--color-brand-dark)}#site-header #nav-toggle+label{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;width:36px;height:36px}#site-header #nav-toggle+label>.icon-close{display:none}#site-header #nav-toggle:checked~.site-navigation{visibility:visible;opacity:1;pointer-events:auto;transform:none}#site-header #nav-toggle:checked+label{z-index:var(--zindex-navigation-icon)}#site-header #nav-toggle:checked+label>.icon-close{display:inline-block}#site-header #nav-toggle:checked+label>.icon-open{display:none}#home>#intro,#home>#post-list{padding-right:var(--container-padding);padding-left:var(--container-padding);margin:0 auto}#home>#intro>h1{max-width:10em;margin-bottom:var(--spacing-3);color:var(--color-text);font-size:var(--font-size-6);line-height:1.2}#home>#intro>p{max-width:var(--measure-small);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-3);hyphens:auto}#home>#intro span{margin-top:var(--spacing-1);display:block}#home>#post-list{padding-top:var(--spacing-3);position:relative}#home>#post-list ul>li:not(:last-child){border-bottom:1px solid var(--color-divider)}#home>#post-list h2{flex-direction:column;margin:1.5rem 0;font-weight:400;display:flex}#home>#post-list h2>span{min-width:225px;font-family:var(--font-family-sans);font-size:var(--font-size-1);justify-content:space-between;padding-top:.5rem;display:flex}#home>#post-list h2>a{font-size:var(--font-size-5)}#home>#post-list h2>a,#home>#post-list h2>span>a{transition-property:color;transition-duration:.25s}#home>#post-list h2>span>a{color:var(--color-text-secondary)}#home>#post-list h2 a:hover,#home>#post-list h2 a:focus{color:var(--color-brand)}#article{font-size:var(--font-size-3);color:var(--color-text)}#article .noscript{color:var(--color-text-secondary);font-size:80%}#article article{padding-right:var(--container-padding);padding-left:var(--container-padding);max-width:var(--container-medium);hyphens:auto;margin:0 auto}#article .abstract{font-size:var(--font-size-4);max-width:var(--measure);padding-bottom:var(--spacing-1);color:var(--color-text)}#article .meta{padding-top:.5rem;padding-bottom:var(--spacing-1);border-top:1px solid var(--color-divider);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-1);flex-direction:column;display:flex}#article ul,#article ol{padding-left:1.05em}#article ul{list-style-type:disc}#article ol{list-style-type:decimal}#article pre{border:1px solid var(--color-divider);border-radius:2px;padding:.3rem .5rem;line-height:1.5;overflow:auto}#article p{text-align:justify}#article img{height:auto;display:block}#article hr{border-color:var(--color-divider)}#article p,#article ol,#article ul,#article blockquote,#article hr{max-width:var(--measure)}#article header>h1{max-width:52.5rem;padding-bottom:var(--spacing-2)}#article .content>:first-child{margin-top:0}#article .content>*+*{margin-top:var(--font-size-3)}#article .content>h1,#article .content>h2,#article .content>h3,#article .content>h4,#article .content>h5,#article .content>h6{margin-top:1em}#article .content>div,#article .content>section,#article .content>figure,#article .content>blockquote,#article .content>table,#article .content>ul,#article .content>ol{margin-top:var(--font-size-3);margin-bottom:var(--font-size-3)}#article .content>ul>li:not(:first-child),#article .content>ol>li:not(:first-child){margin-top:var(--font-size-1)}#article .content>figure{padding-top:1em;padding-bottom:1em}#article .content>blockquote{padding-left:1.05em;font-style:italic;position:relative}#article .content>blockquote:before{background-color:var(--color-divider);content:"";width:3px;height:100%;position:absolute;top:0;left:0}#article .content>blockquote cite{font-size:var(--font-size-2);margin-top:.5rem;font-style:normal;font-weight:700;display:block}#article .content>blockquote cite:before{content:"— "}#article .appendix,#article .references,#article .footnotes{padding-top:var(--font-size-3);border-top:1px solid var(--color-divider);color:var(--color-text-secondary);font-family:var(--font-family-sans);font-size:var(--font-size-2);word-wrap:break-word}#article .citation,#article .references>div{font-style:italic}#article .citation{font-size:90%}#article .appendix *+*,#article .references *+*,#article .footnotes *+*{margin-top:var(--font-size-1)}#article .appendix>h4:not(:first-child){margin-top:var(--font-size-3)}#article .references:before,#article .footnotes:before{margin-bottom:1rem;font-weight:700;display:block}#article .references:before{content:"References"}#article .footnotes:before{content:"Footnotes"}#article .footnotes hr{display:none}#article .references~.footnotes,#article .references~.appendix,#article .footnotes~.appendix{border-top:0;padding-top:0}#article table{font-size:var(--font-size-2)}#article thead{border-bottom:1px solid var(--color-text);vertical-align:bottom}#article td,#article th{padding:.5rem}#article #disqus_thread{margin-top:var(--spacing-5);padding-top:var(--spacing-2);border-top:1px dashed var(--color-brand)}#article figcaption{font-size:var(--font-size-2);text-align:center;color:var(--color-text-secondary);padding-top:.25em;display:block}#article figcaption:before{content:"Figure: ";font-weight:700}#article img:not(.caption)+figcaption{display:none}#article .math{color:var(--color-text);font-size:1.05rem}#article .math.display{display:block;overflow:auto}#article .math.inline .katex{white-space:normal}#article .content h1,#article .content h2,#article .content h3,#article .content h4,#article .content h5,#article .content h6,#article .content figcaption,#article .content .references,#article .content .footnotes,#article .content .appendix{max-width:43.75rem}#article article.centered figcaption{margin:auto}#article article.centered header>h1{text-align:center;margin:auto}#article article.centered .content>*{margin-left:auto;margin-right:auto}#article article.centered .meta,#article article.centered .abstract{text-align:center;margin:auto}#article article.centered .meta{justify-content:center}#article .width-small{width:17.5rem}#article .width-medium{width:21.875rem}#article .width-large{width:26.25rem}#article .width-full{width:43.75rem}#article .width-small,#article .width-medium,#article .width-large,#article .width-full{max-width:100%;margin:auto}#article .definition,#article .proof,#article .theorem{max-width:var(--measure);border:solid var(--color-divider);border-width:1px 0;padding:1em 0}#article .definition>*+*,#article .proof>*+*,#article .theorem>*+*{margin-top:var(--font-size-1)}#article .definition:before,#article .proof:before,#article .theorem:before{float:left;padding-right:1em;font-weight:700}#article .definition:before{content:"Definition"}#article .proof:before{content:"Proof"}#article .theorem:before{content:"Theorem"}#error{min-height:calc(100vh - var(--header-height));background-image:url(/assets/images/404.svg);background-repeat:repeat;background-size:var(--font-size-5);text-align:center;animation:15s linear infinite bgslide;overflow:hidden}#error p{color:var(--color-brand);user-select:none;margin-right:-10vh;font-size:45vh;font-weight:700;transform:rotate(90deg)}@media screen and (aspect-ratio<=5/6){#error p{margin-right:-10vw;font-size:45vw}}@keyframes bgslide{0%{background-position:0 0}to{background-position:100% 0}}@media screen and (width<=599px){#article .meta p>span:first-child{display:none}}@media screen and (width>=600px){#site-header .site-navigation{padding:var(--spacing-2)var(--spacing-5)var(--spacing-2)var(--spacing-2);left:auto}#article{font-size:var(--font-size-3)}#article .abstract{font-size:var(--font-size-4)}#article .meta{flex-direction:row;justify-content:flex-end}#article .meta p>span:first-child{font-weight:700}#article .meta>:not(:last-child){margin-right:1rem;padding-right:1rem}}@media screen and (width>=47.75rem){:root{--container-padding:2rem}#article article:not(.centered) .width-small{margin-left:13.125rem}#article article:not(.centered) .width-medium{margin-left:10.9375rem}#article article:not(.centered) .width-large{margin-left:8.75rem}#article article:not(.centered) .width-full{margin-left:0}}@media screen and (width>=900px){#home>#intro,#home>#post-list{max-width:var(--container-large)}#home>#intro>h1{font-size:var(--font-size-headline)}#home>#post-list h2{flex-direction:row;justify-content:space-between;align-items:center}#home>#post-list h2>a{color:var(--color-text-secondary)}#article header>h1{font-size:var(--font-size-6)}#error{animation-duration:60s}}@media screen and (width>=1680px){main{padding:var(--spacing-3)0 var(--spacing-2)var(--header-width)}#site-header{width:var(--header-width);border-right:1px solid var(--color-divider);height:100%;position:fixed;top:0;left:0}#site-header>nav{align-items:initial;flex-direction:column}#site-header .site-logo{margin:var(--spacing-3)auto 0 auto;-webkit-tap-highlight-color:transparent}#site-header #nav-toggle,#site-header #nav-toggle+label{display:none}#site-header .site-navigation{position:initial;visibility:visible;box-shadow:initial;pointer-events:initial;background-color:var(--color-background);opacity:1}#error{min-height:100vh;animation-duration:90s}}@media screen and (width>=1920px){#home{padding-top:var(--spacing-4)}}@media screen and (width>=2560px){#home{padding-top:var(--spacing-5)}}#nav-toggle{opacity:0;width:1px;height:1px;position:absolute}#nav-toggle:focus-visible+label{outline-offset:4px;outline:2px solid}</style>
 </head>
 
 <body>
@@ -91,7 +41,7 @@
 </svg>
         </a>
 
-        <input type="checkbox" id="nav-toggle" hidden>
+        <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation" aria-controls="site-navigation">
         <label for="nav-toggle">
             <i class="icon-open"><svg fill="#000000" height="36" viewBox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none"/>
@@ -103,12 +53,12 @@
 </svg></i>
         </label>
 
-        <div class="site-navigation">
+        <div class="site-navigation" id="site-navigation">
             <div>
                 <h4>Theme</h4>
-                <a id="theme-system">System</a> |
-                <a id="theme-light">Light</a> |
-                <a id="theme-dark">Dark</a>
+                <a href="#" id="theme-system">System</a> |
+                <a href="#" id="theme-light">Light</a> |
+                <a href="#" id="theme-dark">Dark</a>
             </div>
 
             <div>
@@ -144,7 +94,7 @@
 
         <p class="date">
             <span>Published<br></span>
-            <time itemprop="datePublished dateModified">February 20, 2018</time>
+            <time datetime="2018-02-20" itemprop="datePublished dateModified">February 20, 2018</time>
         </p>
     </div>
 
@@ -155,7 +105,7 @@
 <p><span class="math display">Y = P \cdot X</span></p>
 <p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
 <figure>
-<img src="redundancy.png" class="width-large themed" alt="Correlation and Redundancy (Shlens 2014)" />
+<img src="/assets/derived/3832a2b1b68a6bae4cd8d99bcc9e8394e4d0e38cc01fde370411d2c9da0c1ec8.webp" class="width-large themed" loading="eager" width="602" height="252" alt="Correlation and Redundancy (Shlens 2014)" />
 <figcaption aria-hidden="true">Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
 </figure>
 <p>PCA comes with assumptions:</p>
@@ -166,13 +116,13 @@
 <p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
 <figure>
-<img src="distribution.png" class="width-medium themed" alt="Two-Dimensional Example Distribution" />
+<img src="/assets/derived/9a2dffeec3534f1375d8f84c05792b3bbfc97f9376db444e05a5516f16f28fec.webp" class="width-medium themed" loading="eager" width="360" height="283" alt="Two-Dimensional Example Distribution" />
 <figcaption aria-hidden="true">Two-Dimensional Example Distribution</figcaption>
 </figure>
 <p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
 <figure>
-<img src="data.png" class="width-medium themed" alt="Raw Example Data" />
+<img src="/assets/derived/e8b0e267600ecf3b07d90aa1b4c9fc842f9ef9f9b779948ce82a06af2a3c201c.webp" class="width-medium themed" loading="lazy" width="360" height="223" alt="Raw Example Data" />
 <figcaption aria-hidden="true">Raw Example Data</figcaption>
 </figure>
 <h2 id="standardization">Standardization</h2>
@@ -182,14 +132,14 @@
 <p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
 <figure>
-<img src="data-standardized.png" class="width-medium themed" alt="Standardized Example Data" />
+<img src="/assets/derived/b58b7475b7d89f6fba22986c553164d64eb9741517d0150d484d1f5d38411733.webp" class="width-medium themed" loading="lazy" width="360" height="223" alt="Standardized Example Data" />
 <figcaption aria-hidden="true">Standardized Example Data</figcaption>
 </figure>
 <h2 id="covariance-matrix">Covariance Matrix</h2>
 <p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
 <p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
 <figure>
-<img src="covariance.png" class="width-medium themed caption" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
+<img src="/assets/derived/bcc8f10becb01e8fac17c3de94f7c68c9aa013352c17993aef660f3321251cc8.webp" class="width-medium themed caption" loading="lazy" width="655" height="483" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
 <figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
 </figure>
 <p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
@@ -199,7 +149,7 @@
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
 <p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
 <figure>
-<img src="covariance.gif" class="width-medium themed" alt="Covariance Intuition" />
+<img src="/assets/derived/340ae1691276544a9eaa65431432b85110516b79d29b9d51ad67449516d2c291.webp" class="width-medium themed" loading="lazy" width="360" height="261" alt="Covariance Intuition" />
 <figcaption aria-hidden="true">Covariance Intuition</figcaption>
 </figure>
 <div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
@@ -215,7 +165,7 @@
 </span></p>
 <p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
 <figure>
-<img src="covariance-transform.gif" class="width-medium themed" alt="Applying the Linear Transformation to a Vector" />
+<img src="/assets/derived/90710661ce785dafc44df4494b39e5a6e4f8934d52e20e0edd63bb45650863cd.webp" class="width-medium themed" loading="lazy" width="360" height="223" alt="Applying the Linear Transformation to a Vector" />
 <figcaption aria-hidden="true">Applying the Linear Transformation to a Vector</figcaption>
 </figure>
 <h2 id="eigendecomposition">Eigendecomposition</h2>
@@ -275,13 +225,13 @@ P =
 </span></p>
 <p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
 <figure>
-<img src="pca-projection.gif" class="width-medium themed" alt="Applying the PCA Transformation" />
+<img src="pca-projection.gif" class="width-medium themed" loading="lazy" width="360" height="261" alt="Applying the PCA Transformation" />
 <figcaption aria-hidden="true">Applying the PCA Transformation</figcaption>
 </figure>
 <p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
 <p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
 <figure>
-<img src="explained-variance.png" class="width-medium themed" alt="Explained Variance by Component" />
+<img src="/assets/derived/ba266d917ce7239a570f31134d8a025bfe6abf580ebd8f0f644d02f39fc8aa1c.webp" class="width-medium themed" loading="lazy" width="528" height="362" alt="Explained Variance by Component" />
 <figcaption aria-hidden="true">Explained Variance by Component</figcaption>
 </figure>
 <p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
@@ -295,7 +245,7 @@ P =
 \right)
 </span></p>
 <figure>
-<img src="dimensionality-reduction.gif" class="width-medium themed" alt="Dimensionality Reduction Transformation" />
+<img src="/assets/derived/ddddac200c3d52e66c83c35b16439c9e8de4eb6fc61142cff7c478f5d53d35cb.webp" class="width-medium themed" loading="lazy" width="360" height="230" alt="Dimensionality Reduction Transformation" />
 <figcaption aria-hidden="true">Dimensionality Reduction Transformation</figcaption>
 </figure>
 <p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
@@ -333,112 +283,14 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
 
 </article>
 
-<script>
-    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-
-    /**
-     * Lazy loading disqus comments once the comment section is reached
-     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
-     */
-    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/principal-component-analysis/"; this.page.identifier = "/articles/principal-component-analysis/"; this.page.title = "Principal component analysis";};
-    var disqus_observer = new IntersectionObserver(function (entries) {
-        if (entries[0].isIntersecting) {
-            /* #region Code from Disqus */
-            (function () { // Function from Disqus
-                var d = document, s = d.createElement('script');
-                s.src = 'https://fastpaced.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-            /* #endregion Code from Disqus */
-            disqus_observer.disconnect();
-        }
-    }, {threshold: [0]});
-    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
-</script>
+<script>window.disqus_config=function(){this.page.url=document.querySelector(`link[rel="canonical"]`).href,this.page.identifier=new URL(this.page.url).pathname,this.page.title=document.querySelector(`h1`).textContent},(function(){let localHosts=[`localhost`,`127.0.0.1`,`::1`,`[::1]`],target=document.getElementById(`disqus_thread`);if(localHosts.includes(window.location.hostname)||!target||!(`IntersectionObserver`in window))return;let observer=new IntersectionObserver(function(entries){if(!entries.some(entry=>entry.isIntersecting))return;observer.disconnect();let script=document.createElement(`script`);script.src=`https://fastpaced.disqus.com/embed.js`,script.setAttribute(`data-timestamp`,String(Date.now())),document.head.appendChild(script)});observer.observe(target)})();</script>
 
     </main>
-    <script>
-        (function () {
-            const KEY = "theme";
-            const root = document.documentElement;
-            const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
+    
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.7/dist/katex.min.js"></script>
+<script>document.addEventListener(`DOMContentLoaded`,function(){window.katex&&document.querySelectorAll(`.math`).forEach(function(element){katex.render(element.textContent,element,{displayMode:element.classList.contains(`display`),throwOnError:!1})})});</script>
 
-            const links = {
-                system: document.getElementById("theme-system"),
-                light: document.getElementById("theme-light"),
-                dark: document.getElementById("theme-dark"),
-            };
-            if (!links.system || !links.light || !links.dark) return;
 
-            // --- Helpers -------------------------------------------------------------
-            const osTheme = () => (darkMq.matches ? "dark" : "light");
-            const getSaved = () => storage.get(KEY); // "light" | "dark" | null
-            const save = (v) => (v ? storage.set(KEY, v) : storage.remove(KEY));
-            const effective = () => getSaved() || osTheme();
-
-            const applyTheme = (theme) => {
-                root.setAttribute("data-theme", theme);
-                root.style.colorScheme = theme; // keep controls in sync
-            };
-
-            const updateUI = () => {
-                const saved = getSaved(); // null = system
-                Object.entries(links).forEach(([name, el]) => {
-                    const isActive = (name === "system" && saved === null) || saved === name;
-                    el.style.fontWeight = isActive ? "bold" : "";
-                    el.setAttribute("aria-current", isActive ? "true" : "false");
-                });
-            };
-
-            const setTheme = (value) => {
-                save(value);
-                applyTheme(value || osTheme());
-                updateUI();
-            };
-
-            // --- Init (no duplicate theme set; just sync UI and meta) --------------
-            applyTheme(effective()); // needed only to style the links (active)
-            updateUI();
-
-            // --- Respond to OS changes while in “system” mode ----------------------
-            const onOSChange = (e) => {
-                if (!getSaved()) {
-                    applyTheme(e.matches ? "dark" : "light");
-                    updateUI();
-                }
-            };
-            darkMq.addEventListener?.("change", onOSChange) ||
-                darkMq.addListener(onOSChange); // legacy support
-
-            // --- Click Handlers ----------------------------------------------------
-            Object.entries(links).forEach(([name, el]) => {
-                el.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    setTheme(name === "system" ? null : name);
-                });
-            });
-        })();
-    </script>
 </body>
 
 </html>
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"/>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
-<script defer>
-    document.addEventListener("DOMContentLoaded", function () {
-        var inline = document.getElementsByClassName("math inline");
-        var display = document.getElementsByClassName("math display");
-        setTimeout(function () {
-            for (var i = 0; i < inline.length; i++) {
-                katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
-            }
-            for (var j = 0; j < display.length; j++) {
-                katex.render(display[j].textContent, display[j], {displayMode: true, output: "html", throwOnError: false});
-            }
-        })
-    });
-</script>
-
