@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>fastpaced.com</title>
-    <subtitle><![CDATA[Data. Science. Code. Design. Thoughts.]]></subtitle>
     <link href="https://fastpaced.com/atom.xml" rel="self" />
     <link href="https://fastpaced.com" />
     <id>https://fastpaced.com/atom.xml</id>
@@ -11,57 +10,50 @@
         <email>muhrdavid+atom@gmail.com</email>
         
     </author>
-    <updated>2026-09-09T00:00:00Z</updated>
+    <updated>2025-10-23T00:00:00Z</updated>
     <entry>
-    <title>Data versioning should be boring</title>
-    <link href="https://fastpaced.com/articles/boring-data-versioning/" />
-    <id>https://fastpaced.com/articles/boring-data-versioning/</id>
-    <published>2026-09-09</published>
-    <updated>2026-09-09T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p>I want a fairly unremarkable thing from data versioning: check out an old Git commit and get the files that belong to it. Not the latest dataset. Not the model someone happens to have on their laptop. The files that belong to that commit.</p>
-<p>The usual answers are Git LFS or DVC. Both are reasonable, and both solve substantially more than a shell script that uploads a directory. But they make different decisions about the scope of data storage and where the additional machinery should live.</p>
-<p>I think those decisions are more interesting than the usual feature comparison.<a href="https://fastpaced.com/articles/boring-data-versioning/#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<h2 id="git-lfs-the-cost-of-another-service">Git LFS, the cost of another service</h2>
-<p>Git LFS fits closely into Git’s existing workflow. Its clean filter replaces file contents with a pointer when adding them to Git; its smudge filter restores the contents when checking them out. A pre-push hook uploads the required LFS objects before publishing the commits.<a href="https://fastpaced.com/articles/boring-data-versioning/#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>That integration is useful. Once configured, the familiar Git commands do much of the work.
-The trade-off is that <strong>restoring a working tree now depends on an additional service</strong>.</p>
-<p>The normal LFS setup speaks to an LFS endpoint, not directly to an arbitrary S3 bucket. A hosting provider can operate that endpoint, or it can be self-hosted. Standalone custom transfer agents can also bypass the API server, so saying that LFS <em>always requires a dedicated server</em> would be inaccurate. But using storage you already control is not necessarily just a matter of supplying its bucket URL.<a href="https://fastpaced.com/articles/boring-data-versioning/#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<p>For a project whose Git host already provides suitable LFS storage, this can be an excellent arrangement. However, I would like to be able to choose whatever storage is practical without an additional service necessary to retrieve data.</p>
-<h2 id="dvc-and-the-cost-of-generality">DVC and the cost of generality</h2>
-<p>DVC addresses that storage requirement directly. It can keep data in S3, Azure Blob, GCS, or a local directory, while Git versions the metadata. It also supports pipelines, parameters, metrics, and experiments.<a href="https://fastpaced.com/articles/boring-data-versioning/#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<p>There is an important qualification here: <strong>none of those pipeline features is required for basic file versioning</strong>. A workflow built around <code>dvc add</code>, <code>dvc push</code>, and <code>dvc pull</code> is supported. However, it appears that a good portion of the engineering effort has been put into the larger feature set instead of making git-based large file storage the main priority.</p>
-<p>For me, the question is one of scope. I do not need a tool that can also describe how the data was produced. I only need to record which bytes belong to which commit. DVC can do that; but its apparant that it’s not the only thing it wants to do.</p>
-<h2 id="a-deliberately-boring-alternative">A deliberately boring alternative</h2>
-<p>That narrower responsibility is what I am trying to keep in <a href="https://github.com/getgat-dev/gat">Gat</a>: version large files with Git, leave the rest of the workflow alone. Essentially, I want a <strong>lock file and a highly-efficient engine to process data around it</strong>.</p>
-<p>Git commits <code>gat.lock</code>, which maps paths to content IDs. The bytes live in a cache and, when configured, an object store or a directory. <code>gat add</code> records content, <code>gat push</code> uploads it, and <code>gat pull</code> downloads and restores it.</p>
-<p>The entire engineering effort is deliberately spent on that problem. It is written in Rust, with a clear focus on keeping operations blazingly fast: massively parallel hashing, state-aware synchronization that avoids unnecessary rehashing, copy-on-write materialization to avoid copying cached files and many more optimizations.<a href="https://fastpaced.com/articles/boring-data-versioning/#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<p>I am not suggesting replacing an LFS or DVC setup that already works just because another tool is available. The difference I am aiming for is a narrower scope solving one problem well such that data versioning in Git becomes less of a chore.</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Disclosure: I built <a href="https://getgat.dev/">Gat</a>, a large-file versioning tool.<a href="https://fastpaced.com/articles/boring-data-versioning/#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>These operations are described in the <a href="https://github.com/git-lfs/git-lfs/blob/main/docs/spec.md">Git LFS specification</a>.<a href="https://fastpaced.com/articles/boring-data-versioning/#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Git LFS documents <a href="https://github.com/git-lfs/git-lfs/blob/main/docs/custom-transfers.md">custom transfer agents</a>, including operation without an API server.<a href="https://fastpaced.com/articles/boring-data-versioning/#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>See DVC’s <a href="https://doc.dvc.org/user-guide/data-management/remote-storage">remote-storage documentation</a> and <a href="https://doc.dvc.org/user-guide">user guide</a>.<a href="https://fastpaced.com/articles/boring-data-versioning/#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>See the <a href="https://github.com/getgat-dev/gat">Gat repository</a> and <a href="https://getgat.dev/guides/improving-performance">performance guide</a>. Reflinks require filesystem support and configuration; the default materialization strategy is an independent copy.<a href="https://fastpaced.com/articles/boring-data-versioning/#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>]]></summary>
-</entry>
-<entry>
     <title>Meaningful work</title>
     <link href="https://fastpaced.com/articles/meaningful-work/" />
     <id>https://fastpaced.com/articles/meaningful-work/</id>
     <published>2025-10-23</published>
     <updated>2025-10-23T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p>After reading about <a href="https://en.wikipedia.org/wiki/Bullshit_Jobs">Bullshit Jobs</a>, a rant about meaningless jobs, I wanted to find a concise, useful definition of meaningful work. Surprisingly, I found none that were concise and generic, which motivated this short article.</p>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/meaningful-work/">
+    <header>
+        <h1 itemprop="name headline">Meaningful work</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Meaningful work can be understood as activity that adds value to society. Work adds value to society when its outcomes enhance what that specific society values. This article proposes a concise definition of meaningful work grounded in societal value creation.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">October 23, 2025</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        
+        <p>After reading about <a href="https://en.wikipedia.org/wiki/Bullshit_Jobs">Bullshit Jobs</a>, a rant about meaningless jobs, I wanted to find a concise, useful definition of meaningful work. Surprisingly, I found none that were concise and generic, which motivated this short article.</p>
 <p>The first assumption is that meaningful work comprises activities that contribute to society.
-There is not one uniform “society”, but rather an aggregate of people who share a common spatial, cultural, or social context.<a href="https://fastpaced.com/articles/meaningful-work/#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
-Each society values different aspects of life – material, social, or environmental – and thus defines “contribution” differently.<a href="https://fastpaced.com/articles/meaningful-work/#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+There is not one uniform “society”, but rather an aggregate of people who share a common spatial, cultural, or social context.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+Each society values different aspects of life – material, social, or environmental – and thus defines “contribution” differently.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>Societies might value, for example:</p>
 <ol type="1">
 <li><em>Outcomes that improve human well-being</em> - those directly addressing aspects of <a href="https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs">Maslow’s hierarchy of needs</a>.</li>
 <li><em>Outcomes that create economic value</em> - producing goods or services people need or want <span class="citation" data-cites="menghwarCreatingSharedValue2021">(Menghwar and Daood 2021)</span>.</li>
-<li><em>Outcomes that promote sustainability</em> - preserving or enhancing the capacity of future generations to thrive.<a href="https://fastpaced.com/articles/meaningful-work/#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li><em>Outcomes that promote sustainability</em> - preserving or enhancing the capacity of future generations to thrive.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
 </ol>
 <p>The second assumption is that people in a society (as customers, directly or indirectly) pay for goods and services that enhance these valued aspects.
 To make this abstract notion of societal value more operational, we can borrow from lean manufacturing – a discipline that rigorously distinguishes between value-adding and wasteful activity from the customer’s perspective:</p>
@@ -71,7 +63,7 @@ To make this abstract notion of societal value more operational, we can borrow f
 <p>In lean thinking, all work is categorized as either <em>value-added</em> (directly transforming a product or service in ways the customer values) or <em>non-value-added</em> (supporting or wasteful activity that does not directly add value).
 Obviously, the value a product or service generates must outweigh its cost, which can be visualized as follows:</p>
 <figure>
-<img src="https://fastpaced.com/articles/meaningful-work/value-cost-waste.png" class="width-medium themed caption" loading="eager" width="659" height="389" alt="The relationship of value, cost and waste (Hines, Holweg, and Rich 2004)." />
+<img src="value-cost-waste.png" class="width-medium themed caption" alt="The relationship of value, cost and waste (Hines, Holweg, and Rich 2004)." />
 <figcaption aria-hidden="true">The relationship of value, cost and waste <span class="citation" data-cites="hinesLearningEvolveReview2004">(Hines, Holweg, and Rich 2004)</span>.</figcaption>
 </figure>
 <p>This diagram illustrates two ways in which work can create societal value.
@@ -96,11 +88,53 @@ Womack, James P., and Daniel T. Jones. 2003. <em>Lean <span>Thinking</span>: <sp
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>See the definition of <a href="https://en.wikipedia.org/wiki/Society">Society</a>.<a href="https://fastpaced.com/articles/meaningful-work/#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This perspective fundamentally differentiates work from personal endeavors: while hobbies or self-improvement may be meaningful to the individual, work gains its meaning from producing outcomes that matter beyond the self – outcomes recognized as valuable by others within a shared social context.<a href="https://fastpaced.com/articles/meaningful-work/#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The <a href="https://www.ipcc.ch/reports/">IPCC</a> reports motivate such outcomes.<a href="https://fastpaced.com/articles/meaningful-work/#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See the definition of <a href="https://en.wikipedia.org/wiki/Society">Society</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This perspective fundamentally differentiates work from personal endeavors: while hobbies or self-improvement may be meaningful to the individual, work gains its meaning from producing outcomes that matter beyond the self – outcomes recognized as valuable by others within a shared social context.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The <a href="https://www.ipcc.ch/reports/">IPCC</a> reports motivate such outcomes.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>]]></summary>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/meaningful-work/"; this.page.identifier = "/articles/meaningful-work/"; this.page.title = "Meaningful work";};
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+</script>
+]]></summary>
 </entry>
 <entry>
     <title>The importance of local development</title>
@@ -108,7 +142,35 @@ Womack, James P., and Daniel T. Jones. 2003. <em>Lean <span>Thinking</span>: <sp
     <id>https://fastpaced.com/articles/local-development/</id>
     <published>2024-10-06</published>
     <updated>2024-10-06T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p>A good developer experience (DX) increases productivity, reduces cognitive load, and improves developer satisfaction,
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/local-development/">
+    <header>
+        <h1 itemprop="name headline">The importance of local development</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Local development is crucial for efficient software development, it enables faster iteration, better debugging and ensures consistency between local and production environments.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">October  6, 2024</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        
+        <p>A good developer experience (DX) increases productivity, reduces cognitive load, and improves developer satisfaction,
 leading to higher code quality, faster onboarding, and talent retention.
 An easy-to-use local development environment might be the foundation for good DX.</p>
 <p>I regularly think back to the
@@ -127,7 +189,49 @@ entire story. The concept of <mark>DX-debt</mark> is equally relevant, yet it is
 <a href="https://github.com/GoogleContainerTools/skaffold">Skaffold</a>, <a href="https://github.com/tilt-dev/tilt">Tilt</a> or
 <a href="https://github.com/garden-io/garden">Garden</a> to spin-up entire clusters locally, or provide
 <a href="https://github.com/readme/guides/developer-onboarding">pseudo-local</a> development environments.
-It’s never been easier to provide a great developer experience. What do you think?</p>]]></summary>
+It’s never been easier to provide a great developer experience. What do you think?</p>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/local-development/"; this.page.identifier = "/articles/local-development/"; this.page.title = "The importance of local development";};
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+</script>
+]]></summary>
 </entry>
 <entry>
     <title>Beautiful interpolation</title>
@@ -135,10 +239,38 @@ It’s never been easier to provide a great developer experience. What do you th
     <id>https://fastpaced.com/articles/beautiful-interpolation/</id>
     <published>2018-03-01</published>
     <updated>2018-03-01T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p>Approximating continuously defined functions from given discrete data is an unavoidable task in various fields. Interpolation represents the relatively easiest approach, where an approximating function is constructed that has to perfectly agree with the given points.</p>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/beautiful-interpolation/">
+    <header>
+        <h1 itemprop="name headline">Beautiful interpolation</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Interpolation is the process of deriving a function from a set of data points so that the function passes through all the given points and can be used to estimate points in-between the given ones.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">March  1, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>Approximating continuously defined functions from given discrete data is an unavoidable task in various fields. Interpolation represents the relatively easiest approach, where an approximating function is constructed that has to perfectly agree with the given points.</p>
 <p>If <span class="math inline">x_0 \ldots x_n</span> and <span class="math inline">f(x_0) \ldots f(x_n)</span> are known and if <span class="math inline">x_0 &lt; x &lt; x_n</span>, then the estimated value of <span class="math inline">f(x)</span> is said to be an <em>Interpolation</em>. If <span class="math inline">x &lt; x_0</span> or <span class="math inline">x &gt; x_n</span> then the estimated value is said to be an <em>Extrapolation</em>.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/interpolation-extrapolation.png" class="width-medium themed" loading="eager" width="360" height="184" alt="Interpolation and Extrapolation" />
+<img src="interpolation-extrapolation.png" class="width-medium themed" alt="Interpolation and Extrapolation" />
 <figcaption aria-hidden="true">Interpolation and Extrapolation</figcaption>
 </figure>
 <p>In other words: with interpolation, we want to estimate values <em>between</em> already known values, and with extrapolation, we want to estimate values <em>outside</em> already known values.</p>
@@ -148,7 +280,7 @@ It’s never been easier to provide a great developer experience. What do you th
 <p><span class="math display">(0, 4)\qquad (2, 4)\qquad (4, 1).</span></p>
 <p>The example points can be visualized as follows.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/example-data.png" class="width-medium themed" loading="eager" width="360" height="238" alt="Example Points" />
+<img src="example-data.png" class="width-medium themed" alt="Example Points" />
 <figcaption aria-hidden="true">Example Points</figcaption>
 </figure>
 <h3 id="direct-interpolation">Direct Interpolation</h3>
@@ -208,7 +340,7 @@ It’s never been easier to provide a great developer experience. What do you th
 <p><span class="math display">P(x) = 4 + \frac{3}{4}x - \frac{3}{8}x^2</span></p>
 <p>Unfortunately, we have to invert the Vandermonde matrix to solve for the coefficients <span class="math inline">c_0, c_1 \ldots, c_n</span>. Let’s see if we can find a better basis to find the coefficients.</p>
 <h3 id="lagrange-interpolation">Lagrange Interpolation</h3>
-<p>Lagrange polynomials are based on the beautiful idea that you could express the interpolating polynomial <span class="math inline">P</span> as a linear combination of polynomials <span class="math inline">p_0 \ldots p_n</span>, that individually fit a specific given point.<a href="https://fastpaced.com/articles/beautiful-interpolation/#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Lagrange polynomials are based on the beautiful idea that you could express the interpolating polynomial <span class="math inline">P</span> as a linear combination of polynomials <span class="math inline">p_0 \ldots p_n</span>, that individually fit a specific given point.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>We will arrive at the same unique polynomial that we have calculated before but with a completely different way of constructing it.</p>
 <p>Our goal is to create multiple polynomials that are <span class="math inline">1</span> at a specific point <span class="math inline">(x_i, y_i)</span> and <span class="math inline">0</span> at all other given points.</p>
 <p>Let’s create a polynomial <span class="math inline">p(x) = (x - 0)(x - 2)(x - 4)</span> that is <span class="math inline">0</span> at all values for <span class="math inline">x</span>. We will now create polynomials that individually cancel out one of the terms.</p>
@@ -229,7 +361,7 @@ P(x) = 4 \frac{p_0(x)}{p_0(0)} + 4 \frac{p_1(x)}{p_1(2)} + 1 \frac{p_2(x)}{p_2(4
 <h3 id="newton-interpolation">Newton Interpolation</h3>
 <p>One of the most important features of Newton’s interpolation method is that we can gradually increase the interpolated data points without recomputing what is already computed.</p>
 <p>When an additional point <span class="math inline">(x_{n+1}, y_{n+1})</span> is to be used, all previous basis polynomials and their corresponding coefficients remain unchanged, and we only need to obtain a new basis polynomial of degree <span class="math inline">n + 1</span>.</p>
-<p>Let’s calculate the Newton interpolation for our example.<a href="https://fastpaced.com/articles/beautiful-interpolation/#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Let’s calculate the Newton interpolation for our example.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p><span class="math display">
 \begin{aligned}
 4 = c_0 + c_1(0 - 0) + c_2(0 - 0)(0 - 2) \\
@@ -268,12 +400,12 @@ P(x) = 4 \frac{p_0(x)}{p_0(0)} + 4 \frac{p_1(x)}{p_1(2)} + 1 \frac{p_2(x)}{p_2(4
 <h3 id="runges-phenomenon">Runge’s Phenomenon</h3>
 <p>We have now seen that all polynomial interpolation methods for <span class="math inline">n + 1</span> data points result in the same unique polynomial of degree <span class="math inline">n</span>. All of the methods for polynomial interpolation were expressed in terms of a basis <span class="math inline">B</span> weighted by some coefficients. The interpolating polynomial for our previous example looks as follows.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/interpolating-polynomial.png" class="width-medium themed" loading="lazy" width="360" height="238" alt="Interpolating Polynomial of 3 Points" />
+<img src="interpolating-polynomial.png" class="width-medium themed" alt="Interpolating Polynomial of 3 Points" />
 <figcaption aria-hidden="true">Interpolating Polynomial of 3 Points</figcaption>
 </figure>
 <p>A problem that arises with polynomial interpolation is the interpolating function tends to oscillate more and more with more points added. This is called the <em>Runge’s phenomenon</em>. It limits the use cases where simple polynomial interpolation is appropriate.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/runge-phenomenon.png" class="width-medium themed" loading="lazy" width="360" height="215" alt="Interpolating Polynomial of 10 Points" />
+<img src="runge-phenomenon.png" class="width-medium themed" alt="Interpolating Polynomial of 10 Points" />
 <figcaption aria-hidden="true">Interpolating Polynomial of 10 Points</figcaption>
 </figure>
 <p>Another limitation of polynomial interpolation is that touching a single point causes a recalculation of all other points.</p>
@@ -292,7 +424,7 @@ P_n(x) &amp; x_{n-1} \le x \le x_n
 <h3 id="linear-splines">Linear Splines</h3>
 <p>A linear spline, as the name implies, describes first-degree polynomials of the form <span class="math inline">P(x) = c_0 + c_1 x</span>. Each linear polynomial has <span class="math inline">2</span> unkown parameters, our spline of <span class="math inline">n</span> piecewise polynomials for <span class="math inline">n + 1</span> data points thus has a total of <span class="math inline">2n</span> unknown parameters.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/linear-spline.png" class="width-medium themed" loading="lazy" width="360" height="238" alt="Linear Spline" />
+<img src="linear-spline.png" class="width-medium themed" alt="Linear Spline" />
 <figcaption aria-hidden="true">Linear Spline</figcaption>
 </figure>
 <p>The <em>continuity condition</em>, that consecutive polynomials to meet at some point, needs <span class="math inline">2n</span> free parameters to be fulfilled. Linear splines can thus only fulfill that condition.</p>
@@ -316,7 +448,7 @@ P_1(x) = 7 - \frac{3}{2}x &amp; 2 \le x \le 4
 <h3 id="quadratic-splines">Quadratic Splines</h3>
 <p>Quadratic polynomials add one more degree of freedom, and quadratic splines consequently have <span class="math inline">3n</span> unknown parameters. Again, we need <span class="math inline">2n</span> parameters for continuity, but we can now also specify that two consecutive polynomials should match in their first derivative.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/quadratic-spline.png" class="width-medium themed" loading="lazy" width="360" height="238" alt="Quadratic Spline" />
+<img src="quadratic-spline.png" class="width-medium themed" alt="Quadratic Spline" />
 <figcaption aria-hidden="true">Quadratic Spline</figcaption>
 </figure>
 <p>The <em>smoothness condition</em> needs <span class="math inline">n - 1</span> free parameters, because there are <span class="math inline">n - 1</span> “inner points” for <span class="math inline">n + 1</span> data points.</p>
@@ -330,11 +462,11 @@ P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 &amp; 1 &amp;= b_0 +
 </span></p>
 <p>We need another equation (<span class="math inline">n - 1 = 1</span>) to make sure that two consecutive polynomials have a common first derivative.</p>
 <p><span class="math display">
-P_0'(x_i) = P_1'(x_i)\qquad a_1 + 4 a_2 = b_1 + 4 b_2
+P_0&#39;(x_i) = P_1&#39;(x_i)\qquad a_1 + 4 a_2 = b_1 + 4 b_2
 </span></p>
 <p>Now, we have a total of <span class="math inline">5</span> equations for <span class="math inline">3n = 6</span> unknown parameters. For us to be able to solve the equations we have <span class="math inline">3n - 2n - (n - 1) = 1</span> free parameter left. We can choose one more solvable constraint of our liking, for example, that the first derivative should be <span class="math inline">0</span> at the last point.</p>
 <p><span class="math display">
-P_1'(x_n) = 0\qquad 0 = b_1 + 8 b_2
+P_1&#39;(x_n) = 0\qquad 0 = b_1 + 8 b_2
 </span></p>
 <p>Our quadratic spline is now defined as</p>
 <p><span class="math display">
@@ -348,7 +480,7 @@ P_1(x) = 13 - 6x + \frac{3}{4}x^2 &amp; 2 \le x \le 4
 <h3 id="cubic-splines">Cubic Splines</h3>
 <p>With another degree of freedom, we can specify that two consecutive polynomials share a common first and second derivative at the point they meet.</p>
 <figure>
-<img src="https://fastpaced.com/articles/beautiful-interpolation/cubic-spline.png" class="width-medium themed" loading="lazy" width="360" height="238" alt="Cubic Spline" />
+<img src="cubic-spline.png" class="width-medium themed" alt="Cubic Spline" />
 <figcaption aria-hidden="true">Cubic Spline</figcaption>
 </figure>
 <p>We now have <span class="math inline">4n</span> unknown parameters of which <span class="math inline">2n</span> are bound by the continuity condition.</p>
@@ -363,15 +495,15 @@ P_1(x_{i + 1}) &amp;= b_0 + b_1 x_{i + 1} + b_2 x_{i + 1}^2 + b_3 x_{i + 1}^3 &a
 <p>A further <span class="math inline">2(n - 1)</span> parameters are bound by the smoothness condition for the first and second derivatives.</p>
 <p><span class="math display">
 \begin{aligned}
-P_0'(x_i) &amp;= P_1'(x_i) &amp; a_1 + 4 a_2 + 12 a_3 &amp;= b_1 + 4 b_2 + 12 b_3 \\
-P_0''(x_i) &amp;= P_1''(x_i) &amp; 2 a_2 + 12 a_3 &amp;= 2 b_2 + 12 b_3
+P_0&#39;(x_i) &amp;= P_1&#39;(x_i) &amp; a_1 + 4 a_2 + 12 a_3 &amp;= b_1 + 4 b_2 + 12 b_3 \\
+P_0&#39;&#39;(x_i) &amp;= P_1&#39;&#39;(x_i) &amp; 2 a_2 + 12 a_3 &amp;= 2 b_2 + 12 b_3
 \end{aligned}
 </span></p>
 <p>We now have <span class="math inline">4n - 2n - 2(n - 1) = 2</span> parameters left for constraints of our choice, which is often exactly what we want for spline interpolation.</p>
 <p><span class="math display">
 \begin{aligned}
-P_0''(x_0) &amp;= 0 &amp; a_1 = 0 \\
-P_1''(x_n) &amp;= 0 &amp; b_1 + 8 b_2 + 48 b_3 = 0
+P_0&#39;&#39;(x_0) &amp;= 0 &amp; a_1 = 0 \\
+P_1&#39;&#39;(x_n) &amp;= 0 &amp; b_1 + 8 b_2 + 48 b_3 = 0
 \end{aligned}
 </span></p>
 <p>Our cubic spline is now defined as</p>
@@ -385,19 +517,61 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 </span></p>
 <p>The following constraints are often used for the two free parameters:</p>
 <ul>
-<li><em>Natural</em> cubic splines have their second derivative at the first and last point set to zero. <span class="math inline">P_0''(x_0) = 0</span> and <span class="math inline">P_n''(x_n) = 0</span>.</li>
-<li><em>Complete</em> cubic splines use the first derivative of the function to be interpolated if known <span class="math inline">P_0'(x_0) = f'(x_0)</span> and <span class="math inline">P_n'(x_n) = f'(x_n)</span></li>
-<li><em>Correct</em> cubic splines use the second derivative of the function to be interpolated if known <span class="math inline">P_0''(x_0) = f''(x_0)</span> and <span class="math inline">P_n''(x_n) = f''(x_n)</span>.</li>
+<li><em>Natural</em> cubic splines have their second derivative at the first and last point set to zero. <span class="math inline">P_0&#39;&#39;(x_0) = 0</span> and <span class="math inline">P_n&#39;&#39;(x_n) = 0</span>.</li>
+<li><em>Complete</em> cubic splines use the first derivative of the function to be interpolated if known <span class="math inline">P_0&#39;(x_0) = f&#39;(x_0)</span> and <span class="math inline">P_n&#39;(x_n) = f&#39;(x_n)</span></li>
+<li><em>Correct</em> cubic splines use the second derivative of the function to be interpolated if known <span class="math inline">P_0&#39;&#39;(x_0) = f&#39;&#39;(x_0)</span> and <span class="math inline">P_n&#39;&#39;(x_n) = f&#39;&#39;(x_n)</span>.</li>
 </ul>
-<p>Finally, we have covered all the basics about splines!<a href="https://fastpaced.com/articles/beautiful-interpolation/#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>Finally, we have covered all the basics about splines!<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>MathTheBeautiful offers a series of videos on polynomial interpolation that contains an <a href="https://www.youtube.com/watch?v=XK4G5Ndy-m8">introduction to Lagrange polynomials</a>.<a href="https://fastpaced.com/articles/beautiful-interpolation/#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Ruye Wang wrote a more in-depth tutorial on Newton interpolation and other interpolation methods, which can be found <a href="http://fourier.eng.hmc.edu/e176/lectures/ch7/node4.html">here</a>.<a href="https://fastpaced.com/articles/beautiful-interpolation/#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>For more information about splines, the University of Houston offers a <a href="https://www.math.uh.edu/~jingqiu/math4364/spline.pdf">great tutorial</a> on how to calculate different splines.<a href="https://fastpaced.com/articles/beautiful-interpolation/#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>MathTheBeautiful offers a series of videos on polynomial interpolation that contains an <a href="https://www.youtube.com/watch?v=XK4G5Ndy-m8">introduction to Lagrange polynomials</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ruye Wang wrote a more in-depth tutorial on Newton interpolation and other interpolation methods, which can be found <a href="http://fourier.eng.hmc.edu/e176/lectures/ch7/node4.html">here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>For more information about splines, the University of Houston offers a <a href="https://www.math.uh.edu/~jingqiu/math4364/spline.pdf">great tutorial</a> on how to calculate different splines.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>]]></summary>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/beautiful-interpolation/"; this.page.identifier = "/articles/beautiful-interpolation/"; this.page.title = "Beautiful interpolation";};
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+</script>
+]]></summary>
 </entry>
 <entry>
     <title>Principal component analysis</title>
@@ -405,60 +579,88 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
     <id>https://fastpaced.com/articles/principal-component-analysis/</id>
     <published>2018-02-20</published>
     <updated>2018-02-20T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p>A data set of real-valued measurements can be described by a matrix <span class="math inline">X</span>. We have some number of measurements <span class="math inline">n</span>, each with a number of attributes <span class="math inline">m</span>. Thus, <span class="math inline">X</span> can be represented as a Matrix <span class="math inline">\mathbb{R}^{n \times m}</span>.</p>
+    <summary type="html"><![CDATA[<article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
+    <meta itemprop="isPartOf" content="https://fastpaced.com">
+    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/">
+    <header>
+        <h1 itemprop="name headline">Principal component analysis</h1>
+    </header>
+
+    
+    <div class="abstract" itemprop="abstract">
+        Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.
+    </div>
+    
+
+    <div class="meta">
+        <p class="author" itemprop="author creator publisher" itemscope itemtype="https://schema.org/Person">
+            <span>Author<br></span>
+            <span itemprop="name">David Muhr</span>
+        </p>
+
+        <p class="date">
+            <span>Published<br></span>
+            <time itemprop="datePublished dateModified">February 20, 2018</time>
+        </p>
+    </div>
+
+    <div class="content" itemprop="articleBody">
+        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
+        <p>A data set of real-valued measurements can be described by a matrix <span class="math inline">X</span>. We have some number of measurements <span class="math inline">n</span>, each with a number of attributes <span class="math inline">m</span>. Thus, <span class="math inline">X</span> can be represented as a Matrix <span class="math inline">\mathbb{R}^{n \times m}</span>.</p>
 <p>PCA is about finding a new basis that expresses our data in a lower-dimensional space. That is, we want to find a transformation matrix <span class="math inline">P</span> to transform <span class="math inline">X</span> into a lower-dimensional matrix <span class="math inline">Y</span> that provides a reasonable characterization of the complete data set.</p>
 <p><span class="math display">Y = P \cdot X</span></p>
 <p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/redundancy.png" class="width-large themed" loading="eager" width="602" height="252" alt="Correlation and Redundancy (Shlens 2014)" />
+<img src="redundancy.png" class="width-large themed" alt="Correlation and Redundancy (Shlens 2014)" />
 <figcaption aria-hidden="true">Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
 </figure>
 <p>PCA comes with assumptions:</p>
 <ol type="1">
-<li><em>Linearity &amp; Orthogonality</em> - we use covariance, a linear relationship, as a measure of redundancy and are restricted to express the data set in an orthogonal basis<a href="https://fastpaced.com/articles/principal-component-analysis/#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li><em>Linearity &amp; Orthogonality</em> - we use covariance, a linear relationship, as a measure of redundancy and are restricted to express the data set in an orthogonal basis<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><em>Greater Variance Means Greater Information</em>, directions with greater variance are assumed to represent a more interesting structure</li>
 </ol>
 <p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/distribution.png" class="width-medium themed" loading="eager" width="360" height="283" alt="Two-Dimensional Example Distribution" />
+<img src="distribution.png" class="width-medium themed" alt="Two-Dimensional Example Distribution" />
 <figcaption aria-hidden="true">Two-Dimensional Example Distribution</figcaption>
 </figure>
 <p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/data.png" class="width-medium themed" loading="lazy" width="360" height="223" alt="Raw Example Data" />
+<img src="data.png" class="width-medium themed" alt="Raw Example Data" />
 <figcaption aria-hidden="true">Raw Example Data</figcaption>
 </figure>
 <h2 id="standardization">Standardization</h2>
 <p>Standardization is also known as feature scaling, and there are <a href="https://en.wikipedia.org/wiki/Feature_scaling">different ways to scale variables</a>. It’s on us to decide if there are features that should contribute more or less.</p>
 <p>In our example, we know that the data is normally distributed, and we want to scale our variables to mean <span class="math inline">0</span> and standard deviation <span class="math inline">1</span>, also known as <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">standard normalization</a>: <span class="math inline">X - \mu \over \sigma</span>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb3-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize</span><span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> (<span class="fu">A</span> <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>)<span class="sc">/</span><span class="fu">StandardDeviation</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize</span><span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> (<span class="fu">A</span> <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>)<span class="sc">/</span><span class="fu">StandardDeviation</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>;</span></code></pre></div>
 <p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/data-standardized.png" class="width-medium themed" loading="lazy" width="360" height="223" alt="Standardized Example Data" />
+<img src="data-standardized.png" class="width-medium themed" alt="Standardized Example Data" />
 <figcaption aria-hidden="true">Standardized Example Data</figcaption>
 </figure>
 <h2 id="covariance-matrix">Covariance Matrix</h2>
 <p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
 <p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/covariance.png" class="width-medium themed caption" loading="lazy" width="655" height="483" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
+<img src="covariance.png" class="width-medium themed caption" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
 <figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
 </figure>
 <p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb5-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb5-1" aria-hidden="true" tabindex="-1"></a>covarianceMatrix<span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> <span class="fu">Module</span><span class="op">[{</span>Ats<span class="op">},</span></span>
-<span id="cb5-2"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb5-2" aria-hidden="true" tabindex="-1"></a>  Ats <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span># <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span>#<span class="op">]</span> &amp;<span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span><span class="fu">A</span><span class="op">]]</span>;</span>
-<span id="cb5-3"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb5-3" aria-hidden="true" tabindex="-1"></a>  Ats.(<span class="fu">Transpose</span> <span class="op">[</span>Ats<span class="op">]</span>)<span class="sc">/</span>(<span class="fu">Length</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span> <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covarianceMatrix<span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> <span class="fu">Module</span><span class="op">[{</span>Ats<span class="op">},</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Ats <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span># <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span>#<span class="op">]</span> &amp;<span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span><span class="fu">A</span><span class="op">]]</span>;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Ats.(<span class="fu">Transpose</span> <span class="op">[</span>Ats<span class="op">]</span>)<span class="sc">/</span>(<span class="fu">Length</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span> <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
 <p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/covariance.gif" class="width-medium themed" loading="lazy" width="360" height="261" alt="Covariance Intuition" />
+<img src="covariance.gif" class="width-medium themed" alt="Covariance Intuition" />
 <figcaption aria-hidden="true">Covariance Intuition</figcaption>
 </figure>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
-<p>An interesting thing about covariance matrices is that they define a specific linear transformation - a linear transformation in the directions of variance.<a href="https://fastpaced.com/articles/principal-component-analysis/#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Can you guess what the covariance matrix of our standardized data looks like?</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
+<p>An interesting thing about covariance matrices is that they define a specific linear transformation - a linear transformation in the directions of variance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Can you guess what the covariance matrix of our standardized data looks like?</p>
 <p><span class="math display">
 \text{covmat} \approxeq
 \left(
@@ -470,11 +672,11 @@ P_1(x) = -2 + 9x - \frac{63}{16}x^2 + \frac{15}{32}x^3 &amp; 2 \le x \le 4
 </span></p>
 <p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/covariance-transform.gif" class="width-medium themed" loading="lazy" width="360" height="223" alt="Applying the Linear Transformation to a Vector" />
+<img src="covariance-transform.gif" class="width-medium themed" alt="Applying the Linear Transformation to a Vector" />
 <figcaption aria-hidden="true">Applying the Linear Transformation to a Vector</figcaption>
 </figure>
 <h2 id="eigendecomposition">Eigendecomposition</h2>
-<p>Eigenvectors are the directions along which a linear transformation acts by stretching/compressing or flipping space. Eigenvalues, on the other hand, determine the magnitude of the transformation.<a href="https://fastpaced.com/articles/principal-component-analysis/#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>Eigenvectors are the directions along which a linear transformation acts by stretching/compressing or flipping space. Eigenvalues, on the other hand, determine the magnitude of the transformation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <ol class="example" type="1">
 <li>Let <span class="math inline">A</span> be a square matrix, a scalar <span class="math inline">\lambda</span> is called <strong>Eigenvalue</strong> of <span class="math inline">A</span> if there is a <em>non-zero</em> vector <span class="math inline">v</span>, called an <strong>Eigenvector</strong>, such that <span class="math inline">Av = \lambda v</span>.</li>
 </ol>
@@ -513,12 +715,12 @@ v_1 = v_2
 \end{aligned}
 </span></p>
 <p>A solution for our eigenvectors thus is <span class="math inline">(-1, 1)</span> and <span class="math inline">(1, 1)</span> - the mysterious black arrows from the figure above! We can check our solution with:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb7-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Eigensystem</span><span class="op">[</span>covmat<span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Eigensystem</span><span class="op">[</span>covmat<span class="op">]</span></span></code></pre></div>
 <h2 id="principal-components">Principal Components</h2>
 <p>Principal components are defined in a way that the first principal component has the largest possible variance in a specific direction (that is, accounts for as much of the variability in the data as possible), and each succeeding component, in turn, has the highest variance possible under the constraint that it is orthogonal to the preceding components.</p>
 <p>We have to sort all eigenvalues in descending order and choose <span class="math inline">k</span> eigenvectors that correspond to the <span class="math inline">k</span> largest eigenvalues. The eigenvalues in the case of the covariance matrix represent the magnitude of variance.</p>
 <p>The <span class="math inline">k</span> chosen vectors are our principal components! Principal components are thus nothing more than sorted eigenvectors of the covariance matrix represented as a transformation matrix <span class="math inline">P</span>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb8-1"><a href="https://fastpaced.com/articles/principal-component-analysis/#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Transpose</span><span class="op">[</span><span class="fu">Eigenvectors</span><span class="op">[</span>covmat<span class="op">]]</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Transpose</span><span class="op">[</span><span class="fu">Eigenvectors</span><span class="op">[</span>covmat<span class="op">]]</span></span></code></pre></div>
 <p><span class="math display">
 P =
 \left(
@@ -530,13 +732,13 @@ P =
 </span></p>
 <p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/pca-projection.gif" class="width-medium themed" loading="lazy" width="360" height="261" alt="Applying the PCA Transformation" />
+<img src="pca-projection.gif" class="width-medium themed" alt="Applying the PCA Transformation" />
 <figcaption aria-hidden="true">Applying the PCA Transformation</figcaption>
 </figure>
 <p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
 <p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/explained-variance.png" class="width-medium themed" loading="lazy" width="528" height="362" alt="Explained Variance by Component" />
+<img src="explained-variance.png" class="width-medium themed" alt="Explained Variance by Component" />
 <figcaption aria-hidden="true">Explained Variance by Component</figcaption>
 </figure>
 <p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
@@ -550,7 +752,7 @@ P =
 \right)
 </span></p>
 <figure>
-<img src="https://fastpaced.com/articles/principal-component-analysis/dimensionality-reduction.gif" class="width-medium themed" loading="lazy" width="360" height="230" alt="Dimensionality Reduction Transformation" />
+<img src="dimensionality-reduction.gif" class="width-medium themed" alt="Dimensionality Reduction Transformation" />
 <figcaption aria-hidden="true">Dimensionality Reduction Transformation</figcaption>
 </figure>
 <p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
@@ -565,11 +767,53 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>We are restricted to an orthogonal basis because the covariance matrix, on which our calculations are based on, is symmetric. Check out <a href="https://stats.stackexchange.com/a/130884">this StackExchange answer</a> for more information.<a href="https://fastpaced.com/articles/principal-component-analysis/#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Vincent Spruyt wrote <a href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">an article</a> about the geometric interpretation of covariance matrices.<a href="https://fastpaced.com/articles/principal-component-analysis/#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>There are excellent introductions to eigenvalues and eigenvectors available online, see <a href="http://setosa.io/ev/eigenvectors-and-eigenvalues/">Explained Visually</a>, <a href="https://math.stackexchange.com/questions/23312/what-is-the-importance-of-eigenvalues-eigenvectors/23325">Stackexchange</a>, <a href="https://www.youtube.com/watch?v=PFDu9oVAE-g">Youtube</a><a href="https://fastpaced.com/articles/principal-component-analysis/#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>We are restricted to an orthogonal basis because the covariance matrix, on which our calculations are based on, is symmetric. Check out <a href="https://stats.stackexchange.com/a/130884">this StackExchange answer</a> for more information.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Vincent Spruyt wrote <a href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">an article</a> about the geometric interpretation of covariance matrices.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>There are excellent introductions to eigenvalues and eigenvectors available online, see <a href="http://setosa.io/ev/eigenvectors-and-eigenvalues/">Explained Visually</a>, <a href="https://math.stackexchange.com/questions/23312/what-is-the-importance-of-eigenvalues-eigenvectors/23325">Stackexchange</a>, <a href="https://www.youtube.com/watch?v=PFDu9oVAE-g">Youtube</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>]]></summary>
+</section>
+
+        <section class="appendix">
+            <h4>Updates and Corrections</h4>
+            <p>The source for this article is available at Github. If you want to suggest a change, please <a
+                href="https://github.com/davnn/fastpaced-articles/issues/new">create an issue on GitHub</a>.</p>
+
+            <h4>Citations and Reuse</h4>
+            <p>Figures, and text are licensed under Creative Commons Attribution <a
+                href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>, unless noted otherwise. The figures
+                that have
+                been reused from other sources don't fall under this license and can be recognized by a note in their
+                caption.</p>
+        </section>
+        <div id="disqus_thread"></div>
+    </div>
+
+</article>
+
+<script>
+    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    /**
+     * Lazy loading disqus comments once the comment section is reached
+     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
+     */
+    var disqus_config = function () {this.page.url = "https://fastpaced.com/articles/principal-component-analysis/"; this.page.identifier = "/articles/principal-component-analysis/"; this.page.title = "Principal component analysis";};
+    var disqus_observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+            /* #region Code from Disqus */
+            (function () { // Function from Disqus
+                var d = document, s = d.createElement('script');
+                s.src = 'https://fastpaced.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /* #endregion Code from Disqus */
+            disqus_observer.disconnect();
+        }
+    }, {threshold: [0]});
+    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+</script>
+]]></summary>
 </entry>
 
 </feed>

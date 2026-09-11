@@ -1,11 +1,11 @@
 {
   "name": "fastpaced",
   "short_name": "fastpaced",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#fff",
   "background_color": "#fff",
-  "description": "Articles about data, science, code and design.",
+  "description": "{{ site.description | smartify }}",
   "icons": [{
     "src": "/assets/manifest/homescreen64.png",
     "sizes": "64x64",
