@@ -5,47 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <script data-cfasync="false">
-        /** A safe, no-throw storage wrapper.
-         *  - Uses localStorage if it’s writable.
-         *  - Falls back to an in-memory Map (lost on reload) if not.
-         *  API: storage.get(key, fallback), storage.set(key, value), storage.remove(key)
-         */
-        const storage = (() => {
-            try {
-                const s = window.localStorage;
-                const probe = "__probe__" + Math.random();
-                s.setItem(probe, "1"); s.removeItem(probe);   // verify writability
-                return {
-                    get: (k, fallback = null) => s.getItem(k) ?? fallback,
-                    set: (k, v) => { try { s.setItem(k, v); } catch { } },
-                    remove: (k) => { try { s.removeItem(k); } catch { } },
-                };
-            } catch {
-                const mem = new Map();                        // ephemeral fallback
-                return {
-                    get: (k, fallback = null) => mem.has(k) ? mem.get(k) : fallback,
-                    set: (k, v) => { mem.set(k, v); },
-                    remove: (k) => { mem.delete(k); },
-                };
-            }
-        })();
-
-        (function () {
-            const KEY = "theme";                 // "light" | "dark" | null (system/auto)
-            const saved = storage.get(KEY);
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            const theme = saved || (prefersDark ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-            document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
-        })();
-    </script>
+    <link rel="preload" href="/assets/fonts/eb-garamond-subset.woff2" as="font" type="font/woff2" crossorigin>
+    $partial("templates/partials/theme.html")$
     <link rel="manifest" href="/assets/manifest/manifest.json">
-    <link rel="alternate" type="application/rss+xml" title="$title$" href="$site$/atom.xml">
+    <link rel="alternate" type="application/atom+xml" title="$title$" href="$site$/atom.xml">
     <link rel="canonical" href="$site$$url$">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fastpaced.disqus.com" crossorigin>
+    $if(mathematics)$
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="$katexBase$katex.min.css">
+    $endif$
     <title>$title$</title>
     <meta name="description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
     <meta property="og:url" content="$site$$url$">
@@ -53,28 +21,9 @@
     <meta property="og:title" content="$title$">
     <meta property="og:site_name" content="fastpaced">
     <meta property="og:description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
-    <meta property="og:image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
+    <meta property="og:image" content="$imageUrl$">
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            "@id": "$site$",
-            "name": "fastpaced",
-            "description": "$defaultdescription$",
-            "author": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "creator": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "publisher": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "inLanguage": "en-US"
-        }
+        $siteSchema$
     </script>
     <style>
         $partial("assets/style.css")$
@@ -86,70 +35,7 @@
     <main id="$layout$">
         $body$
     </main>
-    <script>
-        (function () {
-            const KEY = "theme";
-            const root = document.documentElement;
-            const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
-
-            const links = {
-                system: document.getElementById("theme-system"),
-                light: document.getElementById("theme-light"),
-                dark: document.getElementById("theme-dark"),
-            };
-            if (!links.system || !links.light || !links.dark) return;
-
-            // --- Helpers -------------------------------------------------------------
-            const osTheme = () => (darkMq.matches ? "dark" : "light");
-            const getSaved = () => storage.get(KEY); // "light" | "dark" | null
-            const save = (v) => (v ? storage.set(KEY, v) : storage.remove(KEY));
-            const effective = () => getSaved() || osTheme();
-
-            const applyTheme = (theme) => {
-                root.setAttribute("data-theme", theme);
-                root.style.colorScheme = theme; // keep controls in sync
-            };
-
-            const updateUI = () => {
-                const saved = getSaved(); // null = system
-                Object.entries(links).forEach(([name, el]) => {
-                    const isActive = (name === "system" && saved === null) || saved === name;
-                    el.style.fontWeight = isActive ? "bold" : "";
-                    el.setAttribute("aria-current", isActive ? "true" : "false");
-                });
-            };
-
-            const setTheme = (value) => {
-                save(value);
-                applyTheme(value || osTheme());
-                updateUI();
-            };
-
-            // --- Init (no duplicate theme set; just sync UI and meta) --------------
-            applyTheme(effective()); // needed only to style the links (active)
-            updateUI();
-
-            // --- Respond to OS changes while in “system” mode ----------------------
-            const onOSChange = (e) => {
-                if (!getSaved()) {
-                    applyTheme(e.matches ? "dark" : "light");
-                    updateUI();
-                }
-            };
-            darkMq.addEventListener?.("change", onOSChange) ||
-                darkMq.addListener(onOSChange); // legacy support
-
-            // --- Click Handlers ----------------------------------------------------
-            Object.entries(links).forEach(([name, el]) => {
-                el.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    setTheme(name === "system" ? null : name);
-                });
-            });
-        })();
-    </script>
+    $partial("templates/partials/footer.html")$
 </body>
 
 </html>
-
-$partial("templates/partials/footer.html")$

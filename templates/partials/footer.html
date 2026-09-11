@@ -1,18 +1,15 @@
 $if(mathematics)$
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"/>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
-<script defer>
+<script defer src="$katexBase$katex.min.js"></script>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
-        var inline = document.getElementsByClassName("math inline");
-        var display = document.getElementsByClassName("math display");
-        setTimeout(function () {
-            for (var i = 0; i < inline.length; i++) {
-                katex.render(inline[i].textContent, inline[i], {displayMode: false, output: "html", throwOnError: false})
-            }
-            for (var j = 0; j < display.length; j++) {
-                katex.render(display[j].textContent, display[j], {displayMode: true, output: "html", throwOnError: false});
-            }
-        })
+        // Keep readable source equations if the CDN is unavailable.
+        if (!window.katex) return;
+        document.querySelectorAll(".math").forEach(function (element) {
+            katex.render(element.textContent, element, {
+                displayMode: element.classList.contains("display"),
+                throwOnError: false,
+            });
+        });
     });
 </script>
 $endif$

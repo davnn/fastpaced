@@ -17,11 +17,10 @@ layout: home
         $for(posts)$
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <meta itemprop="name" content="$title$" />
-            <meta itemprop="position" content="$dateInt$" />
             <h2>
                 <a itemprop="url" href="$url$">$title$</a>
                 <span>
-                    <a href="https://fastpaced.com$url$#disqus_thread"></a>
+                    <a href="$site$$url$#disqus_thread"></a>
                     $date$
                 </span></h2>
         </li>

@@ -1,0 +1,79 @@
+name: Dependabot squash merge
+
+on:
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+
+# This workflow runs from the default branch, never checks out PR code, and
+# receives write access separately from the read-only Dependabot CI run.
+permissions:
+  actions: write # Dispatch the post-merge build; token merges do not trigger push.
+  checks: read
+  contents: write
+  pull-requests: write
+  statuses: read
+
+concurrency:
+  group: dependabot-merge-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Squash merge passing Dependabot PRs
+        shell: bash
+        run: |
+          set -euo pipefail
+          eligible_pull() {
+            jq -e --arg repo "$GH_REPO" --arg sha "$TESTED_SHA" '
+              .state == "open" and .draft == false and
+              .user.login == "dependabot[bot]" and .user.type == "Bot" and
+              .head.repo.full_name == $repo and .base.repo.full_name == $repo and
+              .base.ref == "main" and (.head.ref | startswith("dependabot/")) and
+              .head.sha == $sha
+            ' <<< "$1" > /dev/null
+          }
+
+          # Query current PR data: workflow_run's embedded PR list can be empty.
+          pulls=$(gh api --paginate "repos/$GH_REPO/commits/$TESTED_SHA/pulls" \
+            --jq '.[] | .number')
+          for number in $pulls; do
+            pr=$(gh api "repos/$GH_REPO/pulls/$number")
+            if ! eligible_pull "$pr"; then
+              continue
+            fi
+
+            # Include all checks, not only those required by branch protection.
+            # Wait for any other CI workflows; failures/timeouts stop the merge.
+            gh pr checks "$number" --watch --fail-fast --interval 10
+
+            checks=$(gh pr checks "$number" --json name,bucket,workflow)
+            jq -e '
+              length > 0 and
+              all(.[]; .bucket == "pass" or .bucket == "skipping") and
+              any(.[]; .name == "Build hakyll site" and .workflow == "build" and .bucket == "pass")
+            ' <<< "$checks" > /dev/null
+
+            # Metadata can change while other checks run (e.g. retarget/draft).
+            current=$(gh api "repos/$GH_REPO/pulls/$number")
+            eligible_pull "$current"
+
+            # The server checks the SHA atomically and enforces branch rules.
+            result=$(gh api --method PUT "repos/$GH_REPO/pulls/$number/merge" \
+              -f sha="$TESTED_SHA" -f merge_method=squash)
+            jq -e '.merged == true' <<< "$result" > /dev/null
+
+            # workflow_dispatch is allowed to trigger a run with GITHUB_TOKEN.
+            gh workflow run build.yml --ref main
+          done

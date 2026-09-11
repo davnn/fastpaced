@@ -1,5 +1,5 @@
 <article $if(centered)$ class="centered" $endif$ itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
+    <meta itemprop="image" content="$imageUrl$">
     <meta itemprop="isPartOf" content="$site$">
     <meta itemprop="mainEntityOfPage" content="$url$">
     <header>
@@ -20,7 +20,7 @@
 
         <p class="date">
             <span>Published<br></span>
-            <time itemprop="datePublished dateModified">$date$</time>
+            <time datetime="$dateISO$" itemprop="datePublished dateModified">$date$</time>
         </p>
     </div>
 
@@ -46,25 +46,25 @@
 </article>
 
 $if(comments)$<script>
-    var is_local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    window.disqus_config = function () {
+        this.page.url = document.querySelector('link[rel="canonical"]').href;
+        this.page.identifier = new URL(this.page.url).pathname;
+        this.page.title = document.querySelector("h1").textContent;
+    };
+    (function () {
+        const localHosts = ["localhost", "127.0.0.1", "::1", "[::1]"];
+        const target = document.getElementById("disqus_thread");
+        if (localHosts.includes(window.location.hostname) ||
+            !target || !("IntersectionObserver" in window)) return;
 
-    /**
-     * Lazy loading disqus comments once the comment section is reached
-     * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
-     */
-    var disqus_config = function () {this.page.url = "$site$$url$"; this.page.identifier = "$url$"; this.page.title = "$title$";};
-    var disqus_observer = new IntersectionObserver(function (entries) {
-        if (entries[0].isIntersecting) {
-            /* #region Code from Disqus */
-            (function () { // Function from Disqus
-                var d = document, s = d.createElement('script');
-                s.src = 'https://fastpaced.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-            /* #endregion Code from Disqus */
-            disqus_observer.disconnect();
-        }
-    }, {threshold: [0]});
-    is_local || disqus_observer.observe(document.querySelector("#disqus_thread"));
+        const observer = new IntersectionObserver(function (entries) {
+            if (!entries.some(entry => entry.isIntersecting)) return;
+            observer.disconnect();
+            const script = document.createElement("script");
+            script.src = "https://fastpaced.disqus.com/embed.js";
+            script.setAttribute("data-timestamp", String(Date.now()));
+            document.head.appendChild(script);
+        });
+        observer.observe(target);
+    })();
 </script>$endif$

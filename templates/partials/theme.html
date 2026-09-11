@@ -1,0 +1,58 @@
+<script data-cfasync="false">
+    (function () {
+        const key = "theme";
+        const root = document.documentElement;
+        const media = typeof window.matchMedia === "function"
+            ? window.matchMedia("(prefers-color-scheme: dark)")
+            : {matches: false};
+        let storage = null;
+        let preference = null;
+        try {
+            storage = window.localStorage;
+            const saved = storage.getItem(key);
+            if (saved === "light" || saved === "dark") preference = saved;
+        } catch {
+            storage = null;
+        }
+
+        const apply = () => {
+            const theme = preference || (media.matches ? "dark" : "light");
+            root.setAttribute("data-theme", theme);
+            root.style.colorScheme = theme;
+        };
+        // Run in the head before first paint; controls are wired after parsing.
+        apply();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const controls = ["system", "light", "dark"]
+                .map(name => [name, document.getElementById("theme-" + name)])
+                .filter(([, element]) => element);
+            const updateControls = () => {
+                controls.forEach(([name, element]) => {
+                    element.setAttribute("aria-current", String(name === (preference || "system")));
+                });
+            };
+            controls.forEach(([name, element]) => {
+                element.addEventListener("click", event => {
+                    event.preventDefault();
+                    preference = name === "system" ? null : name;
+                    // Keep the in-memory preference if persistent storage fails.
+                    try {
+                        if (preference) storage?.setItem(key, preference);
+                        else storage?.removeItem(key);
+                    } catch {
+                        storage = null;
+                    }
+                    apply();
+                    updateControls();
+                });
+            });
+            const onSystemChange = () => {
+                if (preference === null) apply();
+            };
+            if (media.addEventListener) media.addEventListener("change", onSystemChange);
+            else if (media.addListener) media.addListener(onSystemChange);
+            updateControls();
+        });
+    })();
+</script>

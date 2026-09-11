@@ -15,13 +15,17 @@ dependencies:
 - hakyll
 - pandoc
 - filepath
+- network-uri
+- aeson
 - text
+- time
 
 executables:
   fastpaced:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
+    - -Wall
     - -threaded
     - -rtsopts
-    - -with-rtsopts=-N
+    - -with-rtsopts=-N2

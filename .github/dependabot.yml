@@ -1,0 +1,30 @@
+# Dependabot's current configuration schema is version 2.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      time: "08:00"
+      timezone: Europe/Vienna
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: pip
+    directory: /tools
+    schedule:
+      interval: monthly
+      time: "08:00"
+      timezone: Europe/Vienna
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build(deps)"
+    groups:
+      build-tools:
+        patterns:
+          - "*"

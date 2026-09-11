@@ -6,6 +6,7 @@
 *.iml
 *.cabal
 *.lock
+!stack.yaml.lock
 
 _site/
 _cache/
@@ -17,3 +18,8 @@ out/
 # only needed for stylelint
 package-lock.json
 node_modules/
+
+# Python build tools
+__pycache__/
+*.py[cod]
+.venv/

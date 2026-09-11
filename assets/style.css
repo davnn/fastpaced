@@ -1,13 +1,14 @@
 /* ==========================================================================
-   Google Fonts
+   Fonts
    ========================================================================== */
   /* latin */
   @font-face {
     font-family: 'EB Garamond';
     font-style: normal;
     font-weight: 400 800;
-    font-display: swap;
-    src: url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2) format('woff2');
+    /* Keep the fallback for this visit if the font is not ready in time. */
+    font-display: optional;
+    src: url(/assets/fonts/eb-garamond-subset.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 
@@ -425,21 +426,6 @@ main {
   padding: var(--spacing-2) 0; /* Default top and bottom padding */
 }
 
-#home, #article {
-  transform: translateY(var(--spacing-0)); /* Start state for the slideIn animation */
-  animation: fadeIn .5s ease-in forwards, slideIn .75s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0.01; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from { transform: translateY(var(--spacing-0)); }
-  to { transform: translateY(0); }
-}
-
 /* ==========================================================================
    Syntax
    ========================================================================== */
@@ -537,6 +523,7 @@ main {
   margin: calc(var(--container-padding) / 2) calc(var(--container-padding) / -2) 0 calc(var(--container-padding) / -2);
   padding: var(--spacing-2);
   pointer-events: none;
+  visibility: hidden;
   transform: scale(.95);
   transform-origin: 100% 0;
   transition-duration: .25s;
@@ -589,6 +576,7 @@ main {
 }
 
 #site-header #nav-toggle:checked ~ .site-navigation {
+  visibility: visible;
   transform: none;
   opacity: 1; /* Display the navigation when checked */
   pointer-events: auto;
@@ -748,8 +736,9 @@ main {
   text-align: justify;
 }
 
-#article img { /* Display all images as blocks */
+#article img { /* Preserve intrinsic aspect ratios at responsive widths. */
   display: block;
+  height: auto;
 }
 
 #article hr { /* Uniform divider color */
@@ -1205,12 +1194,14 @@ main {
     -webkit-tap-highlight-color: transparent;
   }
 
+  #site-header #nav-toggle,
   #site-header #nav-toggle + label {
     display: none;
   }
 
   #site-header .site-navigation {
     position: initial; /* reset */
+    visibility: visible;
     box-shadow: initial; /* reset */
     pointer-events: initial; /* reset */
     /* keep side navbar in same background as content */
@@ -1231,4 +1222,17 @@ main {
 
 @media screen and (min-width: 2560px) {
   #home { padding-top: var(--spacing-5); }
+}
+
+/* Keep the menu checkbox keyboard-accessible while displaying the icon label. */
+#nav-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+#nav-toggle:focus-visible + label {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
