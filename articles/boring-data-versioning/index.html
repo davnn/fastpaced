@@ -41,18 +41,18 @@
         })();
     </script>
     <link rel="manifest" href="/assets/manifest/manifest.json">
-    <link rel="alternate" type="application/atom+xml" title="Principal component analysis" href="https://fastpaced.com/atom.xml">
-    <link rel="canonical" href="https://fastpaced.com/articles/principal-component-analysis/">
+    <link rel="alternate" type="application/atom+xml" title="Data versioning should be boring" href="https://fastpaced.com/atom.xml">
+    <link rel="canonical" href="https://fastpaced.com/articles/boring-data-versioning/">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fastpaced.disqus.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <title>Principal component analysis</title>
-    <meta name="description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
-    <meta property="og:url" content="https://fastpaced.com/articles/principal-component-analysis/">
+    <title>Data versioning should be boring</title>
+    <meta name="description" content="Large-file versioning should be simple and fast: no extra service, no separate workflow, no pipeline system. Just files that stay aligned with the commits that reference them.">
+    <meta property="og:url" content="https://fastpaced.com/articles/boring-data-versioning/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Principal component analysis">
+    <meta property="og:title" content="Data versioning should be boring">
     <meta property="og:site_name" content="fastpaced">
-    <meta property="og:description" content="Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.">
+    <meta property="og:description" content="Large-file versioning should be simple and fast: no extra service, no separate workflow, no pipeline system. Just files that stay aligned with the commits that reference them.">
     <meta property="og:image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <script type="application/ld+json">{"@context":"https://schema.org","@id":"https://fastpaced.com","@type":"Blog","author":{"@type":"Person","name":"David Muhr"},"creator":{"@type":"Person","name":"David Muhr"},"description":"A research-oriented blog about data, engineering and other interesting topics. Maintained by David Muhr, a machine learning and software engineering leader in Austria.","inLanguage":"en-US","name":"fastpaced","publisher":{"@type":"Person","name":"David Muhr"}}</script>
     <style>
@@ -104,14 +104,14 @@
         <article  itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
     <meta itemprop="image" content="https://fastpaced.com/assets/images/galaxy.jpg">
     <meta itemprop="isPartOf" content="https://fastpaced.com">
-    <meta itemprop="mainEntityOfPage" content="/articles/principal-component-analysis/">
+    <meta itemprop="mainEntityOfPage" content="/articles/boring-data-versioning/">
     <header>
-        <h1 itemprop="name headline">Principal component analysis</h1>
+        <h1 itemprop="name headline">Data versioning should be boring</h1>
     </header>
 
     
     <div class="abstract" itemprop="abstract">
-        Principal component analysis (PCA) is a popular dimensionality reduction procedure that uses a linear transformation to express data in a more suitable basis that preserves most variation in the data.
+        Large-file versioning should be simple and fast: no extra service, no separate workflow, no pipeline system. Just files that stay aligned with the commits that reference them.
     </div>
     
 
@@ -123,175 +123,38 @@
 
         <p class="date">
             <span>Published<br></span>
-            <time itemprop="datePublished dateModified" datetime="2018-02-20">February 20, 2018</time>
+            <time itemprop="datePublished dateModified" datetime="2026-09-13">September 13, 2026</time>
         </p>
     </div>
 
     <div class="content" itemprop="articleBody">
-        <noscript><p class="noscript">Activate JavaScript to enable mathematical typesetting powered by <a href="https://katex.org">KaTex</a>.</p></noscript>
-        <p>A data set of real-valued measurements can be described by a matrix <span class="math inline">X</span>. We have some number of measurements <span class="math inline">n</span>, each with a number of attributes <span class="math inline">m</span>. Thus, <span class="math inline">X</span> can be represented as a Matrix <span class="math inline">\mathbb{R}^{n \times m}</span>.</p>
-<p>PCA is about finding a new basis that expresses our data in a lower-dimensional space. That is, we want to find a transformation matrix <span class="math inline">P</span> to transform <span class="math inline">X</span> into a lower-dimensional matrix <span class="math inline">Y</span> that provides a reasonable characterization of the complete data set.</p>
-<p><span class="math display">Y = P \cdot X</span></p>
-<p>The goals of PCA are: (1) minimize redundancy in our data set, and (2) preserve maximal variance within the data.</p>
-<figure>
-<img src="redundancy.png" class="width-large themed" loading="eager" width="602" height="252" alt="Correlation and Redundancy (Shlens 2014)" />
-<figcaption aria-hidden="true">Correlation and Redundancy <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span></figcaption>
-</figure>
-<p>PCA comes with assumptions:</p>
-<ol type="1">
-<li><em>Linearity &amp; Orthogonality</em> - we use covariance, a linear relationship, as a measure of redundancy and are restricted to express the data set in an orthogonal basis<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
-<li><em>Greater Variance Means Greater Information</em>, directions with greater variance are assumed to represent a more interesting structure</li>
-</ol>
-<p>Let’s calculate an example PCA with Mathematica. We should first generate some example data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>distribution <span class="ex">=</span> <span class="fu">MultinormalDistribution</span><span class="op">[{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> .<span class="dv">5</span><span class="op">},</span> <span class="op">{</span>.<span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">}}]</span>;</span></code></pre></div>
-<figure>
-<img src="distribution.png" class="width-medium themed" loading="eager" width="360" height="283" alt="Two-Dimensional Example Distribution" />
-<figcaption aria-hidden="true">Two-Dimensional Example Distribution</figcaption>
-</figure>
-<p>We create <span class="math inline">10000</span> data points that follow our specified distribution.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">RandomVariate</span><span class="op">[</span>distribution<span class="op">,</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span><span class="op">]</span>;</span></code></pre></div>
-<figure>
-<img src="data.png" class="width-medium themed" loading="lazy" width="360" height="223" alt="Raw Example Data" />
-<figcaption aria-hidden="true">Raw Example Data</figcaption>
-</figure>
-<h2 id="standardization">Standardization</h2>
-<p>Standardization is also known as feature scaling, and there are <a href="https://en.wikipedia.org/wiki/Feature_scaling">different ways to scale variables</a>. It’s on us to decide if there are features that should contribute more or less.</p>
-<p>In our example, we know that the data is normally distributed, and we want to scale our variables to mean <span class="math inline">0</span> and standard deviation <span class="math inline">1</span>, also known as <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">standard normalization</a>: <span class="math inline">X - \mu \over \sigma</span>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize</span><span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> (<span class="fu">A</span> <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>)<span class="sc">/</span><span class="fu">StandardDeviation</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span>;</span></code></pre></div>
-<p>Keep in mind that we want to standardize each feature (column), not each observation (row).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span><span class="fu">standardize</span><span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span>data<span class="op">]]</span> <span class="sc">//</span> <span class="fu">Transpose</span>;</span></code></pre></div>
-<figure>
-<img src="data-standardized.png" class="width-medium themed" loading="lazy" width="360" height="223" alt="Standardized Example Data" />
-<figcaption aria-hidden="true">Standardized Example Data</figcaption>
-</figure>
-<h2 id="covariance-matrix">Covariance Matrix</h2>
-<p>Each observation can be seen as a point in <span class="math inline">m</span>-dimensional space. <a href="http://mathworld.wolfram.com/Covariance.html">Covariance</a> is the sum of signed squares between all points. Covariance thus tells us if the values tend to increase or decrease together.</p>
-<p><span class="math display">\text{cov}(x,y) = E[(x_i - \bar x)(y_i - \bar y)]</span></p>
-<figure>
-<img src="covariance.png" class="width-medium themed caption" loading="lazy" width="655" height="483" alt="Covariance as the Sum of Signed Squares (Hedderich and Sachs 2015)" />
-<figcaption aria-hidden="true">Covariance as the Sum of Signed Squares <span class="citation" data-cites="Hedderich:2015ge">(Hedderich and Sachs 2015)</span></figcaption>
-</figure>
-<p>The covariance matrix (positive semi-definite <span class="math inline">\mathbb R^{m \times m}</span>) is the collection of covariances between all features. Note that the covariance of a feature with itself is the variance of that feature. Thus, the diagonal of the covariance matrix is the variance of the corresponding feature.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covarianceMatrix<span class="op">[</span><span class="at">A_</span><span class="op">]</span> <span class="ex">:=</span> <span class="fu">Module</span><span class="op">[{</span>Ats<span class="op">},</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Ats <span class="ex">=</span> <span class="fu">Map</span><span class="op">[</span># <span class="sc">-</span> <span class="fu">Mean</span><span class="op">[</span>#<span class="op">]</span> &amp;<span class="op">,</span> <span class="fu">Transpose</span><span class="op">[</span><span class="fu">A</span><span class="op">]]</span>;</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Ats.(<span class="fu">Transpose</span> <span class="op">[</span>Ats<span class="op">]</span>)<span class="sc">/</span>(<span class="fu">Length</span><span class="op">[</span><span class="fu">A</span><span class="op">]</span> <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div>
-<p>Recap that one of our goals was to minimize redundancy in our transformed data set. With the notion of covariance, we can state that goal more formally: all off-diagonal items of <span class="math inline">\text{covmat}(Y)</span> should be zero. In other words: we decorrelate the data.</p>
-<figure>
-<img src="covariance.gif" class="width-medium themed" loading="lazy" width="360" height="261" alt="Covariance Intuition" />
-<figcaption aria-hidden="true">Covariance Intuition</figcaption>
-</figure>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covmat <span class="ex">=</span> covarianceMatrix<span class="op">[</span>data<span class="op">]</span></span></code></pre></div>
-<p>An interesting thing about covariance matrices is that they define a specific linear transformation - a linear transformation in the directions of variance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Can you guess what the covariance matrix of our standardized data looks like?</p>
-<p><span class="math display">
-\text{covmat} \approxeq
-\left(
-\begin{array}{cc}
- 1 &amp; \frac{1}{2}  \\
- \frac{1}{2}  &amp; 1 \\
-\end{array}
-\right)
-</span></p>
-<p>Repeatedly applying a linear transformation, in this case, our covariance matrix, to a randomly chosen vector <span class="math inline">(1,0)</span> seems to converge in some direction, but what are those mysterious black arrows?</p>
-<figure>
-<img src="covariance-transform.gif" class="width-medium themed" loading="lazy" width="360" height="223" alt="Applying the Linear Transformation to a Vector" />
-<figcaption aria-hidden="true">Applying the Linear Transformation to a Vector</figcaption>
-</figure>
-<h2 id="eigendecomposition">Eigendecomposition</h2>
-<p>Eigenvectors are the directions along which a linear transformation acts by stretching/compressing or flipping space. Eigenvalues, on the other hand, determine the magnitude of the transformation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<ol class="example" type="1">
-<li>Let <span class="math inline">A</span> be a square matrix, a scalar <span class="math inline">\lambda</span> is called <strong>Eigenvalue</strong> of <span class="math inline">A</span> if there is a <em>non-zero</em> vector <span class="math inline">v</span>, called an <strong>Eigenvector</strong>, such that <span class="math inline">Av = \lambda v</span>.</li>
-</ol>
-<p>The eigenvalues and eigenvectors can be calculated by directly solving (1). Let us, therefore, rewrite the equation:</p>
-<p><span class="math display">Av - \lambda v = 0</span>
-<span class="math display">(A - \lambda I) v = 0</span></p>
-<p>We have now formed a homogeneous linear system of equations. A homogeneous linear system has a nonzero solution if and only if it’s coefficient matrix, in this case, <span class="math inline">A - \lambda I</span>, is singular:</p>
-<p><span class="math display">\text{det}(A - λ I) = 0</span></p>
-<p>Let’s solve this equation for our simple example to get the eigenvalues.</p>
-<p><span class="math display">
-\begin{aligned}
-\text{det}
-\left(
-\begin{array}{cc}
- 1 - \lambda &amp; \frac{1}{2} \\
- \frac{1}{2} &amp; 1 - \lambda \\
-\end{array}
-\right) = 0 \\
-(1 - \lambda)^2 - \frac{1}{4} = 0 \\
-\lambda_1 = \frac{1}{2}, \lambda_2 = \frac{3}{2}
-\end{aligned}
-</span></p>
-<p>We can now solve (1) to get the eigenvectors.</p>
-<p><span class="math display">
-\begin{aligned}
-v_1 + \frac{1}{2}v_2 = \frac{1}{2}v_1 \\
-\frac{1}{2}v_1 + v_2 = \frac{1}{2}v_2 \\
--v_1 = v_2
-\end{aligned}
-</span></p>
-<p><span class="math display">
-\begin{aligned}
-v_1 + \frac{1}{2}v_2 = \frac{3}{2}v_1 \\
-\frac{1}{2}v_1 + v_2 = \frac{3}{2}v_2 \\
-v_1 = v_2
-\end{aligned}
-</span></p>
-<p>A solution for our eigenvectors thus is <span class="math inline">(-1, 1)</span> and <span class="math inline">(1, 1)</span> - the mysterious black arrows from the figure above! We can check our solution with:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Eigensystem</span><span class="op">[</span>covmat<span class="op">]</span></span></code></pre></div>
-<h2 id="principal-components">Principal Components</h2>
-<p>Principal components are defined in a way that the first principal component has the largest possible variance in a specific direction (that is, accounts for as much of the variability in the data as possible), and each succeeding component, in turn, has the highest variance possible under the constraint that it is orthogonal to the preceding components.</p>
-<p>We have to sort all eigenvalues in descending order and choose <span class="math inline">k</span> eigenvectors that correspond to the <span class="math inline">k</span> largest eigenvalues. The eigenvalues in the case of the covariance matrix represent the magnitude of variance.</p>
-<p>The <span class="math inline">k</span> chosen vectors are our principal components! Principal components are thus nothing more than sorted eigenvectors of the covariance matrix represented as a transformation matrix <span class="math inline">P</span>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica width-full"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Transpose</span><span class="op">[</span><span class="fu">Eigenvectors</span><span class="op">[</span>covmat<span class="op">]]</span></span></code></pre></div>
-<p><span class="math display">
-P =
-\left(
-\begin{array}{cc}
- 1 &amp; -1 \\
- 1 &amp; 1 \\
-\end{array}
-\right)
-</span></p>
-<p>What do you think happens if we apply that transformation matrix to our standardized data set? Notice how the covariance matrix changes.</p>
-<figure>
-<img src="pca-projection.gif" class="width-medium themed" loading="lazy" width="360" height="261" alt="Applying the PCA Transformation" />
-<figcaption aria-hidden="true">Applying the PCA Transformation</figcaption>
-</figure>
-<p>In reality, the transformation happens in one step, the dot product of <span class="math inline">P \cdot X</span>. The animation is just for illustrative purposes.</p>
-<p>Another challenge is to find a good value for <span class="math inline">k</span>. The sum of all eigenvalues fully explains the variation in the data.</p>
-<figure>
-<img src="explained-variance.png" class="width-medium themed" loading="lazy" width="528" height="362" alt="Explained Variance by Component" />
-<figcaption aria-hidden="true">Explained Variance by Component</figcaption>
-</figure>
-<p>In our example, the only sensible value for <span class="math inline">k</span> would be <span class="math inline">1</span> since we only have <span class="math inline">2</span> dimensions. It turns out that we will lose <span class="math inline">\frac{1}{4}</span> of variation by reducing our dataset from two to one dimension.</p>
-<p><span class="math display">
-P =
-\left(
-\begin{array}{cc}
- 1 \\
- 1
-\end{array}
-\right)
-</span></p>
-<figure>
-<img src="dimensionality-reduction.gif" class="width-medium themed" loading="lazy" width="360" height="230" alt="Dimensionality Reduction Transformation" />
-<figcaption aria-hidden="true">Dimensionality Reduction Transformation</figcaption>
-</figure>
-<p>There is a closely related matrix-decomposition technique known as Singular Value Decomposition (SVD) that can be used to calculate the principal components. See <span class="citation" data-cites="Shlens:2014vi">(Shlens 2014)</span> for a PCA tutorial for the relationship between PCA and SVD and how to perform an SVD.</p>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Hedderich:2015ge" class="csl-entry" role="listitem">
-Hedderich, Jürgen, and Lothar Sachs. 2015. <em><span>Angewandte Statistik</span></em>. Methodensammlung Mit r. Berlin, Heidelberg: Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-45691-0">https://doi.org/10.1007/978-3-662-45691-0</a>.
-</div>
-<div id="ref-Shlens:2014vi" class="csl-entry" role="listitem">
-Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Component Analysis</span>.”</span> <em>arXiv.org</em>, April. <a href="http://arxiv.org/abs/1404.1100v1">http://arxiv.org/abs/1404.1100v1</a>.
-</div>
-</div>
+        
+        <p>I want a fairly unremarkable thing from data versioning: check out an old Git commit and get the files that belong to it. Not the latest dataset. Not the model someone happens to have on their laptop. The files that belong to that commit.</p>
+<p>The usual answers are Git LFS or DVC. Both are reasonable, and both solve substantially more than a shell script that uploads a directory. But they make different decisions about the scope of data storage and where the additional machinery should live.</p>
+<p>I think those decisions are more interesting than the usual feature comparison.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h2 id="git-lfs-the-cost-of-another-service">Git LFS, the cost of another service</h2>
+<p>Git LFS fits closely into Git’s existing workflow. Its clean filter replaces file contents with a pointer when adding them to Git; its smudge filter restores the contents when checking them out. A pre-push hook uploads the required LFS objects before publishing the commits.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>That integration is useful. Once configured, the familiar Git commands do much of the work.
+The trade-off is that <strong>restoring a working tree now depends on an additional service</strong>.</p>
+<p>The normal LFS setup speaks to an LFS endpoint, not directly to an arbitrary S3 bucket. A hosting provider can operate that endpoint, or it can be self-hosted. Standalone custom transfer agents can also bypass the API server, so saying that LFS <em>always requires a dedicated server</em> would be inaccurate. But using storage you already control is not necessarily just a matter of supplying its bucket URL.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>For a project whose Git host already provides suitable LFS storage, this can be an excellent arrangement. However, I would like to be able to choose whatever storage is practical without an additional service necessary to retrieve data.</p>
+<h2 id="dvc-and-the-cost-of-generality">DVC and the cost of generality</h2>
+<p>DVC addresses that storage requirement directly. It can keep data in S3, Azure Blob, GCS, or a local directory, while Git versions the metadata. It also supports pipelines, parameters, metrics, and experiments.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>There is an important qualification here: <strong>none of those pipeline features is required for basic file versioning</strong>. A workflow built around <code>dvc add</code>, <code>dvc push</code>, and <code>dvc pull</code> is supported. However, it appears that a good portion of the engineering effort has been put into the larger feature set instead of making git-based large file storage the main priority.</p>
+<p>For me, the question is one of scope. I do not need a tool that can also describe how the data was produced. I only need to record which bytes belong to which commit. DVC can do that; but its apparant that it’s not the only thing it wants to do.</p>
+<h2 id="a-deliberately-boring-alternative">A deliberately boring alternative</h2>
+<p>That narrower responsibility is what I am trying to keep in <a href="https://github.com/getgat-dev/gat">Gat</a>: version large files with Git, leave the rest of the workflow alone. Essentially, I want a <strong>lock file and a highly-efficient engine to process data around it</strong>.</p>
+<p>Git commits <code>gat.lock</code>, which maps paths to content IDs. The bytes live in a cache and, when configured, an object store or a directory. <code>gat add</code> records content, <code>gat push</code> uploads it, and <code>gat pull</code> downloads and restores it.</p>
+<p>The entire engineering effort is deliberately spent on that problem. It is written in Rust, with a clear focus on keeping operations blazingly fast: massively parallel hashing, state-aware synchronization that avoids unnecessary rehashing, copy-on-write materialization to avoid copying cached files and many more optimizations.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>I am not suggesting replacing an LFS or DVC setup that already works just because another tool is available. The difference I am aiming for is a narrower scope solving one problem well such that data versioning in Git becomes less of a chore.</p>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>We are restricted to an orthogonal basis because the covariance matrix, on which our calculations are based on, is symmetric. Check out <a href="https://stats.stackexchange.com/a/130884">this StackExchange answer</a> for more information.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Vincent Spruyt wrote <a href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">an article</a> about the geometric interpretation of covariance matrices.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>There are excellent introductions to eigenvalues and eigenvectors available online, see <a href="http://setosa.io/ev/eigenvectors-and-eigenvalues/">Explained Visually</a>, <a href="https://math.stackexchange.com/questions/23312/what-is-the-importance-of-eigenvalues-eigenvectors/23325">Stackexchange</a>, <a href="https://www.youtube.com/watch?v=PFDu9oVAE-g">Youtube</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Disclosure: I built <a href="https://getgat.dev/">Gat</a>, a large-file versioning tool.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>These operations are described in the <a href="https://github.com/git-lfs/git-lfs/blob/main/docs/spec.md">Git LFS specification</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Git LFS documents <a href="https://github.com/git-lfs/git-lfs/blob/main/docs/custom-transfers.md">custom transfer agents</a>, including operation without an API server.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>See DVC’s <a href="https://doc.dvc.org/user-guide/data-management/remote-storage">remote-storage documentation</a> and <a href="https://doc.dvc.org/user-guide">user guide</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>See the <a href="https://github.com/getgat-dev/gat">Gat repository</a> and <a href="https://getgat.dev/guides/improving-performance">performance guide</a>. Reflinks require filesystem support and configuration; the default materialization strategy is an independent copy.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -307,7 +170,7 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
                 been reused from other sources don't fall under this license and can be recognized by a note in their
                 caption.</p>
         </section>
-        <div id="disqus_thread" data-url="https://fastpaced.com/articles/principal-component-analysis/" data-identifier="/articles/principal-component-analysis/" data-title="Principal component analysis"></div>
+        <div id="disqus_thread" data-url="https://fastpaced.com/articles/boring-data-versioning/" data-identifier="/articles/boring-data-versioning/" data-title="Data versioning should be boring"></div>
     </div>
 
 </article>
@@ -408,20 +271,6 @@ Shlens, Jonathon. 2014. <span>“<span class="nocase">A Tutorial on Principal Co
         })();
     </script>
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.7/dist/katex.min.css"/>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.7/dist/katex.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".math").forEach(function (element) {
-            katex.render(element.textContent, element, {
-                displayMode: element.classList.contains("display"),
-                output: "html",
-                throwOnError: false
-            });
-        });
-    });
-</script>
-
 
 </body>
 
