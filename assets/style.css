@@ -444,11 +444,11 @@ main {
    Syntax
    ========================================================================== */
 
-.sourceCode {
+code, .sourceCode {
   font-size: var(--font-size-2);
 }
 
-.sourceCode a {
+code a, .sourceCode a {
   color: var(--color-syntax-generic);
 }
 
