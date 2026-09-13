@@ -63,7 +63,7 @@ The trade-off is that <strong>restoring a working tree now depends on an additio
 <p>That narrower responsibility is what I am trying to keep in <a href="https://github.com/getgat-dev/gat">Gat</a>: version large files with Git, leave the rest of the workflow alone. Essentially, I want a <strong>lock file and a highly-efficient engine to process data around it</strong>.</p>
 <p>Git commits <code>gat.lock</code>, which maps paths to content IDs. The bytes live in a cache and, when configured, an object store or a directory. <code>gat add</code> records content, <code>gat push</code> uploads it, and <code>gat pull</code> downloads and restores it.</p>
 <p>The entire engineering effort is deliberately spent on that problem. It is written in Rust, with a clear focus on keeping operations blazingly fast: massively parallel hashing, state-aware synchronization that avoids unnecessary rehashing, copy-on-write materialization to avoid copying cached files and many more optimizations.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<p>I am not suggesting replacing an LFS or DVC setup that already works just because another tool is available. The difference I am aiming for is a narrower scope solving one problem well such that data versioning in Git becomes less of a chore.</p>
+<p>I am not suggesting replacing an LFS or DVC setup that already works just because another tool is available. The difference I am aiming for is solving one problem well such that data versioning in Git becomes less of a chore.</p>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
