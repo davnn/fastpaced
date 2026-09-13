@@ -13,7 +13,7 @@
     </author>
     <updated>2026-09-13T00:00:00Z</updated>
     <entry>
-    <title>Data versioning should be boring</title>
+    <title>LFS should be boring</title>
     <link href="https://fastpaced.com/articles/boring-data-versioning/" />
     <id>https://fastpaced.com/articles/boring-data-versioning/</id>
     <published>2026-09-13T00:00:00Z</published>
@@ -23,7 +23,7 @@
     <meta itemprop="isPartOf" content="https://fastpaced.com">
     <meta itemprop="mainEntityOfPage" content="/articles/boring-data-versioning/">
     <header>
-        <h1 itemprop="name headline">Data versioning should be boring</h1>
+        <h1 itemprop="name headline">LFS should be boring</h1>
     </header>
 
     
@@ -87,7 +87,7 @@ The trade-off is that <strong>restoring a working tree now depends on an additio
                 been reused from other sources don't fall under this license and can be recognized by a note in their
                 caption.</p>
         </section>
-        <div id="disqus_thread" data-url="https://fastpaced.com/articles/boring-data-versioning/" data-identifier="/articles/boring-data-versioning/" data-title="Data versioning should be boring"></div>
+        <div id="disqus_thread" data-url="https://fastpaced.com/articles/boring-data-versioning/" data-identifier="/articles/boring-data-versioning/" data-title="LFS should be boring"></div>
     </div>
 
 </article>
