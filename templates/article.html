@@ -1,5 +1,5 @@
 <article $if(centered)$ class="centered" $endif$ itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-    <meta itemprop="image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
+    <meta itemprop="image" content="$imageUrl$">
     <meta itemprop="isPartOf" content="$site$">
     <meta itemprop="mainEntityOfPage" content="$url$">
     <header>
@@ -20,7 +20,7 @@
 
         <p class="date">
             <span>Published<br></span>
-            <time itemprop="datePublished dateModified">$date$</time>
+            <time itemprop="datePublished dateModified" datetime="$dateISO$">$date$</time>
         </p>
     </div>
 
@@ -40,7 +40,7 @@
                 been reused from other sources don't fall under this license and can be recognized by a note in their
                 caption.</p>
         </section>
-        <div id="disqus_thread"></div>
+        $if(comments)$<div id="disqus_thread" data-url="$site$$url$" data-identifier="$url$" data-title="$title$"></div>$endif$
     </div>
 
 </article>
@@ -52,7 +52,12 @@ $if(comments)$<script>
      * Lazy loading disqus comments once the comment section is reached
      * based on: https://usefulangle.com/post/251/disqus-comments-improve-page-load-speed
      */
-    var disqus_config = function () {this.page.url = "$site$$url$"; this.page.identifier = "$url$"; this.page.title = "$title$";};
+    var disqus_config = function () {
+        var metadata = document.getElementById("disqus_thread").dataset;
+        this.page.url = metadata.url;
+        this.page.identifier = metadata.identifier;
+        this.page.title = metadata.title;
+    };
     var disqus_observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
             /* #region Code from Disqus */

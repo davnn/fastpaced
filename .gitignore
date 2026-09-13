@@ -6,6 +6,7 @@
 *.iml
 *.cabal
 *.lock
+!stack.yaml.lock
 
 _site/
 _cache/

@@ -41,7 +41,7 @@
         })();
     </script>
     <link rel="manifest" href="/assets/manifest/manifest.json">
-    <link rel="alternate" type="application/rss+xml" title="$title$" href="$site$/atom.xml">
+    <link rel="alternate" type="application/atom+xml" title="$title$" href="$site$/atom.xml">
     <link rel="canonical" href="$site$$url$">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fastpaced.disqus.com" crossorigin>
@@ -53,29 +53,8 @@
     <meta property="og:title" content="$title$">
     <meta property="og:site_name" content="fastpaced">
     <meta property="og:description" content="$if(abstract)$$abstract$$else$$defaultdescription$$endif$">
-    <meta property="og:image" content="$if(image)$$site$$url$/$image$$else$$site$/assets/images/galaxy.jpg$endif$">
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            "@id": "$site$",
-            "name": "fastpaced",
-            "description": "$defaultdescription$",
-            "author": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "creator": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "publisher": {
-                "@type": "Person",
-                "name": "David Muhr"
-            },
-            "inLanguage": "en-US"
-        }
-    </script>
+    <meta property="og:image" content="$imageUrl$">
+    <script type="application/ld+json">$siteSchema$</script>
     <style>
         $partial("assets/style.css")$
     </style>
@@ -136,8 +115,11 @@
                     updateUI();
                 }
             };
-            darkMq.addEventListener?.("change", onOSChange) ||
-                darkMq.addListener(onOSChange); // legacy support
+            if (darkMq.addEventListener) {
+                darkMq.addEventListener("change", onOSChange);
+            } else {
+                darkMq.addListener(onOSChange);
+            }
 
             // --- Click Handlers ----------------------------------------------------
             Object.entries(links).forEach(([name, el]) => {
@@ -148,8 +130,7 @@
             });
         })();
     </script>
+    $partial("templates/partials/footer.html")$
 </body>
 
 </html>
-
-$partial("templates/partials/footer.html")$

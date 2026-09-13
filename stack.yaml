@@ -1,6 +1,11 @@
 # Resolver to choose a 'specific' stackage snapshot or a compiler version.
-resolver: lts-24.14
+resolver: lts-24.58
 
 # User packages to be built.
 packages:
 - .
+
+# Use the Haskell zlib dependency instead of requiring system pkg-config.
+flags:
+  digest:
+    pkg-config: false

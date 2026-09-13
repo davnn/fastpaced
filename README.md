@@ -12,7 +12,20 @@ git submodule update --init
 
 1. Install or update [Stack](https://github.com/commercialhaskell/stack)
 2. Build the project: `stack build`
-3. Run the site compiler: `stack exec fastpaced`
+3. Generate the site: `stack exec fastpaced build`
+
+`stack.yaml` configures `digest` to use the Haskell `zlib` dependency, so it does
+not require `pkg-config` to locate zlib.
+
+Run `python3 tests/check_site.py` after building to check article routes, canonical URLs, assets, and the Atom feed.
+
+Use `stack exec fastpaced rebuild` for a clean site build, or `stack exec fastpaced watch` for local previews.
+
+The executable entry point is `app/Main.hs`. Site rules live in `Lib.Rules`,
+shared site metadata in `Lib.Configuration`, template fields in `Lib.Context`,
+Markdown/citation rendering in `Lib.Pandoc`, boolean metadata in `Lib.Metadata`,
+and URL resolution in `Lib.Url`. All `.bib` files in an article directory are used
+for citations; articles without bibliographies use ordinary Pandoc rendering.
 
 ### Updating content
 
@@ -35,12 +48,18 @@ Optional metadata is available if articles require additional features. The foll
 ```yaml
 mathematics: Boolean (true | false)
 centered: Boolean  (true | false)
+comments: Boolean (true | false)
 image: String (path)
 ```
 
 * `mathematics` enables mathematical typesetting with [KaTeX](https://github.com/KaTeX/KaTeX). Mathematical content can then be included with `$expr$` for inline content and `$$expr$$` for block content.
 * `centered` changes the article to a centered layout instead of left-aligned.
-* `image` specifies the path to an image relative to the current article path. This image is used for the site meta data `og:image`. A default image is included if the `image` field is missing.
+* `comments` enables Disqus comments (enabled by default). Set it to `false` to disable comments for an article.
+* `image` accepts an article-relative path, a root-relative path, or an absolute URL. It is used consistently for social and article metadata. A default image is included if the field is missing.
+
+`mathematics` and `centered` default to `false`. Explicit `false` values, including
+quoted strings, disable these flags. Titles, authors, and abstracts are plain text
+and are escaped when rendered; Markdown article bodies retain their generated HTML.
 
 ### Styling content
 
@@ -50,4 +69,4 @@ The width of elements can be modified with `.width-small`, `.width-medium`, `.wi
 
 #### Theming
 
-Theming is the only feature implemented using JavaScript. When JavaScript is deactivated the light theme is used. The only theme-specific class is `.themed` for `img` elements, which safely inverts the image colors with a hue-rotation turning white images into black images for dark mode.
+JavaScript powers theme switching, mathematical typesetting, and comments. When JavaScript is deactivated the light theme is used. The only theme-specific class is `.themed` for `img` elements, which safely inverts the image colors with a hue-rotation turning white images into black images for dark mode.

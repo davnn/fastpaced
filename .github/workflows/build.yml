@@ -5,6 +5,12 @@ on:
     types: [ opened, reopened, synchronize ]
 
 name: build
+
+# Keep only the newest build across branches and pull requests.
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   run:
     name: Build hakyll site
@@ -30,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-stack-${{ steps.setup.outputs.stack-version }}
         with:
           path: ${{ steps.setup.outputs.stack-root }}
-          key: ${{ env.key }}-package-${{ hashFiles('package.yaml') }}
+          key: ${{ env.key }}-package-${{ hashFiles('package.yaml', 'stack.yaml', 'stack.yaml.lock') }}
           restore-keys: ${{ env.key }}-
 
       - name: Build project
@@ -47,6 +53,9 @@ jobs:
 
       - name: Build site
         run: stack exec fastpaced build
+
+      - name: Check generated site
+        run: python3 tests/check_site.py
 
       - name: Deploy site
         uses: peaceiris/actions-gh-pages@v4
